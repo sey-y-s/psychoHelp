@@ -13,7 +13,7 @@ public interface PsyService {
     // lecture operation
     List<Psychologue> PSYCHOLOGUEList();
     Optional<Psychologue> GetPsychologueById(int PsychologueId);
-    List<Psychologue> UpdateEtat(int PsyId,boolean etat);
+    Psychologue UpdateEtat(int PsyId,Psychologue psychologue);
 
 
     // modification operation
