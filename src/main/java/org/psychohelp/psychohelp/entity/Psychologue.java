@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Entity
 @Data
 @Table(name = "psychologues")
@@ -18,6 +19,9 @@ public class Psychologue extends Utilisateur{
     private String diplome_path;
     private String  cv_path;
     private boolean etat;
+    @ManyToOne(cascade = CascadeType.ALL);
+    @JoinColumn(name="specialite_id");
+    private Specialite specialite;
 
 
 }

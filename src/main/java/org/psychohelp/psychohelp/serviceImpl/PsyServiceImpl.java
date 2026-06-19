@@ -33,10 +33,10 @@ public class PsyServiceImpl implements PsyService {
     }
 
     @Override
-    public List<Psychologue> UpdateEtat(int PsyId, boolean etat) {
+    public Psychologue UpdateEtat(int PsyId,Psychologue psychologue) {
         Psychologue psy=psychologueRepository.findById(PsyId).get();
-        if(etat!=null){
-            psy.setEtat(etat);
+        if(psychologue.isEtat()){
+            psy.setEtat(psychologue.isEtat());
 
         }
         return psychologueRepository.save(psy);
@@ -46,6 +46,21 @@ public class PsyServiceImpl implements PsyService {
     @Override
     public Psychologue updatePsychologue(Psychologue psychologue, int PsychologueId) {
         Psychologue psy = psychologueRepository.findById(PsychologueId).get();
+        if(psychologue.getDescription()!=null){
+            psy.setDescription(psychologue.getDescription());
+        }
+        if (psychologue.getCv_path()!=null){
+            psy.setCv_path(psychologue.getCv_path());
+        }
+        if (psychologue.getDiplome_path()!=null){
+            psy.setDiplome_path(psychologue.getDiplome_path());
+        }
+        if (psychologue.isEtat()){
+            psy.setEtat(psychologue.isEtat());
+        }
+        if (psychologue.isStatus()){
+            psy.setStatus(psychologue.isStatus());
+        }
 
 
 
