@@ -6,3 +6,4 @@ import org.springframework.data.repository.Repository;
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer> {
 }
+
