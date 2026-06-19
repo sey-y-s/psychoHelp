@@ -14,8 +14,8 @@ public class Specialite {
     private int id;
     @Column(name="nom_specialite",nullable = false, length = 60,unique = true)
     private String nom;
-    /*@OneToMany(mappedBy = "specialite")
-    private List<Psychologue> psychologue;
+    @OneToMany(mappedBy = "specialite")
+    private List<Psychologue> psychologues;
 
-     */
+
 }
