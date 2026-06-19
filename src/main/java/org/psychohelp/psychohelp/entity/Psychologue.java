@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "psychologues")
@@ -22,6 +24,9 @@ public class Psychologue extends Utilisateur{
     @ManyToOne(cascade = CascadeType.ALL);
     @JoinColumn(name="specialite_id");
     private Specialite specialite;
+
+    @OneToMany(mappedBy = "psychologue")
+    private List<Creneau> creneaux;
 
 
 }
