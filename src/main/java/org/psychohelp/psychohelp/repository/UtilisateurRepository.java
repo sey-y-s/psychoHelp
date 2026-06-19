@@ -1,4 +1,8 @@
 package org.psychohelp.psychohelp.repository;
 
-public interface UtilisateurRepository {
+import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
+
+public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer> {
 }
