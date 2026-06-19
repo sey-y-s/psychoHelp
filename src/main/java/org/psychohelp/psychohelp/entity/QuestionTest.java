@@ -5,14 +5,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
-@Table(name = "questiontest")
+@Table(name = "questiontests")
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionTest {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id ;
     private String question ;
+
+    @ManyToOne
+    @JoinColumn(name = "test_id")
+
+    private Test test;
+
+
+    @OneToMany(mappedBy = "questionTest",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<ChoixMultiple> choixMultiples;
+
 }
