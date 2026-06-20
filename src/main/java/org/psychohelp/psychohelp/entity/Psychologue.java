@@ -21,7 +21,7 @@ public class Psychologue extends Utilisateur{
     private String diplome_path;
     private String  cv_path;
     private Boolean etat;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="specialite_id")
     private Specialite specialite;
 
