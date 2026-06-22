@@ -7,6 +7,6 @@ import java.util.List;
 public interface CategorieService {
     CategorieTest creerCategorie(CategorieTest categorie);
     List<CategorieTest> obtenirToutesLesCategories();
-    CategorieTest modifierCategorie(Long id, CategorieTest categorieMiseAJour);
-    void supprimerCategorie(Long id);
+    CategorieTest modifierCategorie(Integer id, CategorieTest categorieMiseAJour);
+    void supprimerCategorie(Integer id);
 }
