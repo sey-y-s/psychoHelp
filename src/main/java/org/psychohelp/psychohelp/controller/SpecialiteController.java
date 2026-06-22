@@ -65,8 +65,8 @@ public class SpecialiteController {
                 psychologue ->
                         new PsychologueListeDto(psychologue.getId(),
                         psychologue.getNom(), psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),
-                                psychologue.getRole(),psychologue.getDateCreation(),psychologue.isStatus(),
-                                psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.isEtat()
+                                psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),
+                                psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat()
                                 )
         ).toList();
     }
