@@ -27,4 +27,8 @@ public class Test {
 
     @JsonManagedReference // pour sérialiser les questions  quand on démande un test
     private List<QuestionsTest> questions ;
+
+    @ManyToOne
+    @JoinColumn(name = "categorie_test_id")
+    private CategorieTest categorieTest ;
 }
