@@ -22,8 +22,8 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Override
-    public CategorieTest modifierCategorie(Long id, CategorieTest categorieMiseAJour) {
-       CategorieTest categorie = categorieRepository.findById(id).orElseThrow(
+    public CategorieTest modifierCategorie(Integer id, CategorieTest categorieMiseAJour) {
+       CategorieTest categorie = categorieRepository.findById(Long.valueOf(id)).orElseThrow(
                () -> new RuntimeException("Categorie introuvable avec l'ID:" +id));
 
        categorie.setNomCategorie(categorieMiseAJour.getNomCategorie());
@@ -32,10 +32,10 @@ public class CategorieServiceImpl implements CategorieService {
     }
 
     @Override
-    public void supprimerCategorie(Long id) {
-        if(!categorieRepository.existsById(id)){
+    public void supprimerCategorie(Integer id) {
+        if(!categorieRepository.existsById(Long.valueOf(id))){
             throw new RuntimeException("Categorie introuvablle");
         }
-        categorieRepository.deleteById(id);
+        categorieRepository.deleteById(Long.valueOf(id));
     }
 }
