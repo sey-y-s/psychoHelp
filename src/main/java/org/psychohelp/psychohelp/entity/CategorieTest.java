@@ -12,7 +12,7 @@ public class CategorieTest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "nom_categorie", nullable = false, unique = true, length = 100)
     private String nomCategorie;
