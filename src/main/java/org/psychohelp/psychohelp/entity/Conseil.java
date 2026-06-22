@@ -32,9 +32,4 @@ public class Conseil {
     @JoinColumn(name = "psy_id")
     private Psychologue psychologue;
 
-
-
-
-
-
 }

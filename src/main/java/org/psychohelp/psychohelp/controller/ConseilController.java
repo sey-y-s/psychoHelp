@@ -28,7 +28,7 @@ public class ConseilController {
         return conseilService.conseilParId(id);
     }
 
-    @PostMapping
+    @PostMapping(path = "post")
     public Conseil create(@RequestBody Conseil utl){
         return conseilService.creer(utl);
     }

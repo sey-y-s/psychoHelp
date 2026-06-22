@@ -28,7 +28,7 @@ public class UtilisateurController {
         return utilisateurService.utilisateurParId(id);
     }
 
-    @PostMapping
+    @PostMapping(path = "post")
     public Utilisateur create(@RequestBody Utilisateur utl){
         return utilisateurService.creer(utl);
     }
