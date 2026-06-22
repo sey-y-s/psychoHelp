@@ -13,9 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Psychologue extends Utilisateur{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-incremente
-    private int id;
     private Boolean status;
     private String description;
     private String diplome_path;
@@ -27,6 +24,7 @@ public class Psychologue extends Utilisateur{
 
     @OneToMany(mappedBy = "psychologue")
     private List<Creneau> creneaux;
-
+    @OneToMany(mappedBy = "conseil")
+    private List<Conseil> conseils;
 
 }
