@@ -4,7 +4,7 @@ import org.psychohelp.psychohelp.entity.ResultatTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface ResultatTestRepository extends JpaRepository<ResultatTest, Long> {
+public interface ResultatTestRepository extends JpaRepository<ResultatTest, Integer> {
     // Pour afficher l'historique des tests d'un citoyen
-    List<ResultatTest> findByCitoyenId(Long citoyenId);
+    List<ResultatTest> findByCitoyenId(Integer citoyenId);
 }
