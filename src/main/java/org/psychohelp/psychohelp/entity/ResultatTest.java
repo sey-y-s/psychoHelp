@@ -11,7 +11,7 @@ import org.aspectj.weaver.ast.Test;
 public class ResultatTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private Integer score;
