@@ -2,7 +2,6 @@ package org.psychohelp.psychohelp.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Length;
 
 import java.util.List;
 
@@ -27,5 +26,5 @@ public class Test {
     @OneToMany(mappedBy = "test",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<QuestionTest> questions ;
+    private List<QuestionsTest> questions ;
 }

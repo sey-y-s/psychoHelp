@@ -16,5 +16,5 @@ public class ChoixMultiple {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
-    private QuestionTest questionTest;
+    private QuestionsTest questionTest;
 }

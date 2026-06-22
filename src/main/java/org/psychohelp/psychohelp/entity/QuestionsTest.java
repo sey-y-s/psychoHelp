@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "questiontests")
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionTest {
+public class QuestionsTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id ;

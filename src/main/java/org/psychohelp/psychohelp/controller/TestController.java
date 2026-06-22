@@ -3,7 +3,7 @@ package org.psychohelp.psychohelp.controller;
 
 import lombok.AllArgsConstructor;
 import org.psychohelp.psychohelp.entity.Test;
-import org.psychohelp.psychohelp.repository.TestRepository;
+import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,28 +15,27 @@ import java.util.List;
 public class TestController {
 
 
-    private final TestRepository testRepository;
+    private final TestService testService;
 
 
     @GetMapping
     public List<Test> getAllTests() {
 
-        return testRepository.findAll();
+        return testService.getAllTests();
     }
 
 
     @GetMapping("/{id}")
     public Test getTestById(@PathVariable int id) {
 
-        return testRepository.findById(id)
-                .orElse(null);
+        return testService.getTestById(id);
     }
 
 
     @PostMapping
     public Test saveTest(@RequestBody Test test) {
 
-        return testRepository.save(test);
+        return testService.saveTest(test);
     }
 
 
@@ -47,14 +46,14 @@ public class TestController {
 
         test.setId(id);
 
-        return testRepository.save(test);
+        return testService.saveTest(test);
     }
 
 
     @DeleteMapping("/{id}")
     public void deleteTest(@PathVariable int id) {
 
-        testRepository.deleteById(id);
+        testService.getTestById(id);
 
     }
 
