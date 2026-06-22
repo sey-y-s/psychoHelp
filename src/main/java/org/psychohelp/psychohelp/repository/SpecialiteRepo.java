@@ -15,4 +15,7 @@ public interface SpecialiteRepo extends JpaRepository<Specialite,Integer> {
 
 
 
+
+
+
 }
