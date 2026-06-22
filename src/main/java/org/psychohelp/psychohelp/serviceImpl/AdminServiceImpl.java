@@ -35,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setNom(dto.getNom());
         admin.setPrenom(dto.getPrenom());
-        admin.setEmail(dto.getEmail());
+        admin.setMail(dto.getEmail());
         admin.setTelephone(dto.getTelephone());
 
         admin.setDateCreation(LocalDate.now());
@@ -51,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setNom(dto.getNom());
         admin.setPrenom(dto.getPrenom());
-        admin.setEmail(dto.getEmail());
+        admin.setMail(dto.getEmail());
         admin.setTelephone(dto.getTelephone());
 
         return adminRepository.save(admin);
@@ -90,7 +90,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        conseil.setStatut(false);
+        conseil.setStatus(false);
 
         return conseilRepository.save(conseil);
     }

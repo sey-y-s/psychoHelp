@@ -1,20 +1,19 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.service.CreneauService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CreneauServiceImpl implements CreneauService {
 
     private final CreneauRepository cp;
-
-    public CreneauServiceImpl(CreneauRepository creneauRepository) {
-        this.cp = creneauRepository;
-    }
 
     @Override
     public Creneau creer(Creneau creneau) {

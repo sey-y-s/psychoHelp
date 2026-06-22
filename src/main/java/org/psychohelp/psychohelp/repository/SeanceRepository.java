@@ -15,6 +15,6 @@ public interface SeanceRepository extends JpaRepository<Seance, Long> {
     List<Seance> findByCitoyenId(Long citoyenId);
     List<Seance> findByStatut(StatutRdvEnum statut);
 
-    @Query("SELECT s FROM Seance s JOIN s.creneau c WHERE c.psy.id = :psyId")
+    @Query("SELECT s FROM Seance s JOIN s.creneau c WHERE c.psychologue.id = :psyId")
     List<Seance> findByPsyId(@Param("psyId") Long psyId);
 }
