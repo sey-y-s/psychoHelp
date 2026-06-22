@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor @Data
 public class Specialite {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name="nom_specialite",nullable = false, length = 60,unique = true)
     private String nom;
     @OneToMany(mappedBy = "specialite")

@@ -36,8 +36,8 @@ public class ResultatServiceImpl implements ResultatService {
 
 
     @Override
-    public ResultatTest calculerEtEnregistrerResultat(Integer citoyenId, Integer testId, List<Integer> choixIds) {
-        Citoyen citoyen = citoyenRepository.findById(citoyenId).orElseThrow(
+    public ResultatTest calculerEtEnregistrerResultat(Long citoyenId, Integer testId, List<Integer> choixIds) {
+        Citoyen citoyen = citoyenRepository.findById(Math.toIntExact(citoyenId)).orElseThrow(
                 () -> new RuntimeException("Citoyen introuvable")
         );
 
@@ -63,7 +63,7 @@ public class ResultatServiceImpl implements ResultatService {
     }
 
     @Override
-    public List<ResultatTest> obtenirResultatsParCitoyen(Integer citoyenId) {
+    public List<ResultatTest> obtenirResultatsParCitoyen(Long citoyenId) {
         return resultatTestRepository.findByCitoyenId(citoyenId);
     }
 }

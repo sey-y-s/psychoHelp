@@ -5,14 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.AdminDTO;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.Admin;
-import org.psychohelp.psychohelp.entity.CategorieTest;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.AdminService;
-import org.psychohelp.psychohelp.service.CategorieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +28,6 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private ConseilRepository conseilRepository;
 
-    @Autowired
-    private CategorieService categorieService;
-
     @Override
     public Admin ajouterAdmin(AdminDTO dto) {
 
@@ -40,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setNom(dto.getNom());
         admin.setPrenom(dto.getPrenom());
-        admin.setMail(dto.getMail());
+        admin.setMail(dto.getEmail());
         admin.setTelephone(dto.getTelephone());
 
         admin.setDateCreation(LocalDate.now());
@@ -56,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setNom(dto.getNom());
         admin.setPrenom(dto.getPrenom());
-        admin.setMail(dto.getMail());
+        admin.setMail(dto.getEmail());
         admin.setTelephone(dto.getTelephone());
 
         return adminRepository.save(admin);
@@ -98,32 +93,5 @@ public class AdminServiceImpl implements AdminService {
         conseil.setStatus(false);
 
         return conseilRepository.save(conseil);
-    }
-
-    @Override
-    public CategorieTest ajouterCategorie(
-            CategorieTest categorie) {
-
-        return categorieService.creerCategorie(categorie);
-    }
-
-    @Override
-    public List<CategorieTest> obtenirToutesLesCategories() {
-
-        return categorieService.obtenirToutesLesCategories();
-    }
-
-    @Override
-    public CategorieTest modifierCategorie(
-            Integer id,
-            CategorieTest categorie) {
-
-        return categorieService.modifierCategorie(id, categorie);
-    }
-
-    @Override
-    public void supprimerCategorie(Integer id) {
-
-        categorieService.supprimerCategorie(id);
     }
 }

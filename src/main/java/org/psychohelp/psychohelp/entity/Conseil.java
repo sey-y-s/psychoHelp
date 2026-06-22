@@ -20,7 +20,7 @@ public class Conseil {
 
     private String description;
 
-    private boolean status;
+    private Boolean status;
 
     @Column(name = "date_publication")
     private LocalDate datePublication;

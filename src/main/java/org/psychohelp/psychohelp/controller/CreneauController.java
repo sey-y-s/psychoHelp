@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.service.CreneauService;
 import org.springframework.http.HttpStatus;
@@ -8,14 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/creneaux")
 public class CreneauController {
 
-    private final CreneauService cs;
 
-    public CreneauController(CreneauService cs) {
-        this.cs = cs;
-    }
+    private final CreneauService cs;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
