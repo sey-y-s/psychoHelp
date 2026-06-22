@@ -16,13 +16,13 @@ public class Psychologue extends Utilisateur{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-incremente
     private int id;
-    private boolean status;
+    private Boolean status;
     private String description;
     private String diplome_path;
     private String  cv_path;
-    private boolean etat;
-    @ManyToOne(cascade = CascadeType.ALL);
-    @JoinColumn(name="specialite_id");
+    private Boolean etat;
+    @ManyToOne
+    @JoinColumn(name="specialite_id")
     private Specialite specialite;
 
     @OneToMany(mappedBy = "psychologue")

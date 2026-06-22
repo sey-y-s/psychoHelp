@@ -22,8 +22,15 @@ public class PsychologueController {
     public List<Psychologue> psychologueList(){
         return psyService.PSYCHOLOGUEList();
     }
-    @PutMapping("psychologue/{id}")
+    @PutMapping("/psychologue/{id}")
     public Psychologue updatePsychologue( @RequestBody Psychologue psychologue ,@PathVariable("id") int PsychologueId){
         return psyService.updatePsychologue(psychologue,PsychologueId);
+    }
+    @PatchMapping("/psychologue/{id}/etat")
+    public Psychologue updateEtat(
+            @PathVariable int id,
+            @RequestBody Psychologue psychologue){
+
+        return psyService.UpdateEtat(id, psychologue);
     }
 }

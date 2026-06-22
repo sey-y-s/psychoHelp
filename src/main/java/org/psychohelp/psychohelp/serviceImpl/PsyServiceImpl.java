@@ -28,43 +28,52 @@ public class PsyServiceImpl implements PsyService {
     }
 
     @Override
-    public Optional<Psychologue> GetPsychologueById(int PsychologueId) {
-        return psychologueRepository.findById(PsychologueId);
+    public Psychologue GetPsychologueById(int psychologueId) {
+        return psychologueRepository.findById(psychologueId)
+                .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
     }
-
     @Override
-    public Psychologue UpdateEtat(int PsyId,Psychologue psychologue) {
-        Psychologue psy=psychologueRepository.findById(PsyId).get();
-        if(psychologue.isEtat()){
-            psy.setEtat(psychologue.isEtat());
+    public Psychologue UpdateEtat(int psyId, Psychologue psychologue) {
 
-        }
+        Psychologue psy = psychologueRepository.findById(psyId)
+                .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
+
+        psy.setEtat(psychologue.getEtat());
+
         return psychologueRepository.save(psy);
     }
 
 
     @Override
-    public Psychologue updatePsychologue(Psychologue psychologue, int PsychologueId) {
-        Psychologue psy = psychologueRepository.findById(PsychologueId).get();
-        if(psychologue.getDescription()!=null){
+    public Psychologue updatePsychologue(Psychologue psychologue, int psychologueId) {
+
+        Psychologue psy = psychologueRepository.findById(psychologueId)
+                .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
+
+        if (psychologue.getDescription() != null) {
             psy.setDescription(psychologue.getDescription());
         }
-        if (psychologue.getCv_path()!=null){
+
+        if (psychologue.getCv_path() != null) {
             psy.setCv_path(psychologue.getCv_path());
         }
-        if (psychologue.getDiplome_path()!=null){
+
+        if (psychologue.getDiplome_path() != null) {
             psy.setDiplome_path(psychologue.getDiplome_path());
         }
-        if (psychologue.isEtat()){
-            psy.setEtat(psychologue.isEtat());
-        }
-        if (psychologue.isStatus()){
-            psy.setStatus(psychologue.isStatus());
+
+        if (psychologue.getEtat() != null) {
+            psy.setEtat(psychologue.getEtat());
         }
 
+        if (psychologue.getStatus() != null) {
+            psy.setStatus(psychologue.getStatus());
+        }
 
+        if (psychologue.getSpecialite() != null) {
+            psy.setSpecialite(psychologue.getSpecialite());
+        }
 
-       return psychologueRepository.save(psy);
-
+        return psychologueRepository.save(psy);
     }
 }
