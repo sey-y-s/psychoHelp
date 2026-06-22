@@ -8,6 +8,7 @@ import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.repository.AdminRepository;
+import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
