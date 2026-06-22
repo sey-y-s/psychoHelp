@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Conseil {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(length = 40)

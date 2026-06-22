@@ -30,6 +30,7 @@ public class ConseilController {
 
     @PostMapping(path = "post")
     public Conseil create(@RequestBody Conseil utl){
+        //System.out.println("***************" + utl);
         return conseilService.creer(utl);
     }
 

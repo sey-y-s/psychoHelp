@@ -12,7 +12,7 @@ import java.util.List;
 public class ConseilServiceImpl implements ConseilService {
 
     @Autowired
-    ConseilRepository conseilRepository;
+    private ConseilRepository conseilRepository;
 
     @Override
     public Conseil creer(Conseil utl) {
