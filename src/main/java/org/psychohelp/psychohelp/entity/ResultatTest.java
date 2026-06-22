@@ -3,7 +3,7 @@ package org.psychohelp.psychohelp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.aspectj.weaver.ast.Test;
+
 
 @Entity
 @Table(name = "resultats_test")
