@@ -36,7 +36,7 @@ public class ConseilServiceImpl implements ConseilService {
         //lastUtl.setId(utl.getId());
         lastUtl.setTitre(utl.getTitre());
         lastUtl.setDescription(utl.getDescription());
-        lastUtl.setStatus(utl.isStatus());
+        lastUtl.setStatus(utl.getStatus());
 
         lastUtl.setDatePublication(utl.getDatePublication());
         lastUtl.setAuteur(utl.getAuteur());

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.AdminDTO;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.Admin;
-import org.psychohelp.psychohelp.entity.CategorieTest;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,41 +51,5 @@ public class AdminController {
 
         return adminService.validerConseil(id);
     }
-
-    @PutMapping("/conseils/{id}/annuler")
-    public Conseil annulerConseil(@PathVariable Integer id) {
-
-        return adminService.annulerConseil(id);
-    }
-
-    @PostMapping("/categories")
-    public CategorieTest ajouterCategorie(
-            @RequestBody CategorieTest categorie) {
-
-        return adminService.ajouterCategorie(categorie);
-    }
-
-    @GetMapping("/categories")
-    public List<CategorieTest> obtenirToutesLesCategories() {
-
-        return adminService.obtenirToutesLesCategories();
-    }
-
-    @PutMapping("/categories/{id}")
-    public CategorieTest modifierCategorie(
-            @PathVariable Integer id,
-            @RequestBody CategorieTest categorie) {
-
-        return adminService.modifierCategorie(id, categorie);
-    }
-
-    @DeleteMapping("/categories/{id}")
-    public void supprimerCategorie(
-            @PathVariable Integer id) {
-
-        adminService.supprimerCategorie(id);
-    }
-
-
 
 }

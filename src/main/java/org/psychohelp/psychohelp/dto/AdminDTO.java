@@ -15,7 +15,7 @@ public class AdminDTO {
 
     private String prenom;
 
-    private String mail;
+    private String email;
 
     private String telephone;
 
