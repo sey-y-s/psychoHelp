@@ -12,8 +12,8 @@ public interface PsyService {
 
     // lecture operation
     List<Psychologue> PSYCHOLOGUEList();
-    Optional<Psychologue> GetPsychologueById(int PsychologueId);
     Psychologue UpdateEtat(int PsyId,Psychologue psychologue);
+    public Psychologue GetPsychologueById(int psychologueId);
 
 
     // modification operation

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,4 +27,7 @@ public class Creneau {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "psychologue_id")
     private Psychologue psychologue;
+
+    @OneToMany(mappedBy = "creneau")
+    private List<Seance> seances;
 }
