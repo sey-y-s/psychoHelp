@@ -24,7 +24,8 @@ public class Psychologue extends Utilisateur{
 
     @OneToMany(mappedBy = "psychologue")
     private List<Creneau> creneaux;
-    @OneToMany(mappedBy = "conseil")
+
+    @OneToMany(mappedBy = "psychologue")
     private List<Conseil> conseils;
 
 }
