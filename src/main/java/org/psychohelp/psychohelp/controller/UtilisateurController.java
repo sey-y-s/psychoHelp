@@ -1,7 +1,7 @@
 package org.psychohelp.psychohelp.controller;
 
 import org.psychohelp.psychohelp.entity.Utilisateur;
-import org.psychohelp.psychohelp.service.UtilisateurService;
+import org.psychohelp.psychohelp.serviceImpl.UtilisateurServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 @RequestMapping("/api/utilisateurs")
 public class UtilisateurController {
 
-    UtilisateurService utilisateurService;
+    UtilisateurServiceImpl utilisateurService;
 
-    public UtilisateurController(UtilisateurService utlService){
+    public UtilisateurController(UtilisateurServiceImpl utlService){
         this.utilisateurService = utlService;
     }
 
@@ -21,6 +21,7 @@ public class UtilisateurController {
     public List<Utilisateur> list(){
         return utilisateurService.listeUtilisateur();
     }
+
 
     @GetMapping(path = "{id}")
     public Utilisateur userById(@PathVariable int id){
@@ -32,6 +33,22 @@ public class UtilisateurController {
         return utilisateurService.creer(utl);
     }
 
+    @GetMapping(path = "/test")
+    public String test() {
+        return "test";
+    }
+
+
+    @PutMapping(path = "update/{id}")
+    public Utilisateur update(@PathVariable int id, @RequestBody Utilisateur utl){
+        return utilisateurService.modifier(id, utl);
+    }
+
+
+    @DeleteMapping(path = "delete/{id}")
+    public void delete(@PathVariable int id){
+        utilisateurService.supUtilisateur(id);
+    }
 
 
 
