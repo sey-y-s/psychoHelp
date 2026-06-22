@@ -1,7 +1,9 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -16,5 +18,7 @@ public class ChoixMultiple {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
+    @ToString.Exclude
+    @JsonBackReference
     private QuestionsTest questionTest;
 }

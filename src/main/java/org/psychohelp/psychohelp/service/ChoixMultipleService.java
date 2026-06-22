@@ -3,12 +3,13 @@ package org.psychohelp.psychohelp.service;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChoixMultipleService {
     List<ChoixMultiple> getAllChoix();
 
 
-    ChoixMultiple getChoixById(int id);
+    Optional<ChoixMultiple> getChoixById(int id);
 
 
     ChoixMultiple saveChoix(ChoixMultiple choix);

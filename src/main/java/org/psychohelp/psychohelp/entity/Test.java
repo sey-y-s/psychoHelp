@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +27,7 @@ public class Test {
     @OneToMany(mappedBy = "test",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+
+    @JsonManagedReference // pour sérialiser les questions  quand on démande un test
     private List<QuestionsTest> questions ;
 }

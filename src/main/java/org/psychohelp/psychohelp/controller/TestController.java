@@ -7,6 +7,7 @@ import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tests")
@@ -26,7 +27,7 @@ public class TestController {
 
 
     @GetMapping("/{id}")
-    public Test getTestById(@PathVariable int id) {
+    public Optional<Test> getTestById(@PathVariable int id) {
 
         return testService.getTestById(id);
     }

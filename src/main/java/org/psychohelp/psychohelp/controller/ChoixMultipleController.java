@@ -6,6 +6,7 @@ import org.psychohelp.psychohelp.service.ChoixMultipleService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/choix")
@@ -26,7 +27,7 @@ public class ChoixMultipleController {
 
 
     @GetMapping("/{id}")
-    public ChoixMultiple getChoixById(
+    public Optional<ChoixMultiple> getChoixById(
             @PathVariable int id){
 
         return choixService.getChoixById(id);

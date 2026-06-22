@@ -7,6 +7,8 @@ import org.psychohelp.psychohelp.service.ChoixMultipleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class ChoixMultipleServiceImpl implements ChoixMultipleService {
@@ -27,10 +29,9 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
 
     @Override
-    public ChoixMultiple getChoixById(int id){
+    public Optional<ChoixMultiple> getChoixById(int id){
 
-        return choixRepository.findById(id)
-                .orElse(null);
+        return choixRepository.findById(id) ;
 
     }
 
