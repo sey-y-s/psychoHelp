@@ -42,7 +42,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         lastUtl.setRole(utl.getRole());
         lastUtl.setDateCreation(utl.getDateCreation());
 
-        utilisateurRepository.save(utl);
+        utilisateurRepository.save(lastUtl);
         return utl;
     }
 

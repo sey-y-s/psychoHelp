@@ -20,7 +20,7 @@ import java.util.Date;
 public class Utilisateur {
     @Id //designer comme clef primaire de la table
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-incremente
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 30)
     private String nom;
