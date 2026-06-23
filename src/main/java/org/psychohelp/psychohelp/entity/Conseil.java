@@ -12,15 +12,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Conseil {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(length = 40)
     private String titre;
 
-
     private String description;
 
-    private Boolean status;
+    //le conseil doit etre valider par l'admin
+    private Boolean status = false;
 
     @Column(name = "date_publication")
     private LocalDate datePublication;
@@ -31,10 +32,5 @@ public class Conseil {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "psy_id")
     private Psychologue psychologue;
-
-
-
-
-
 
 }
