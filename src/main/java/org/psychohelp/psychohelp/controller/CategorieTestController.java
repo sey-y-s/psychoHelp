@@ -31,7 +31,7 @@ public class CategorieTestController {
         );
     }
 
-    @GetMapping
+    @GetMapping(path = "/api/categorie-tests")
     public ResponseEntity<List<CategorieTest>>
     obtenirToutesLesCategories() {
 
