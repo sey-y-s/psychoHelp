@@ -41,7 +41,7 @@ public class ConseilServiceImpl implements ConseilService {
         lastUtl.setDatePublication(utl.getDatePublication());
         lastUtl.setAuteur(utl.getAuteur());
 
-        conseilRepository.save(utl);
+        conseilRepository.save(lastUtl);
         return utl;
     }
 
