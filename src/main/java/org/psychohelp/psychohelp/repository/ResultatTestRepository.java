@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ResultatTestRepository extends JpaRepository<ResultatTest, Long> {
     // Pour afficher l'historique des tests d'un citoyen
-    List<ResultatTest> findByCitoyenId(Long citoyenId);
+    List<ResultatTest> findByCitoyenId(Integer citoyenId);
 }

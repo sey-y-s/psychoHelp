@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.PsyService;
@@ -75,5 +76,10 @@ public class PsyServiceImpl implements PsyService {
         }
 
         return psychologueRepository.save(psy);
+    }
+
+    @Override
+    public List<Conseil> getConseilByPsy(int id) {
+        return  psychologueRepository.getConseilByPsy(id);
     }
 }

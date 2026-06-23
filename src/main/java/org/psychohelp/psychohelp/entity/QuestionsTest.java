@@ -19,13 +19,13 @@ import java.util.List;
 public class QuestionsTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id ;
+    private Integer id ;
     private String question ;
 
     @ManyToOne
     @JoinColumn(name = "test_id")
     @ToString.Exclude
-    @JsonBackReference //
+    @JsonBackReference // pour ne pas afficher le parent et donc éviter les doublons
     private Test test;
 
 

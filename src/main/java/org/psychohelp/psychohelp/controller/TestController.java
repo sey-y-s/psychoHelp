@@ -12,7 +12,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/tests")
 @AllArgsConstructor
-
 public class TestController {
 
 
@@ -47,14 +46,14 @@ public class TestController {
 
         test.setId(id);
 
-        return testService.saveTest(test);
+        return testService.updateTest(id, test);
     }
 
 
     @DeleteMapping("/{id}")
     public void deleteTest(@PathVariable int id) {
 
-        testService.getTestById(id);
+        testService.deleteTest(id);
 
     }
 
