@@ -18,10 +18,10 @@ public class Conseil {
     @Column(length = 40)
     private String titre;
 
-
     private String description;
 
-    private Boolean status;
+    //le conseil doit etre valider par l'admin
+    private Boolean status = false;
 
     @Column(name = "date_publication")
     private LocalDate datePublication;

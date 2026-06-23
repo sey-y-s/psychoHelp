@@ -38,6 +38,7 @@ public class Utilisateur {
     private String motDePasse;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
     @Column(name = "date_creation")

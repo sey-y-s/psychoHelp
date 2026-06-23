@@ -49,4 +49,11 @@ public class ConseilServiceImpl implements ConseilService {
     public void supConseil(Integer id) {
         conseilRepository.deleteById(id);
     }
+
+    @Override
+    public List<Conseil> listConseilParStatus(Boolean status) {
+        return conseilRepository.findByStatus(status);
+    }
+
+
 }

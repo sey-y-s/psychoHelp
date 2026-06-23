@@ -17,8 +17,11 @@ public class ConseilController {
     }
 
 
-    @GetMapping(path = "list")
-    public List<Conseil> list(){
+    @GetMapping(path = "read")
+    public List<Conseil> list(@RequestParam (required = false) Boolean status){
+        if (status != null){
+            return conseilService.listConseilParStatus(status);
+        }
         return conseilService.listeConseil();
     }
 
