@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Conseil {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(length = 40)
     private String titre;
