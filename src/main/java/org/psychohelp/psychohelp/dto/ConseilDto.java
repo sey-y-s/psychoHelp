@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConseilDto {
-        private  int id;
         private String titre;
         private String description;
         private Boolean status=false;
         private String auteur;
+        private int psy_id;
 
 
 }

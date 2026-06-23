@@ -1,10 +1,7 @@
 package org.psychohelp.psychohelp.controller;
 
 import jakarta.validation.Valid;
-import org.psychohelp.psychohelp.dto.AddPsyDto;
-import org.psychohelp.psychohelp.dto.ConseilDto;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
+import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
@@ -83,14 +80,19 @@ public class PsychologueController {
 
     }
 
-    @PostMapping(path = "post")
-    public Conseil create(@RequestBody ConseilDto conseilDto){
+    @PostMapping(path = "psychologues/conseil")
+    public ListConseilDto create(@RequestBody ConseilDto conseilDto){
         //System.out.println("***************" + utl);
         //return conseilService.creer(utl);
         Conseil conseil=new Conseil();
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
         conseil.setAuteur(conseilDto.getAuteur());
+        //recuperation de l'id psy à partir de conseil
+        Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsy_id());
+        conseil.setPsychologue(psychologue);
+        Conseil conseilcreer=conseilService.creer(conseil);
+        return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
     }
 
 }

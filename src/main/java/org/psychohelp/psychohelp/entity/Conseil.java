@@ -24,7 +24,7 @@ public class Conseil {
     private Boolean status = false;
 
     @Column(name = "date_publication")
-    private LocalDate datePublication;
+    private LocalDate datePublication=LocalDate.now();
 
     @Column(length = 40)
     private String auteur;
