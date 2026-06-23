@@ -5,11 +5,17 @@ import org.psychohelp.psychohelp.service.CategorieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@Tag(
+        name = "Catégories de tests",
+        description = "Gestion des catégories de tests psychologiques"
+)
 public class CategorieTestController {
 
     private final CategorieService categorieService;
@@ -19,6 +25,10 @@ public class CategorieTestController {
 
         this.categorieService = categorieService;
     }
+    @Operation(
+            summary = "Créer une catégorie",
+            description = "Ajoute une nouvelle catégorie de test"
+    )
 
     @PostMapping
     public ResponseEntity<CategorieTest>
@@ -30,8 +40,12 @@ public class CategorieTestController {
                 HttpStatus.CREATED
         );
     }
+    @Operation(
+            summary = "Lister toutes les catégories",
+            description = "Retourne la liste complète des catégories de tests"
+    )
 
-    @GetMapping(path = "/api/categorie-tests")
+    @GetMapping
     public ResponseEntity<List<CategorieTest>>
     obtenirToutesLesCategories() {
 
@@ -40,6 +54,10 @@ public class CategorieTestController {
                         .obtenirToutesLesCategories()
         );
     }
+    @Operation(
+            summary = "Rechercher une catégorie",
+            description = "Retourne une catégorie à partir de son identifiant"
+    )
 
     @GetMapping("/{id}")
     public ResponseEntity<CategorieTest>
@@ -63,6 +81,10 @@ public class CategorieTestController {
                         .modifierCategorie(id, categorie)
         );
     }
+    @Operation(
+            summary = "Supprimer une catégorie",
+            description = "Supprime une catégorie à partir de son identifiant"
+    )
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>

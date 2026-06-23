@@ -77,5 +77,6 @@ public class CategorieServiceImpl
         }
 
         categorieRepository.deleteById(id);
+
     }
 }
