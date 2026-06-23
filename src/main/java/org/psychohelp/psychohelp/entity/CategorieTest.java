@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,8 @@ public class CategorieTest {
     @Column(length = 255)
     private String description;
 
-    // Relation : Une catégorie contient plusieurs tests (Gérer)
-    @OneToMany(mappedBy = "categorieTest", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "categorieTest",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Test> tests = new ArrayList<>();
 }
