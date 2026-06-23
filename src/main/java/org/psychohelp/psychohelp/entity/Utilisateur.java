@@ -36,12 +36,12 @@ public class Utilisateur {
 
     @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
-
+   @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleEnum role;
 
     @Column(name = "date_creation")
-    private LocalDate dateCreation;
+    private LocalDate dateCreation=LocalDate.now();
 
 
 

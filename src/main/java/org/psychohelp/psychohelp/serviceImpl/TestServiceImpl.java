@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.AllArgsConstructor;
 import org.psychohelp.psychohelp.entity.Test;
+import org.psychohelp.psychohelp.repository.QuestionsTestRepository;
 import org.psychohelp.psychohelp.repository.TestRepository;
 import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,9 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class TestServiceImpl implements TestService {
+
     private final TestRepository testRepository;
+
     @Override
     public List<Test> getAllTests() {
        // return List.of();
@@ -26,16 +29,18 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public Test saveTest(Test test) {
-        return null;
+        return testRepository.save(test);
     }
 
     @Override
     public Test updateTest(int id, Test test) {
-        return null;
+        return testRepository.save(test);
+
     }
 
     @Override
     public void deleteTest(int id) {
+        testRepository.deleteById(id);
 
     }
 }

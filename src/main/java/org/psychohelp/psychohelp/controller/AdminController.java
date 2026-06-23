@@ -5,6 +5,7 @@ import org.psychohelp.psychohelp.dto.AdminDTO;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
+import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin")
-@RequiredArgsConstructor
+@RequestMapping("/api/admins")
 public class AdminController {
 
     @Autowired
@@ -50,6 +50,24 @@ public class AdminController {
     public Conseil validerConseil(@PathVariable Integer id) {
 
         return adminService.validerConseil(id);
+    }
+
+    @PutMapping("/conseils/{id}/annuler")
+    public Conseil annulerConseil(@PathVariable Integer id) {
+
+        return adminService.annulerConseil(id);
+    }
+
+    @PutMapping("/psychologues/{id}/valider")
+    public Psychologue validerInscriptionPsy(@PathVariable Integer id) {
+
+        return adminService.validerInscriptionPsy(id);
+    }
+
+    @PutMapping("/psychologues/{id}/annuler")
+    public Psychologue annulerInscriptionPsy(@PathVariable Integer id) {
+
+        return adminService.annulerInscriptionPsy(id);
     }
 
 }

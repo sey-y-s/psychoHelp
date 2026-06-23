@@ -11,7 +11,7 @@ import lombok.ToString;
 public class ChoixMultiple {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id ;
+    private Integer id ;
     private String choix ;
     private int score ;
 

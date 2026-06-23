@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,17 +12,14 @@ import java.util.List;
 @Table(name ="tests" )
 @NoArgsConstructor
 @AllArgsConstructor
-
-
 public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id ;
-
+    private Integer id ;
     @Column(nullable = false, length = 30)
     private String nom_test ;
     private String description ;
-    private boolean etat ;
+    private Boolean etat ;
 
 
     @OneToMany(mappedBy = "test",
@@ -33,5 +31,9 @@ public class Test {
 
     @ManyToOne
     @JoinColumn(name = "categorie_test_id")
+
+    @ToString.Exclude
+    @JsonBackReference
     private CategorieTest categorieTest ;
+
 }
