@@ -10,9 +10,10 @@ import org.psychohelp.psychohelp.repository.ResultatTestRepository;
 import org.psychohelp.psychohelp.repository.TestRepository;
 import org.psychohelp.psychohelp.service.DiagnosticService;
 import org.psychohelp.psychohelp.service.ResultatService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ResultatServiceImpl implements ResultatService {
     private final ResultatTestRepository resultatTestRepository;
     private final CitoyenRepository citoyenRepository;
