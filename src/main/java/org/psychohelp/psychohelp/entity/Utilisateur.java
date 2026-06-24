@@ -20,7 +20,7 @@ import java.util.Date;
 public class Utilisateur {
     @Id //designer comme clef primaire de la table
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-incremente
-    private Integer id;
+    private int id;
 
     @Column(nullable = false, length = 30)
     private String nom;
@@ -36,8 +36,9 @@ public class Utilisateur {
 
     @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
+
+   @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
     @Column(name = "date_creation")
