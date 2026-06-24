@@ -20,6 +20,4 @@ public class PsychologueListeDto {
     private String diplome_path;
     private String  cv_path;
     private boolean etat;
-
-
 }
