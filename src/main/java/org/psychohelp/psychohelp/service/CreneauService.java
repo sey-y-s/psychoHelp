@@ -1,28 +1,24 @@
 package org.psychohelp.psychohelp.service;
 
-import org.psychohelp.psychohelp.entity.Creneau;
-
+import org.psychohelp.psychohelp.dto.CreneauDTO;
+import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
+import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import java.util.List;
 
 public interface CreneauService {
 
-    Creneau creer(Creneau creneau);
+    CreneauResponseDTO creer(CreneauDTO dto);
 
-    List<Creneau> getAll();
+    List<CreneauResponseDTO> getAll();
 
-    Creneau getById(Long id);
+    CreneauResponseDTO getById(Long id);
 
-    Creneau update(Long id, Creneau creneau);
+    CreneauResponseDTO update(Long id, UpdateCreneauDTO dto);
 
     void delete(Long id);
 
-    Creneau reserver(Long id);
 
-    Creneau annuler(Long id);
+    List<CreneauResponseDTO> getDisponibles();
 
-    Creneau confirmer(Long id);
-
-    List<Creneau> getDisponibles();
-
-    List<Creneau> getDisponiblesByPsychologueId(Integer psychologueId);
+    List<CreneauResponseDTO> getDisponiblesByPsychologueId(Integer psychologueId);
 }
