@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Conseil {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(length = 40)
     private String titre;
@@ -24,7 +24,7 @@ public class Conseil {
     private Boolean status = false;
 
     @Column(name = "date_publication")
-    private LocalDate datePublication;
+    private LocalDate datePublication=LocalDate.now();
 
     @Column(length = 40)
     private String auteur;

@@ -13,13 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Psychologue extends Utilisateur{
-    private Boolean status;
+    private Boolean status=false;
     private String description;
     private String diplome_path;
     private String  cv_path;
-    private Boolean etat;
+    private Boolean etat=true;
     @ManyToOne
-    @JoinColumn(name="specialite_id")
+    @JoinColumn(name="specialite_id",nullable = false)
     private Specialite specialite;
 
     @OneToMany(mappedBy = "psychologue")

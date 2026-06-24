@@ -8,16 +8,21 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PsychologueListeDto {
-    private int id;
-    private String nom,prenom,telephone,mail;
+@AllArgsConstructor
+public class AddPsyDto {
+    private String nom;
+    private String prenom;
+    private String telephone;
+    private String mail;
+    private  String motDePasse;
+
     private RoleEnum role;
-    private LocalDate dateCreation;
-    private boolean status;
+    //private LocalDate dateCreation;
+    private Boolean status=false;
     private String description;
     private String diplome_path;
     private String  cv_path;
-    private boolean etat;
+    private Boolean etat=true;
+    private Integer idSpecialite;
 }
