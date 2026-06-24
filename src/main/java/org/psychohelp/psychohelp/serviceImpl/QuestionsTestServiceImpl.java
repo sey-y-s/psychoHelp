@@ -28,16 +28,17 @@ public class QuestionsTestServiceImpl implements QuestionsTestService {
 
     @Override
     public QuestionsTest saveQuestions(QuestionsTest questionsTest) {
-        return null;
+        return questionsTestRepository.save(questionsTest);
     }
 
     @Override
     public QuestionsTest updateQuestions(int id, QuestionsTest questionsTest) {
-        return null;
+
+        return questionsTestRepository.save(questionsTest);
     }
 
     @Override
     public void deleteQuestions(int id) {
-
+       questionsTestRepository.deleteById(id);
     }
 }
