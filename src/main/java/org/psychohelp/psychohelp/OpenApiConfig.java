@@ -14,7 +14,7 @@ public class OpenApiConfig {
                         new Info()
                                 .title("PsychoHelp API")
                                 .version("1.0")
-                                .description("API de gestion des tests psychologiques")
+                                .description("API de rendez-vous psychologues")
                 );
     }
 }
