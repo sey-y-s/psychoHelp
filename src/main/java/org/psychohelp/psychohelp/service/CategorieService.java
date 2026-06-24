@@ -9,4 +9,5 @@ public interface CategorieService {
     List<CategorieTest> obtenirToutesLesCategories();
     CategorieTest modifierCategorie(Integer id, CategorieTest categorieMiseAJour);
     void supprimerCategorie(Integer id);
+    CategorieTest obtenirCategorieParId(Integer id);
 }

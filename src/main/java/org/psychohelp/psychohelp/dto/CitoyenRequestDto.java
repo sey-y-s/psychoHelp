@@ -4,23 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class AdminDTO {
-
-    private Integer id;
-
+@Data @NoArgsConstructor @AllArgsConstructor
+public class CitoyenRequestDto {
     private String nom;
-
     private String prenom;
-
-    private String mail;
-
     private String telephone;
-
-    private String motDePasse;
-
-    private String role;
+    private String mail;
+    private  String motDePasse;
 
 }

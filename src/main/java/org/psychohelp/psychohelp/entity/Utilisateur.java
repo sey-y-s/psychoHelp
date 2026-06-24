@@ -20,7 +20,7 @@ import java.util.Date;
 public class Utilisateur {
     @Id //designer comme clef primaire de la table
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-incremente
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 30)
     private String nom;
@@ -36,12 +36,11 @@ public class Utilisateur {
 
     @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
-
     @Column(nullable = false)
     private RoleEnum role;
 
     @Column(name = "date_creation")
-    private LocalDate dateCreation;
+    private LocalDate dateCreation=LocalDate.now();
 
 
 

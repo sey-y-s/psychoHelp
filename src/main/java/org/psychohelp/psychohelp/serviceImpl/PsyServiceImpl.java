@@ -1,6 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class PsyServiceImpl implements PsyService {
     @Autowired
     private PsychologueRepository psychologueRepository;
+
 
 
     @Override
@@ -75,5 +78,10 @@ public class PsyServiceImpl implements PsyService {
         }
 
         return psychologueRepository.save(psy);
+    }
+
+    @Override
+    public List<Conseil> getConseilByPsy(int id) {
+        return  psychologueRepository.getConseilByPsy(id);
     }
 }

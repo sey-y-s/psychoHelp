@@ -1,26 +1,17 @@
 package org.psychohelp.psychohelp.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data @NoArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
-public class AdminDTO {
-
-    private Integer id;
-
+public class CitoyenListeDto {
+    private int id;
     private String nom;
-
     private String prenom;
-
-    private String mail;
-
     private String telephone;
-
-    private String motDePasse;
-
+    private String mail;
     private String role;
-
 }

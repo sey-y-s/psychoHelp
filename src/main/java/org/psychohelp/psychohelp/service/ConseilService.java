@@ -16,4 +16,5 @@ public interface ConseilService {
 
     public void supConseil(Integer id);
 
+    public List<Conseil> listConseilParStatus(Boolean status);
 }

@@ -7,6 +7,7 @@ import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
@@ -28,6 +29,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private ConseilRepository conseilRepository;
 
+    @Autowired
+    private PsychologueRepository psychologueRepository;
+
     @Override
     public Admin ajouterAdmin(AdminDTO dto) {
 
@@ -35,9 +39,11 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setNom(dto.getNom());
         admin.setPrenom(dto.getPrenom());
-        admin.setMail(dto.getEmail());
+        admin.setMail(dto.getMail());
         admin.setTelephone(dto.getTelephone());
+        admin.setMotDePasse(dto.getMotDePasse());
 
+        admin.setRole(RoleEnum.ADMIN);
         admin.setDateCreation(LocalDate.now());
 
         return adminRepository.save(admin);
@@ -51,8 +57,14 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setNom(dto.getNom());
         admin.setPrenom(dto.getPrenom());
-        admin.setMail(dto.getEmail());
+        admin.setMail(dto.getMail());
         admin.setTelephone(dto.getTelephone());
+
+        if (dto.getMotDePasse() != null && !dto.getMotDePasse().isEmpty()) {
+            admin.setMotDePasse(dto.getMotDePasse());
+        }
+
+        admin.setRole(RoleEnum.ADMIN);
 
         return adminRepository.save(admin);
     }
@@ -69,6 +81,15 @@ public class AdminServiceImpl implements AdminService {
     public List<Admin> getAllAdmins() {
 
         return adminRepository.findAll();
+    }
+
+    @Override
+    public void supprimerAdmin(Integer id) {
+
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Admin introuvable"));
+
+        adminRepository.delete(admin);
     }
 
     @Override
@@ -93,5 +114,27 @@ public class AdminServiceImpl implements AdminService {
         conseil.setStatus(false);
 
         return conseilRepository.save(conseil);
+    }
+
+    @Override
+    public Psychologue validerInscriptionPsy(Integer id) {
+
+        Psychologue psychologue = psychologueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
+
+        psychologue.setEtat(true);
+
+        return psychologueRepository.save(psychologue);
+    }
+
+    @Override
+    public Psychologue annulerInscriptionPsy(Integer id) {
+
+        Psychologue psychologue = psychologueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
+
+        psychologue.setEtat(false);
+
+        return psychologueRepository.save(psychologue);
     }
 }

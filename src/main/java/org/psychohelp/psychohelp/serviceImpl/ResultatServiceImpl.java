@@ -10,9 +10,10 @@ import org.psychohelp.psychohelp.repository.ResultatTestRepository;
 import org.psychohelp.psychohelp.repository.TestRepository;
 import org.psychohelp.psychohelp.service.DiagnosticService;
 import org.psychohelp.psychohelp.service.ResultatService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ResultatServiceImpl implements ResultatService {
     private final ResultatTestRepository resultatTestRepository;
     private final CitoyenRepository citoyenRepository;
@@ -36,7 +37,7 @@ public class ResultatServiceImpl implements ResultatService {
 
 
     @Override
-    public ResultatTest calculerEtEnregistrerResultat(Long citoyenId, Integer testId, List<Integer> choixIds) {
+    public ResultatTest calculerEtEnregistrerResultat(Integer citoyenId, Integer testId, List<Integer> choixIds) {
         Citoyen citoyen = citoyenRepository.findById(Math.toIntExact(citoyenId)).orElseThrow(
                 () -> new RuntimeException("Citoyen introuvable")
         );
@@ -63,7 +64,7 @@ public class ResultatServiceImpl implements ResultatService {
     }
 
     @Override
-    public List<ResultatTest> obtenirResultatsParCitoyen(Long citoyenId) {
+    public List<ResultatTest> obtenirResultatsParCitoyen(Integer citoyenId) {
         return resultatTestRepository.findByCitoyenId(citoyenId);
     }
 }
