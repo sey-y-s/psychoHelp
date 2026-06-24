@@ -24,7 +24,7 @@ public class CategorieTestController {
             CategorieService categorieService) {
 
         this.categorieService = categorieService;
-    }
+    }  
     @Operation(
             summary = "Créer une catégorie",
             description = "Ajoute une nouvelle catégorie de test"
