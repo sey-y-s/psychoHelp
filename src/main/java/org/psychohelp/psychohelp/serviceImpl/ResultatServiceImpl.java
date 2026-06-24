@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 import org.psychohelp.psychohelp.entity.Citoyen;
 import org.psychohelp.psychohelp.entity.ResultatTest;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
+@Transactional
 public class ResultatServiceImpl implements ResultatService {
     private final ResultatTestRepository resultatTestRepository;
     private final CitoyenRepository citoyenRepository;
