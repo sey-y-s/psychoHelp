@@ -36,7 +36,6 @@ public class Utilisateur {
 
     @Column(name = "mot_de_passe", nullable = false)
     private String motDePasse;
-   @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleEnum role;

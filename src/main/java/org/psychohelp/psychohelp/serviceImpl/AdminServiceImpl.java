@@ -84,6 +84,15 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void supprimerAdmin(Integer id) {
+
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Admin introuvable"));
+
+        adminRepository.delete(admin);
+    }
+
+    @Override
     public Conseil validerConseil(Integer conseilId) {
 
         Conseil conseil = conseilRepository.findById(conseilId)
