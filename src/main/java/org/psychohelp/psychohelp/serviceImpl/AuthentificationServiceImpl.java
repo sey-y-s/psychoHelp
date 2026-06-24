@@ -1,11 +1,14 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.repository.UtilisateurRepository;
 import org.psychohelp.psychohelp.service.AuthentificationService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
+@Transactional
 public class AuthentificationServiceImpl implements AuthentificationService {
     private final UtilisateurRepository utilisateurRepository;
 

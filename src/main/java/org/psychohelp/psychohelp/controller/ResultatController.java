@@ -1,5 +1,7 @@
 package org.psychohelp.psychohelp.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.psychohelp.psychohelp.entity.ResultatTest;
 import org.psychohelp.psychohelp.service.ResultatService;
 
@@ -12,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/resultats")
+@Tag(
+        name = "Resultat de tests",
+        description = "Gestion des resultats de tests psychologiques"
+)
 public class ResultatController {
 
 
@@ -22,6 +28,10 @@ public class ResultatController {
         this.resultatService = resultatService;
     }
 
+    @Operation(
+            summary = "Calculer et enregistrer le resultat test",
+            description = "Faire le calcul des tests tenant compte des scores et enfin enregistrer"
+    )
 
     @PostMapping("/calculer")
     public ResponseEntity<ResultatTest> calculerEtEnregistrerResultat(
@@ -32,6 +42,10 @@ public class ResultatController {
         ResultatTest resultat = resultatService.calculerEtEnregistrerResultat(citoyenId, testId, choixIds);
         return new ResponseEntity<>(resultat, HttpStatus.CREATED);
     }
+    @Operation(
+            summary = "Obtention des resultats d'un citoyen specifique",
+            description = "Obtenir les resultats d'un citoyen specifique "
+    )
 
     @GetMapping("/citoyen/{citoyenId}")
     public ResponseEntity<List<ResultatTest>> obtenirResultatsParCitoyen(@PathVariable Integer citoyenId) {
