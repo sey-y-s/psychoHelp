@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface CreneauRepository extends JpaRepository<Creneau, Long> {
 
-    List<Creneau> findByStatutFalse();
+    List<Creneau> findByStatutTrue();
 
-    List<Creneau> findByPsychologueIdAndStatutFalse(int psychologue_id);
+    List<Creneau> findByPsychologueIdAndStatutTrue(int psychologue_id);
 }

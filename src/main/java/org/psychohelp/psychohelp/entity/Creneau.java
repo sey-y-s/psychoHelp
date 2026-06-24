@@ -24,7 +24,7 @@ public class Creneau {
     private LocalTime heureFin;
     private Boolean statut;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name= "psychologue_id")
     private Psychologue psychologue;
 
