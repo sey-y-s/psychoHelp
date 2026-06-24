@@ -1,11 +1,17 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.psychohelp.psychohelp.dto.CreneauDTO;
+import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
+import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Creneau;
+import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
+import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.CreneauService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -14,37 +20,65 @@ import java.util.List;
 public class CreneauServiceImpl implements CreneauService {
 
     private final CreneauRepository cp;
+    private final PsychologueRepository pp;
 
     @Override
-    public Creneau creer(Creneau creneau) {
-        if (creneau.getHeureDebut().isAfter(creneau.getHeureFin())) {
-            throw new RuntimeException(
-                    "L'heure de début doit etre inférieure a l'heure de fin"
-            );
-        }
-        return cp.save(creneau);
+    public CreneauResponseDTO creer(CreneauDTO dto) {
+
+        Psychologue psychologue = pp.findById(dto.getPsychologueId().intValue())
+                .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
+
+        Creneau creneau = new Creneau();
+
+        creneau.setJours(dto.getJours());
+        creneau.setHeureDebut(dto.getHeureDebut());
+        creneau.setHeureFin(dto.getHeureFin());
+        creneau.setStatut(dto.getStatut());
+        creneau.setPsychologue(psychologue);
+
+        Creneau saved = cp.save(creneau);
+
+        CreneauResponseDTO response = new CreneauResponseDTO();
+
+        response.setId(saved.getId());
+        response.setJours(saved.getJours());
+        response.setHeureDebut(saved.getHeureDebut());
+        response.setHeureFin(saved.getHeureFin());
+        response.setStatut(saved.getStatut());
+        response.setNomPsychologue(
+                saved.getPsychologue().getNom() + " " +
+                        saved.getPsychologue().getPrenom());
+
+        return mapToDTO(saved);
     }
 
     @Override
-    public List<Creneau> getAll() {
-        return cp.findAll();
+    public List<CreneauResponseDTO> getAll() {
+        return cp.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
     @Override
-    public Creneau getById(Long id) {
-        return cp.findById(id)
+    public CreneauResponseDTO getById(Long id) {
+
+        Creneau creneau = cp.findById(id)
                 .orElseThrow(() -> new RuntimeException("Créneau introuvable"));
+        return mapToDTO(creneau);
     }
 
     @Override
-    public Creneau update(Long id, Creneau creneau) {
-        Creneau old = getById(id);
+    public CreneauResponseDTO update(Long id, UpdateCreneauDTO dto) {
+        Creneau creneau = cp.findById(id)
+                .orElseThrow(() -> new RuntimeException("Créneau introuvable"));
 
-        old.setJours(creneau.getJours());
-        old.setHeureDebut(creneau.getHeureDebut());
-        old.setHeureFin(creneau.getHeureFin());
+        creneau.setJours(dto.getJours());
+        creneau.setHeureDebut(dto.getHeureDebut());
+        creneau.setHeureFin(dto.getHeureFin());
+        creneau.setStatut(dto.getStatut());
 
-        return cp.save(old);
+        return mapToDTO(cp.save(creneau));
     }
 
     @Override
@@ -53,45 +87,50 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public Creneau reserver(Long id) {
+    public List<CreneauResponseDTO> getDisponibles() {
 
-        Creneau cn = getById(id);
+        return cp.findByStatutTrue()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
 
-        if(cn.getStatut()){
-            throw new RuntimeException(
-                    "Ce creneau est deja reservé"
+    @Override
+    public List<CreneauResponseDTO> getDisponiblesByPsychologueId(Integer psychologueId) {
+
+        List<CreneauResponseDTO> creneaux =
+                cp.findByPsychologueIdAndStatutTrue(psychologueId)
+                        .stream()
+                        .map(this::mapToDTO)
+                        .toList();
+
+        if (creneaux.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Aucun créneau disponible pour ce psychologue"
             );
+
         }
-        cn.setStatut(true);
-        return cp.save(cn);
-
+        return creneaux;
     }
 
-    @Override
-    public Creneau annuler(Long id) {
-        Creneau cn = getById(id);
-        cn.setStatut(false);
-        return cp.save(cn);
-    }
+    private CreneauResponseDTO mapToDTO(Creneau creneau) {
 
-    @Override
-    public Creneau confirmer(Long id) {
-        Creneau cn = getById(id);
-        if(!cn.getStatut()){
-            throw new RuntimeException(
-                    "Imposible de confirmer un creneau non reservé"
-            );
+        CreneauResponseDTO dto = new CreneauResponseDTO();
+
+        dto.setId(creneau.getId());
+        dto.setJours(creneau.getJours());
+        dto.setHeureDebut(creneau.getHeureDebut());
+        dto.setHeureFin(creneau.getHeureFin());
+        dto.setStatut(creneau.getStatut());
+
+        if (creneau.getPsychologue() != null) {
+            dto.setNomPsychologue(
+                    creneau.getPsychologue().getNom() + " " +
+                            creneau.getPsychologue().getPrenom());
         }
-        return cn;
+
+        return dto;
     }
 
-    @Override
-    public List<Creneau> getDisponibles() {
-        return cp.findByStatutFalse();
-    }
-
-    @Override
-    public List<Creneau> getDisponiblesByPsychologueId(Integer psychologueId) {
-        return cp.findByPsychologueIdAndStatutFalse(psychologueId);
-    }
 }
