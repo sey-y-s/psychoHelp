@@ -17,6 +17,8 @@ public interface AdminService {
 
     List<Admin> getAllAdmins();
 
+    void supprimerAdmin(Integer id);
+
     Conseil validerConseil(Integer conseilId);
 
     Conseil annulerConseil(Integer conseilId);
@@ -24,4 +26,5 @@ public interface AdminService {
     Psychologue validerInscriptionPsy(Integer id);
 
     Psychologue annulerInscriptionPsy(Integer id);
+
 }

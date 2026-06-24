@@ -46,6 +46,12 @@ public class AdminController {
         return adminService.getAllAdmins();
     }
 
+    @DeleteMapping("/{id}")
+    public void supprimerAdmin(@PathVariable Integer id) {
+
+        adminService.supprimerAdmin(id);
+    }
+
     @PutMapping("/conseils/{id}/valider")
     public Conseil validerConseil(@PathVariable Integer id) {
 
