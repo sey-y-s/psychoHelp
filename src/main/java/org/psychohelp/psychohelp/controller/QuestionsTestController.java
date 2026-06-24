@@ -74,9 +74,9 @@ public class QuestionsTestController {
     public QuestionsTest updateQuestions(
             @PathVariable int id,
             @RequestBody QuestionsTest questions){
+           questions.setId(id);
 
-
-        return questionsTestService.updateQuestions(id, questions);
+        return questionsTestService. updateQuestions(id, questions);
 
     }
 

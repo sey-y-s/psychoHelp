@@ -1,7 +1,9 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import org.psychohelp.psychohelp.service.DiagnosticService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DiagnosticServiceImpl implements DiagnosticService {
     @Override
     public String genererDiagnosticScientifique(String nomTest, int score) {
