@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.QuestionsTestsDTO;
 import org.psychohelp.psychohelp.entity.QuestionsTest;
 import org.psychohelp.psychohelp.repository.QuestionsTestRepository;
 import org.psychohelp.psychohelp.service.QuestionsTestService;
@@ -27,12 +28,21 @@ public class QuestionsTestServiceImpl implements QuestionsTestService {
     }
 
     @Override
-    public QuestionsTest saveQuestions(QuestionsTest questionsTest) {
+    public QuestionsTest saveQuestions(QuestionsTestsDTO questionsTestsDTO) {
+
+        QuestionsTest questionsTest = new QuestionsTest();
+
+        questionsTest.setQuestion(questionsTestsDTO.getQuestion());
+
         return questionsTestRepository.save(questionsTest);
     }
 
     @Override
-    public QuestionsTest updateQuestions(int id, QuestionsTest questionsTest) {
+    public QuestionsTest updateQuestions(int id, QuestionsTestsDTO questionsTestsDTO) {
+        QuestionsTest questionsTest = questionsTestRepository.findById(id).
+                orElseThrow(()-> new RuntimeException("La question non trouvée"));
+
+        questionsTest.setQuestion(questionsTestsDTO.getQuestion());
 
         return questionsTestRepository.save(questionsTest);
     }

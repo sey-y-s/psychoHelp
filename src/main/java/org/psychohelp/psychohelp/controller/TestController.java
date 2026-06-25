@@ -4,6 +4,7 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.TestDTO;
 import org.psychohelp.psychohelp.entity.Test;
 import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,6 @@ public class TestController {
     )
     @GetMapping
     public List<Test> getAllTests() {
-
         return testService.getAllTests();
     }
 
@@ -51,9 +51,9 @@ public class TestController {
             description = "Ajoute un nouveau test psychologique dans la base de données"
     )
     @PostMapping
-    public Test saveTest(@RequestBody Test test) {
+    public Test saveTest(@RequestBody TestDTO testDTO) {
 
-        return testService.saveTest(test);
+        return testService.saveTest(testDTO);
     }
 
 
@@ -64,11 +64,11 @@ public class TestController {
     @PutMapping("/{id}")
     public Test updateTest(
             @PathVariable int id,
-            @RequestBody Test test) {
+            @RequestBody TestDTO testDTO) {
 
-        test.setId(id);
+        testDTO.setId(id);
 
-        return testService.updateTest(id, test);
+        return testService.updateTest(id, testDTO);
     }
 
 

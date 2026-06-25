@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 import org.psychohelp.psychohelp.repository.ChoixMultipleRepository;
 import org.psychohelp.psychohelp.service.ChoixMultipleService;
@@ -38,9 +39,14 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
 
     @Override
-    public ChoixMultiple saveChoix(ChoixMultiple choix){
+    public ChoixMultiple saveChoix(ChoixMultiplesDTO choixMultiplesDTO){
 
-        return choixRepository.save(choix);
+        ChoixMultiple choixMultiple = new ChoixMultiple();
+
+        choixMultiple.setChoix(choixMultiplesDTO.getChoix());
+        choixMultiple.setScore(choixMultiplesDTO.getScore());
+
+        return choixRepository.save(choixMultiple);
 
     }
 
@@ -49,7 +55,7 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
     @Override
     public ChoixMultiple updateChoix(
             int id,
-            ChoixMultiple choix){
+            ChoixMultiplesDTO choixMultiplesDTO){
 
 
         ChoixMultiple ancienChoix =
@@ -60,12 +66,12 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
         if(ancienChoix != null){
 
             ancienChoix.setChoix(
-                    choix.getChoix()
+                    choixMultiplesDTO.getChoix()
             );
 
 
             ancienChoix.setScore(
-                    choix.getScore()
+                    choixMultiplesDTO.getScore()
             );
 
 

@@ -4,6 +4,7 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.QuestionsTestsDTO;
 import org.psychohelp.psychohelp.entity.QuestionsTest;
 import org.psychohelp.psychohelp.service.QuestionsTestService;
 import org.springframework.web.bind.annotation.*;
@@ -57,9 +58,9 @@ public class QuestionsTestController {
     )
     @PostMapping
     public QuestionsTest saveQuestions(
-            @RequestBody QuestionsTest questions){
+            @RequestBody QuestionsTestsDTO questionsTestsDTO){
 
-        return questionsTestService.saveQuestions(questions);
+        return questionsTestService.saveQuestions(questionsTestsDTO);
 
     }
 
@@ -73,10 +74,10 @@ public class QuestionsTestController {
     @PutMapping("/{id}")
     public QuestionsTest updateQuestions(
             @PathVariable int id,
-            @RequestBody QuestionsTest questions){
-           questions.setId(id);
+            @RequestBody QuestionsTestsDTO questionsTestsDTO){
+           questionsTestsDTO.setId(id);
 
-        return questionsTestService. updateQuestions(id, questions);
+        return questionsTestService. updateQuestions(id, questionsTestsDTO);
 
     }
 
