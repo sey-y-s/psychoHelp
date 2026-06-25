@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
 import org.psychohelp.psychohelp.dto.UpdateSpecialiteDto;
@@ -50,7 +51,11 @@ public class SpecialiteController {
         return  ResponseEntity.status(HttpStatus.NO_CONTENT).body("suppression effectuee avec succes");
     }
     @GetMapping("/{id}")
-    public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id){
+    public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id, HttpSession session){
+
+            if(session.getAttribute("UtilisateurConnecte") == null){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new SpecialiteListeDto());
+            }
         Specialite specialite=specialiteService.getSpecialite(id);
         if(specialite==null){
             return  ResponseEntity.notFound().build();
