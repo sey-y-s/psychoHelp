@@ -115,7 +115,7 @@ public class PsychologueController {
         conseil.setDescription(conseilDto.getDescription());
         conseil.setAuteur(conseilDto.getAuteur());
         //recuperation de l'id psy à partir de conseil
-        Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsy_id());
+        Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psychologue);
         Conseil conseilcreer=conseilService.creer(conseil);
         return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
