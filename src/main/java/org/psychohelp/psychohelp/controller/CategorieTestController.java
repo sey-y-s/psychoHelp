@@ -69,6 +69,10 @@ public class CategorieTestController {
                         .obtenirCategorieParId(id)
         );
     }
+    @Operation(
+            summary = "modifier catégorie",
+            description = "modifier une catégorie"
+    )
 
     @PutMapping("/{id}")
     public ResponseEntity<CategorieTest>
