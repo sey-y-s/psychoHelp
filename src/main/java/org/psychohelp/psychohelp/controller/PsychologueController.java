@@ -10,19 +10,28 @@ import org.psychohelp.psychohelp.service.ConseilService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/psychologues")
+@Tag(
+        name = "Psychologues",
+        description = "Gestion des Psychologues"
+)
+
 public class PsychologueController {
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;
    @Autowired private ConseilService conseilService;
-    @PostMapping("/psychologues")
+    @Operation(
+            summary = "Créer une psychologue",
+            description = "Ajoute un nouveau psychologue"
+    )
+    @PostMapping
     public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto){
        // psychologue.setDateCreation(LocalDate.now());
         Psychologue psychologue=new Psychologue();
@@ -47,30 +56,53 @@ public class PsychologueController {
 
 
     }
-    @GetMapping("/psychologues")
+    @Operation(
+            summary = "Lister toutes les psychologues",
+            description = "Retourne la liste  des psychologues"
+    )
+    @GetMapping
     public List<PsychologueListeDto> psychologueList(){
         return psyService.PSYCHOLOGUEList().stream().map(
                 psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
         ).toList();
     }
-    @PutMapping("/psychologues/{id}")
+    @Operation(
+            summary ="Modifier un psychologue ",
+            description = "Modifier un psychologue"
+    )
+
+    @PutMapping("/{id}")
     public Psychologue updatePsychologue( @RequestBody Psychologue psychologue ,@PathVariable("id") int PsychologueId){
         return psyService.updatePsychologue(psychologue,PsychologueId);
     }
-    @PatchMapping("/psychologues/{id}/etat")
+    @Operation(
+            summary ="Modifier l'état d'un psychologue ",
+            description = "Modifier l'état d'un psychologue"
+    )
+    @PatchMapping("/{id}/etat")
     public Psychologue updateEtat(
             @PathVariable int id,
             @RequestBody Psychologue psychologue){
 
         return psyService.UpdateEtat(id, psychologue);
     }
-    @GetMapping("/psychologues/{id}")
+    @Operation(
+            summary = "Rechercher un psychologue",
+            description = "Retourne un psychologue à partir de son identifiant"
+    )
+
+    @GetMapping("/{id}")
     public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id){
         Psychologue psychologue=psyService.GetPsychologueById(id);
 
         return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
     }
-    @GetMapping("/psychologues/{id}/conseils")
+    @Operation(
+            summary = "Rechercher un conseil d'un  psychologue",
+            description = "Retourne un conseil d'un psyvhologue à partir de son identifiant"
+    )
+
+    @GetMapping("/{id}/conseils")
     public List<Conseil> getConseilByPsy(@PathVariable Integer id){
         return psyService.getConseilByPsy(id);
         //Psychologue psychologue=psyService.GetPsychologueById(id);
@@ -79,8 +111,11 @@ public class PsychologueController {
         //return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
 
     }
-
-    @PostMapping(path = "psychologues/conseil")
+    @Operation(
+            summary = "Crée un conseil ",
+            description = "Ajoute un nouveau conseil"
+    )
+    @PostMapping(path = "/conseil")
     public ListConseilDto create(@RequestBody ConseilDto conseilDto){
         //System.out.println("***************" + utl);
         //return conseilService.creer(utl);

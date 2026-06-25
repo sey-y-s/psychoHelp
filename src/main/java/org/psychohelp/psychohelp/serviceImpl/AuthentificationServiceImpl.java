@@ -1,11 +1,16 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.transaction.Transactional;
+import org.psychohelp.psychohelp.dto.ConnectionDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.exceptions.ConnexionException;
 import org.psychohelp.psychohelp.repository.UtilisateurRepository;
 import org.psychohelp.psychohelp.service.AuthentificationService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
+@Transactional
 public class AuthentificationServiceImpl implements AuthentificationService {
     private final UtilisateurRepository utilisateurRepository;
 
@@ -23,12 +28,13 @@ public class AuthentificationServiceImpl implements AuthentificationService {
     }
 
     @Override
-    public Utilisateur connecter(String mail, String motDePasse) {
-        Utilisateur utilisateur = utilisateurRepository.findByMail(mail).orElseThrow(()
-                -> new RuntimeException("Identifiants incorrects (email introuvable)."));
+    public Utilisateur connecter(ConnectionDTO connectionDTO) {
+        String msg = "Identifiants incorrects.";
+        Utilisateur utilisateur = utilisateurRepository.findByMail(connectionDTO.getEmail()).orElseThrow(()
+                -> new ConnexionException(msg));
 
-        if(!utilisateur.getMotDePasse().equals(motDePasse)){
-            throw new RuntimeException("Identifiants incorrects (mot de passe invalide).");
+        if(!utilisateur.getMotDePasse().equals(connectionDTO.getMotDePasse())){
+            throw new ConnexionException(msg);
         }
 
         return utilisateur;

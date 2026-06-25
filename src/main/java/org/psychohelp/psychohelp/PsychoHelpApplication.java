@@ -7,5 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PsychoHelpApplication {
     public static void main(String[] args) {
         SpringApplication.run(PsychoHelpApplication.class, args);
+
     }
 }
