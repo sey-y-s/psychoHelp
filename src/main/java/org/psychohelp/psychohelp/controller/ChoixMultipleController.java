@@ -4,6 +4,7 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 import org.psychohelp.psychohelp.service.ChoixMultipleService;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +61,7 @@ public class ChoixMultipleController {
     )
     @PostMapping
     public ChoixMultiple saveChoix(
-            @RequestBody ChoixMultiple choix){
+            @RequestBody ChoixMultiplesDTO choix){
 
         return choixService.saveChoix(choix);
 
@@ -75,10 +76,10 @@ public class ChoixMultipleController {
     @PutMapping("/{id}")
     public ChoixMultiple updateChoix(
             @PathVariable int id,
-            @RequestBody ChoixMultiple choix){
+            @RequestBody ChoixMultiplesDTO choixDTO){
 
 
-        return choixService.updateChoix(id, choix);
+        return choixService.updateChoix(id, choixDTO);
 
     }
 

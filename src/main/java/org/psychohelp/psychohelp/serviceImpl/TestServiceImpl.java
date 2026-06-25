@@ -1,8 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.TestDTO;
 import org.psychohelp.psychohelp.entity.Test;
-import org.psychohelp.psychohelp.repository.QuestionsTestRepository;
 import org.psychohelp.psychohelp.repository.TestRepository;
 import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.stereotype.Service;
@@ -29,13 +29,23 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Test saveTest(Test test) {
+    public Test saveTest(TestDTO testDTO) {
+
+        Test test = new Test() ;
+        test.setNom_test(testDTO.getNom_test());
+        test.setDescription(testDTO.getDescription());
+        test.setEtat(testDTO.getEtat());
 
         return testRepository.save(test);
     }
 
     @Override
-    public Test updateTest(int id, Test test) {
+    public Test updateTest(int id, TestDTO testDTO) {
+        Test test = testRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Test non trouvé"));
+        test.setNom_test(testDTO.getNom_test());
+        test.setDescription(testDTO.getDescription());
+        test.setEtat(testDTO.getEtat());
         return testRepository.save(test);
 
     }

@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.ChoixMultiplesDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 
 import java.util.List;
@@ -12,10 +13,10 @@ public interface ChoixMultipleService {
     Optional<ChoixMultiple> getChoixById(int id);
 
 
-    ChoixMultiple saveChoix(ChoixMultiple choix);
+    ChoixMultiple saveChoix(ChoixMultiplesDTO choix);
 
 
-    ChoixMultiple updateChoix(int id, ChoixMultiple choix);
+    ChoixMultiple updateChoix(int id, ChoixMultiplesDTO choix);
 
 
     void deleteChoix(int id);

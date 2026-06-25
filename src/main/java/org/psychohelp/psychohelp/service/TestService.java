@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.TestDTO;
 import org.psychohelp.psychohelp.entity.Test;
 
 import java.util.List;
@@ -12,10 +13,10 @@ public interface TestService {
     Optional<Test> getTestById(Integer id);
 
 
-    Test saveTest(Test test);
+    Test saveTest(TestDTO testDTO);
 
 
-    Test updateTest(int id, Test test);
+    Test updateTest(int id, TestDTO testDTO);
 
 
     void deleteTest(int id);
