@@ -2,6 +2,8 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.ConnectionDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.service.AuthentificationService;
 import org.psychohelp.psychohelp.service.UtilisateurService;
