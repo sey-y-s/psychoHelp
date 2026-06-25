@@ -5,7 +5,6 @@ import org.psychohelp.psychohelp.service.DiagnosticService;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class DiagnosticServiceImpl implements DiagnosticService {
     @Override
     public String genererDiagnosticScientifique(String nomTest, int score) {

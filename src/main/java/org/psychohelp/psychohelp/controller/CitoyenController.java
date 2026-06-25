@@ -64,6 +64,7 @@ public class CitoyenController {
     public  List<CitoyenSeanceWithPsychologueDto>  listeSeanceWithIsPsychologue(@PathVariable int id){
         return citoyenService.listeSeanceWithIsPsychologue(id);
     }
+    
 
 
 }

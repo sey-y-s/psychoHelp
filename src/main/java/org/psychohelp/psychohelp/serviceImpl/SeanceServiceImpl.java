@@ -1,6 +1,9 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 
+import org.psychohelp.psychohelp.dto.SeanceDTO;
+import org.psychohelp.psychohelp.entity.Citoyen;
+import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Seance;
 import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
 import org.psychohelp.psychohelp.repository.SeanceRepository;
@@ -30,9 +33,15 @@ public class SeanceServiceImpl implements SeanceService {
     }
 
     @Override
-    public Seance createSeance(Seance seance) {
-        seance.setStatut(StatutRdvEnum.RESERVER);
-        return seanceRepository.save(seance);
+    public Seance createSeance(SeanceDTO seance) {
+        Citoyen c = new Citoyen(); c.setId(seance.getCitoyenId());
+        Creneau cr = new Creneau(); cr.setId(seance.getCreneauId());
+        Seance s = new  Seance();
+        s.setDateRdv(seance.getDateRdv());
+        s.setStatut(StatutRdvEnum.RESERVER);
+        s.setCitoyen(c);
+        s.setCreneau(cr);
+        return seanceRepository.save(s);
     }
 
     @Override

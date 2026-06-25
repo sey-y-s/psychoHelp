@@ -16,31 +16,50 @@ import java.util.List;
 @RequestMapping("/api/specialites")
 
 @RestController
+@Tag(
+        name = "Specialité des psychologues",
+        description = "Gestion de la specialité des psychologues"
+)
 public class SpecialiteController {
     @Autowired
     private SpecialiteService specialiteService;
+    @Operation(
+            summary = "Créer une nouvelle specialité",
+            description = "Ajoute une nouvelle specialité "
+    )
     @PostMapping
-    public ResponseEntity<String> ajouter(@RequestBody Specialite specialite){
-        specialiteService.ajouter(specialite);
+    public ResponseEntity<String> ajouter(@RequestBody UpdateSpecialiteDto updateSpecialiteDto){
+        specialiteService.ajouter(updateSpecialiteDto);
         return  ResponseEntity.status(HttpStatus.CREATED).body("specialite iseree avec succes");
     }
+    @Operation(
+            summary = "La liste des specialités",
+            description = "ici on affiche la liste des specialités"
+    )
     @GetMapping
     public List<SpecialiteListeDto> Liste(){
         return specialiteService.ListeSpecialite().stream().map(
                 specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom())
         ).toList();
     }
+    @Operation(
+            summary = "modification d'une specialité specifique",
+            description = "ici on modifie une specialité specifique"
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<SpecialiteListeDto> modifier(@PathVariable int id, @RequestBody UpdateSpecialiteDto updateSpecialiteDto){
-        Specialite specialite=specialiteService.getSpecialite(id);
-        if(specialite==null){
+        SpecialiteListeDto specialiteListeDto   =specialiteService.updateSpecialite(id,updateSpecialiteDto);
+        if(specialiteListeDto==null){
             return ResponseEntity.notFound().build();
         }
-        specialite.setNom(updateSpecialiteDto.getNom());
-        Specialite specialitemodifiee=   specialiteService.ajouter(specialite);
-        return ResponseEntity.ok(new SpecialiteListeDto(specialitemodifiee.getId(),specialitemodifiee.getNom()));
+
+        return ResponseEntity.ok(specialiteListeDto);
 
     }
+    @Operation(
+            summary = "suppression d'un  specialité",
+            description = "ici on supprime une specialité specifique"
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<String> supprimerSepecialite(@PathVariable int id){
         Specialite specialite=specialiteService.getSpecialite(id);
@@ -50,6 +69,10 @@ public class SpecialiteController {
         specialiteService.supprimer(id);
         return  ResponseEntity.status(HttpStatus.NO_CONTENT).body("suppression effectuee avec succes");
     }
+    @Operation(
+            summary = "specialité specifique",
+            description = "ici on affiche une specialité specifique"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id, HttpSession session){
 
@@ -62,6 +85,10 @@ public class SpecialiteController {
         }
         return ResponseEntity.ok(new SpecialiteListeDto(specialite.getId(),specialite.getNom()));
     }
+    @Operation(
+            summary = "les pychologues qui ont cette specialité",
+            description = "ici on affiche les psychologues qui ont cette specialité"
+    )
     @GetMapping("/{id}/psychologues")
     public List<PsychologueListeDto> getSpecialisteIsPysychologue(@PathVariable int id){
         List<Psychologue>psychologues=specialiteService.getSpecialiteIsPsycholoque(id);
