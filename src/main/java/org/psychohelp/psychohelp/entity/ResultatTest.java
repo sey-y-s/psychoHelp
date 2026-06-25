@@ -11,7 +11,7 @@ import lombok.Data;
 public class ResultatTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private Integer score;

@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
 import org.psychohelp.psychohelp.dto.UpdateSpecialiteDto;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 import java.util.List;
 @RequestMapping("/api/specialites")
@@ -75,7 +79,11 @@ public class SpecialiteController {
             description = "ici on affiche une specialité specifique"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id){
+    public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id, HttpSession session){
+
+            if(session.getAttribute("UtilisateurConnecte") == null){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new SpecialiteListeDto());
+            }
         Specialite specialite=specialiteService.getSpecialite(id);
         if(specialite==null){
             return  ResponseEntity.notFound().build();

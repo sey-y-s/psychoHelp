@@ -37,7 +37,6 @@ public class SeanceServiceImpl implements SeanceService {
         Citoyen c = new Citoyen(); c.setId(seance.getCitoyenId());
         Creneau cr = new Creneau(); cr.setId(seance.getCreneauId());
         Seance s = new  Seance();
-        s.setDate(seance.getDate());
         s.setDateRdv(seance.getDateRdv());
         s.setStatut(StatutRdvEnum.RESERVER);
         s.setCitoyen(c);
