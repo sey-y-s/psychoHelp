@@ -10,13 +10,10 @@ import org.psychohelp.psychohelp.service.ConseilService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

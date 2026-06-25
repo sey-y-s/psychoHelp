@@ -8,5 +8,7 @@ public class PsychoHelpApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PsychoHelpApplication.class, args);
+
+        System.out.println("65566");
     }
 }
