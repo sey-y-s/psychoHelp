@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 public class ConseilDto {
         private String titre;
         private String description;
-        private Boolean status=false;
+        //private Boolean status=false;
         private String auteur;
-        private int psy_id;
+        private Integer psy_id;
+
 
 
 }
