@@ -4,21 +4,26 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.CreneauService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.psychohelp.psychohelp.utils.Session;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/creneaux")
-@Tag(name = "Gestion des créneaux",
-        description = "API de gestion des créneaux des psychologues")
+@Tag(
+        name = "Gestion des créneaux",
+        description = "API de gestion des créneaux des psychologues"
+)
 public class CreneauController {
 
     private final CreneauService cs;
@@ -27,9 +32,22 @@ public class CreneauController {
             summary = "Créer un créneau",
             description = "Permet à un psychologue d'ajouter un nouveau créneau de disponibilité."
     )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Créneau créé avec succès"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Psychologue introuvable"
+            )
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreneauResponseDTO creer(@RequestBody CreneauDTO dto) {
+    public CreneauResponseDTO creer(@RequestBody CreneauDTO dto,
+                                    HttpSession session) {
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+
         return cs.creer(dto);
     }
 
@@ -37,16 +55,30 @@ public class CreneauController {
             summary = "Lister tous les créneaux",
             description = "Retourne la liste complète des créneaux enregistrés dans le système."
     )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Liste des créneaux récupérée avec succès"
+    )
     @GetMapping
     public List<CreneauResponseDTO> getAll() {
         return cs.getAll();
     }
 
-    @GetMapping("/{id}")
     @Operation(
             summary = "Obtenir un créneau",
-            description = "Retourne les informations d'un créneau à partir de son identifiant"
+            description = "Retourne les informations d'un créneau à partir de son identifiant."
     )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Créneau trouvé"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Créneau introuvable"
+            )
+    })
+    @GetMapping("/{id}")
     public CreneauResponseDTO getById(@PathVariable Long id) {
         return cs.getById(id);
     }
@@ -55,16 +87,31 @@ public class CreneauController {
             summary = "Modifier un créneau",
             description = "Met à jour les informations d'un créneau existant."
     )
-    @PutMapping("/{id}")
-    public CreneauResponseDTO update(@PathVariable Long id,
-                          @RequestBody UpdateCreneauDTO dto) {
-        return cs.update(id, dto);
-    }
-
-    @Operation(summary = "Supprimer un créneau")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
+                    description = "Créneau modifié avec succès"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Créneau introuvable"
+            )
+    })
+    @PutMapping("/{id}")
+    public CreneauResponseDTO update(
+            @PathVariable Long id,
+            @RequestBody UpdateCreneauDTO dto) {
+
+        return cs.update(id, dto);
+    }
+
+    @Operation(
+            summary = "Supprimer un créneau",
+            description = "Supprime un créneau existant à partir de son identifiant."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
                     description = "Créneau supprimé avec succès"
             ),
             @ApiResponse(
@@ -78,17 +125,14 @@ public class CreneauController {
         cs.delete(id);
     }
 
-
     @Operation(
             summary = "Lister tous les créneaux disponibles",
-            description = "Retourne la liste de tous les créneaux ayant le statut 'DISPONIBLE' dans le système."
+            description = "Retourne la liste de tous les créneaux disponibles dans le système."
     )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Liste des créneaux disponibles récupérée avec succès"
-            )
-    })
+    @ApiResponse(
+            responseCode = "200",
+            description = "Liste des créneaux disponibles récupérée avec succès"
+    )
     @GetMapping("/disponibles")
     public List<CreneauResponseDTO> getDisponibles() {
         return cs.getDisponibles();
@@ -109,7 +153,9 @@ public class CreneauController {
             )
     })
     @GetMapping("/disponibles/{psychologueId}")
-    public List<CreneauResponseDTO> getDisponiblesByPsychologueId(@PathVariable Integer psychologueId) {
+    public List<CreneauResponseDTO> getDisponiblesByPsychologueId(
+            @PathVariable Integer psychologueId) {
+
         return cs.getDisponiblesByPsychologueId(psychologueId);
     }
 }

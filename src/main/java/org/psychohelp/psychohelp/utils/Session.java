@@ -7,7 +7,7 @@ import org.psychohelp.psychohelp.exceptions.AccesRefuseException;
 
 public final class Session {
 
-    public  Session(){
+   public  Session(){
 
     }
     public static Utilisateur utilisateur(HttpSession session){
