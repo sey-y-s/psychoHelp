@@ -1,5 +1,7 @@
 package org.psychohelp.psychohelp.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.psychohelp.psychohelp.dto.CitoyenListeDto;
 import org.psychohelp.psychohelp.dto.CitoyenRequestDto;
 import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
@@ -11,12 +13,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
+@Tag(
+        name = "citoyen ",
+        description = "Gestion des citoyens"
+)
 @RequestMapping("/api/citoyens")
 @RestController
 public class CitoyenController {
     @Autowired
     private CitoyenService citoyenService;
+    @Operation(
+            summary = "Créer une nouveau citoyen",
+            description = "Ajoute une nouveau citoyen "
+    )
     @PostMapping
     public ResponseEntity<String> ajouterCitoyen(@RequestBody CitoyenRequestDto citoyenRequestDto) {
         Citoyen citoyen = new Citoyen();
@@ -30,12 +39,20 @@ public class CitoyenController {
         return ResponseEntity.status(HttpStatus.CREATED).body("citoyen ajouteé avec succes");
 
     }
+    @Operation(
+            summary = "liste des citoyens",
+            description = "affiche la  liste des citoyens "
+    )
     @GetMapping
     public List<CitoyenListeDto> listerCitoyen() {
         return citoyenService.getAllCitoyen().stream().map(
                 citoyen -> new CitoyenListeDto(citoyen.getId(),citoyen.getNom(),citoyen.getPrenom(),citoyen.getTelephone(),citoyen.getMail(),citoyen.getRole().toString())
         ).toList();
     }
+    @Operation(
+            summary = "modifie un citoyen ",
+            description = "modifier un citoyen "
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<CitoyenListeDto>modifierCitoyen(@PathVariable int id,   @RequestBody CitoyenRequestDto citoyenRequestDto) {
         Citoyen citoyenRecuperer = citoyenService.getCitoyenById(id);
@@ -51,6 +68,10 @@ public class CitoyenController {
         return ResponseEntity.ok(new CitoyenListeDto(citoyenModifier.getId(),citoyenModifier.getNom(),citoyenModifier.getPrenom(),citoyenModifier.getTelephone(),citoyenModifier.getMail(),citoyenModifier.getRole().toString()) );
 
     }
+    @Operation(
+            summary = "citoyen specifique",
+            description = "affiche un citoyen specifique "
+    )
     @GetMapping("/{id}")
     public ResponseEntity<CitoyenListeDto> getCitoyenById(@PathVariable int id) {
         Citoyen citoyen = citoyenService.getCitoyenById(id);
@@ -60,6 +81,10 @@ public class CitoyenController {
         return ResponseEntity.ok( new CitoyenListeDto(citoyen.getId(),citoyen.getNom(),citoyen.getPrenom(),citoyen.getTelephone(),citoyen.getMail(),citoyen.getRole().toString()) );
 
     }
+    @Operation(
+            summary = "affiche les predv pris par un citoyen",
+            description = "affiche les rdv pris par un citoyen "
+    )
     @GetMapping("/{id}/rdvs")
     public  List<CitoyenSeanceWithPsychologueDto>  listeSeanceWithIsPsychologue(@PathVariable int id){
         return citoyenService.listeSeanceWithIsPsychologue(id);
