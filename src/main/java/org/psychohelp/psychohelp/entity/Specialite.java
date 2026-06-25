@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class Specialite {
     @Column(name="nom_specialite",nullable = false, length = 60,unique = true)
     private String nom;
     @OneToMany(mappedBy = "specialite")
+    @JsonIgnore
     private List<Psychologue> psychologues;
 
 
