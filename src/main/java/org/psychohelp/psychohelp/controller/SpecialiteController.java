@@ -8,7 +8,10 @@ import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
 import org.psychohelp.psychohelp.dto.UpdateSpecialiteDto;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.exceptions.GlobalExceptionHandler;
 import org.psychohelp.psychohelp.service.SpecialiteService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +28,7 @@ import java.util.List;
         name = "Specialité des psychologues",
         description = "Gestion de la specialité des psychologues"
 )
-public class SpecialiteController {
+public class SpecialiteController{
     @Autowired
     private SpecialiteService specialiteService;
     @Operation(
@@ -81,9 +84,8 @@ public class SpecialiteController {
     @GetMapping("/{id}")
     public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id, HttpSession session){
 
-            if(session.getAttribute("UtilisateurConnecte") == null){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new SpecialiteListeDto());
-            }
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
         Specialite specialite=specialiteService.getSpecialite(id);
         if(specialite==null){
             return  ResponseEntity.notFound().build();
