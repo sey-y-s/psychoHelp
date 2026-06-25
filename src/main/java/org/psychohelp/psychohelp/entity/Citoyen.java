@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class Citoyen extends Utilisateur{
 
     // Un citoyen peut réserver plusieurs séances de consultation
     @OneToMany(mappedBy = "citoyen", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Seance> seances = new ArrayList<>();
 
 

@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 public class SeanceDTO {
-    private LocalDate date;
     private LocalDate dateRdv;
     private StatutRdvEnum statut;
     private int citoyenId;
