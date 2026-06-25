@@ -69,10 +69,19 @@ public class PsychologueController {
                 psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
         ).toList();
     }
+    @Operation(
+            summary ="Modifier un psychologue ",
+            description = "Modifier un psychologue"
+    )
+
     @PutMapping("/{id}")
     public Psychologue updatePsychologue( @RequestBody Psychologue psychologue ,@PathVariable("id") int PsychologueId){
         return psyService.updatePsychologue(psychologue,PsychologueId);
     }
+    @Operation(
+            summary ="Modifier l'état d'un psychologue ",
+            description = "Modifier l'état d'un psychologue"
+    )
     @PatchMapping("/{id}/etat")
     public Psychologue updateEtat(
             @PathVariable int id,
