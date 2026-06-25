@@ -1,7 +1,13 @@
 package org.psychohelp.psychohelp.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.apache.coyote.Response;
+import org.psychohelp.psychohelp.dto.ConnectionDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.service.AuthentificationService;
+import org.psychohelp.psychohelp.service.UtilisateurService;
 import org.psychohelp.psychohelp.serviceImpl.UtilisateurServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,10 +16,14 @@ import java.util.List;
 @RequestMapping("/api/utilisateurs")
 public class UtilisateurController {
 
-    UtilisateurServiceImpl utilisateurService;
+    private final UtilisateurService utilisateurService;
+    private final AuthentificationService authentificationService;
 
-    public UtilisateurController(UtilisateurServiceImpl utlService){
-        this.utilisateurService = utlService;
+    public UtilisateurController(UtilisateurServiceImpl utilisateurService,
+                                 AuthentificationService authentificationService
+                                 ){
+        this.utilisateurService = utilisateurService;
+        this.authentificationService = authentificationService;
     }
 
 
@@ -49,6 +59,21 @@ public class UtilisateurController {
     public void delete(@PathVariable int id){
         utilisateurService.supUtilisateur(id);
     }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody ConnectionDTO connectionDTO, HttpSession session){
+        Utilisateur utilisateur = authentificationService.connecter(connectionDTO);
+
+        session.setAttribute("UtilisateurConnecte", utilisateur);
+
+        return ResponseEntity.ok(utilisateur);
+
+
+    }
+
+
+
 
 
 
