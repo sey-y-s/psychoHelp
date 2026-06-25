@@ -67,7 +67,7 @@ public class UtilisateurController {
 
         session.setAttribute("UtilisateurConnecte", utilisateur);
 
-        return ResponseEntity.ok(utilisateur);
+        return ResponseEntity.ok("vous etes connecté !");
 
 
     }
