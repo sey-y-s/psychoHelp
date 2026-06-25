@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,5 +30,6 @@ public class Creneau {
     private Psychologue psychologue;
 
     @OneToMany(mappedBy = "creneau")
+    @JsonManagedReference
     private List<Seance> seances;
 }
