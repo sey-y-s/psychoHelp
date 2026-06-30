@@ -27,4 +27,11 @@ public final class Session {
 
         }
     }
+
+    public static void verifierRole(HttpSession session, RoleEnum role1, RoleEnum role2){
+        Utilisateur utilisateur = utilisateur(session);
+        if(!utilisateur.getRole().equals(role1) || utilisateur.getRole().equals(role2)){
+            throw  new AccesRefuseException("Accès refusé : Vous n'avez pas le rôle requis.");
+        }
+    }
 }
