@@ -40,7 +40,7 @@ public class QuestionsTestServiceImpl implements QuestionsTestService {
     @Override
     public QuestionsTest updateQuestions(int id, QuestionsTestsDTO questionsTestsDTO) {
         QuestionsTest questionsTest = questionsTestRepository.findById(id).
-                orElseThrow(()-> new RuntimeException("La question non trouvée"));
+                orElseThrow(()-> new RuntimeException("Question non trouvée"));
 
         questionsTest.setQuestion(questionsTestsDTO.getQuestion());
 
