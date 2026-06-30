@@ -56,8 +56,14 @@ public class ConseilController {
             description = "recuperer un seul conseils par son identifiant"
     )
     @GetMapping(path = "{id}")
-    public Conseil userById(@PathVariable int id){
-        return conseilService.conseilParId(id);
+    public ConseilDto conseilById(@PathVariable int id){
+        Conseil conseil = conseilService.conseilParId(id);
+        ConseilDto conseilDto = new ConseilDto();
+        conseilDto.setTitre(conseil.getTitre());
+        conseilDto.setDescription(conseil.getDescription());
+        conseilDto.setAuteur(conseil.getAuteur());
+        conseilDto.setPsyId(conseil.getPsychologue().getId());
+        return conseilDto;
     }
 
     @Operation(
@@ -90,9 +96,16 @@ public class ConseilController {
             description = "modifier un conseil par son id"
     )
     @PutMapping(path = "update/{id}")
-    public Conseil update(@PathVariable int id, @RequestBody Conseil utl){
+    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto){
 
-        return conseilService.modifier(id, utl);
+        Conseil conseil = conseilService.conseilParId(id);
+        conseil.setTitre(conseilDto.getTitre());
+        conseil.setAuteur(conseilDto.getAuteur());
+        conseil.setDescription(conseilDto.getDescription());
+
+
+        conseilService.modifier(id, conseil);
+        return conseilDto;
     }
 
 
@@ -101,8 +114,9 @@ public class ConseilController {
             description = "Supprimer un conseil"
     )
     @DeleteMapping(path = "delete/{id}")
-    public void delete(@PathVariable int id){
+    public String delete(@PathVariable int id){
         conseilService.supConseil(id);
+        return "Conseils supprimer";
     }
 
 
