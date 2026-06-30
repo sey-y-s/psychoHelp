@@ -14,5 +14,5 @@ public interface SeanceService {
 
     List<Seance> getSeancesByCitoyen(Long citoyenId);
     List<Seance> getSeancesByStatut(StatutRdvEnum statut);
-    List<Seance> getSeancesByPsy(Long psyId);
+    List<Seance> getSeancesByPsy(int psyId);
 }
