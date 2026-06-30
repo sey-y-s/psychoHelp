@@ -33,7 +33,7 @@ public class SeanceServiceImpl implements SeanceService {
     }
 
     @Override
-    public Seance createSeance(SeanceDTO seance) {
+    public SeanceDTO createSeance(SeanceDTO seance) {
         Citoyen c = new Citoyen(); c.setId(seance.getCitoyenId());
         Creneau cr = new Creneau(); cr.setId(seance.getCreneauId());
         Seance s = new  Seance();
@@ -45,7 +45,7 @@ public class SeanceServiceImpl implements SeanceService {
     }
 
     @Override
-    public Seance cancelSeance(Long id) {
+    public SeanceDTO cancelSeance(Long id) {
         Seance seance = seanceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Séance " + id + "introuvable"));
         seance.setStatut(StatutRdvEnum.ANNULER);
