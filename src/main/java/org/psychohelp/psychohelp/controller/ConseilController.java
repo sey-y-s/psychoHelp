@@ -46,7 +46,7 @@ public class ConseilController {
         //return conseilService.listeConseil();
         return conseilService.listeConseil().stream()
                 .map(
-                        conseil -> new ConseilDto(conseil.getTitre(), conseil.getDescription(),conseil.getAuteur(), 23)
+                        conseil -> new ConseilDto(conseil.getTitre(), conseil.getDescription(),conseil.getAuteur(), conseil.getPsychologue().getId())
                 ).toList();
     }
 
@@ -56,8 +56,14 @@ public class ConseilController {
             description = "recuperer un seul conseils par son identifiant"
     )
     @GetMapping(path = "{id}")
-    public Conseil userById(@PathVariable int id){
-        return conseilService.conseilParId(id);
+    public ConseilDto conseilById(@PathVariable int id){
+        Conseil conseil = conseilService.conseilParId(id);
+        ConseilDto conseilDto = new ConseilDto();
+        conseilDto.setTitre(conseil.getTitre());
+        conseilDto.setDescription(conseil.getDescription());
+        conseilDto.setAuteur(conseil.getAuteur());
+        conseilDto.setPsyId(conseil.getPsychologue().getId());
+        return conseilDto;
     }
 
     @Operation(
@@ -65,7 +71,7 @@ public class ConseilController {
             description = "Inserer un conseils"
     )
     @PostMapping(path = "post")
-    public Conseil create(@RequestBody ConseilDto conseilDto){
+    public ConseilDto create(@RequestBody ConseilDto conseilDto){
         //System.out.println("***************" + utl);
         Conseil conseil =  new Conseil();
         conseil.setTitre(conseilDto.getTitre());
@@ -77,10 +83,11 @@ public class ConseilController {
                 conseilService.conseilParId(conseilDto.getPsy_id()).getPsychologue()
         );*/
 
-        //Psychologue psy = psyService.GetPsychologueById(conseilDto.getPsy_id());
+        Psychologue psy = psyService.GetPsychologueById(conseilDto.getPsyId());
         //System.out.println("**********test" + psy);
-        //conseil.setPsychologue(psy);
-        return conseilService.creer(conseil);
+        conseil.setPsychologue(psy);
+         conseilService.creer(conseil);
+        return conseilDto;
     }
 
 
@@ -89,8 +96,16 @@ public class ConseilController {
             description = "modifier un conseil par son id"
     )
     @PutMapping(path = "update/{id}")
-    public Conseil update(@PathVariable int id, @RequestBody Conseil utl){
-        return conseilService.modifier(id, utl);
+    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto){
+
+        Conseil conseil = conseilService.conseilParId(id);
+        conseil.setTitre(conseilDto.getTitre());
+        conseil.setAuteur(conseilDto.getAuteur());
+        conseil.setDescription(conseilDto.getDescription());
+
+
+        conseilService.modifier(id, conseil);
+        return conseilDto;
     }
 
 
@@ -99,8 +114,9 @@ public class ConseilController {
             description = "Supprimer un conseil"
     )
     @DeleteMapping(path = "delete/{id}")
-    public void delete(@PathVariable int id){
+    public String delete(@PathVariable int id){
         conseilService.supConseil(id);
+        return "Conseils supprimer";
     }
 
 

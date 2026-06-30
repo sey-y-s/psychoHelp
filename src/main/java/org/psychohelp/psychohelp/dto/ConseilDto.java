@@ -12,7 +12,7 @@ public class ConseilDto {
         private String description;
         //private Boolean status=false;
         private String auteur;
-        private Integer psy_id;
+        private Integer psyId;
 
 
 
