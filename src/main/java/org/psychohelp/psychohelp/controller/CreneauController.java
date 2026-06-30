@@ -100,8 +100,10 @@ public class CreneauController {
     @PutMapping("/{id}")
     public CreneauResponseDTO update(
             @PathVariable Long id,
-            @RequestBody UpdateCreneauDTO dto) {
+            @RequestBody UpdateCreneauDTO dto,
+            HttpSession session) {
 
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         return cs.update(id, dto);
     }
 
