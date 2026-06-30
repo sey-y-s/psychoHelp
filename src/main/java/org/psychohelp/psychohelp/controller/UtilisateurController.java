@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.ConnectionDTO;
+import org.psychohelp.psychohelp.dto.ConnectionReponseDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.service.AuthentificationService;
 import org.psychohelp.psychohelp.service.UtilisateurService;
@@ -87,8 +88,15 @@ public class UtilisateurController {
         Utilisateur utilisateur = authentificationService.connecter(connectionDTO);
 
         session.setAttribute("UtilisateurConnecte", utilisateur);
+        ConnectionReponseDTO dto = new ConnectionReponseDTO();
 
-        return ResponseEntity.ok(utilisateur);
+        dto.setNom(utilisateur.getNom());
+        dto.setPrenom(utilisateur.getPrenom());
+        dto.setMail(utilisateur.getMail());
+        dto.setRole(utilisateur.getRole());
+
+
+        return ResponseEntity.ok(dto);
 
 
     }
