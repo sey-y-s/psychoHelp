@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.exceptions.AccesRefuseException;
+import org.psychohelp.psychohelp.exceptions.ConnexionException;
 
 public final class Session {
 
@@ -14,7 +15,7 @@ public final class Session {
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
 
         if(utilisateur==null){
-            throw new RuntimeException("Veuillez vous connecter svp");
+            throw new ConnexionException("Veuillez vous connecter svp");
         }
         return utilisateur;
     }
