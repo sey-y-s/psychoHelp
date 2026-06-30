@@ -44,6 +44,10 @@ public class Utilisateur {
     @Column(name = "date_creation")
     private LocalDate dateCreation=LocalDate.now();
 
+    public String nomComplet(){
+        return prenom + " " + nom.toUpperCase();
+    }
+
 
 
 

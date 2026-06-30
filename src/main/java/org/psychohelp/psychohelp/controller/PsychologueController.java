@@ -72,19 +72,19 @@ public class PsychologueController {
     )
 
     @PutMapping("/{id}")
-    public Psychologue updatePsychologue( @RequestBody Psychologue psychologue ,@PathVariable("id") int PsychologueId){
-        return psyService.updatePsychologue(psychologue,PsychologueId);
+    public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId){
+        return psyService.updatePsychologue(updatePsyDto,PsychologueId);
     }
     @Operation(
             summary ="Modifier l'état d'un psychologue ",
             description = "Modifier l'état d'un psychologue"
     )
-    @PatchMapping("/{id}/etat")
-    public Psychologue updateEtat(
+    @PatchMapping("/{id}/etatStatus")
+    public PsychologueListeDto updateEtatStatus(
             @PathVariable int id,
-            @RequestBody Psychologue psychologue){
+            @RequestBody UpdateEtatStatusDto psychologue){
 
-        return psyService.UpdateEtat(id, psychologue);
+        return psyService.UpdateEtatStatus(id, psychologue);
     }
     @Operation(
             summary = "Rechercher un psychologue",

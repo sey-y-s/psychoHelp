@@ -36,7 +36,8 @@ public class SpecialiteController{
             description = "Ajoute une nouvelle specialité "
     )
     @PostMapping
-    public ResponseEntity<String> ajouter(@RequestBody UpdateSpecialiteDto updateSpecialiteDto){
+    public ResponseEntity<String> ajouter(@RequestBody UpdateSpecialiteDto updateSpecialiteDto,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
         specialiteService.ajouter(updateSpecialiteDto);
         return  ResponseEntity.status(HttpStatus.CREATED).body("specialite iseree avec succes");
     }
@@ -45,7 +46,8 @@ public class SpecialiteController{
             description = "ici on affiche la liste des specialités"
     )
     @GetMapping
-    public List<SpecialiteListeDto> Liste(){
+    public List<SpecialiteListeDto> Liste(HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return specialiteService.ListeSpecialite().stream().map(
                 specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom())
         ).toList();
@@ -55,7 +57,8 @@ public class SpecialiteController{
             description = "ici on modifie une specialité specifique"
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<SpecialiteListeDto> modifier(@PathVariable int id, @RequestBody UpdateSpecialiteDto updateSpecialiteDto){
+    public ResponseEntity<SpecialiteListeDto> modifier(@PathVariable int id, @RequestBody UpdateSpecialiteDto updateSpecialiteDto,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
         SpecialiteListeDto specialiteListeDto   =specialiteService.updateSpecialite(id,updateSpecialiteDto);
         if(specialiteListeDto==null){
             return ResponseEntity.notFound().build();
@@ -69,7 +72,9 @@ public class SpecialiteController{
             description = "ici on supprime une specialité specifique"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> supprimerSepecialite(@PathVariable int id){
+    public ResponseEntity<String> supprimerSepecialite(@PathVariable int id,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
         Specialite specialite=specialiteService.getSpecialite(id);
         if(specialite==null){
             return ResponseEntity.notFound().build();
@@ -97,7 +102,8 @@ public class SpecialiteController{
             description = "ici on affiche les psychologues qui ont cette specialité"
     )
     @GetMapping("/{id}/psychologues")
-    public List<PsychologueListeDto> getSpecialisteIsPysychologue(@PathVariable int id){
+    public List<PsychologueListeDto> getSpecialisteIsPysychologue(@PathVariable int id,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
         List<Psychologue>psychologues=specialiteService.getSpecialiteIsPsycholoque(id);
 
         return psychologues.stream().map(
