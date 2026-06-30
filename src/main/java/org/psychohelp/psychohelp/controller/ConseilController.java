@@ -2,11 +2,15 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.serviceImpl.ConseilServiceImpl;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,18 +39,22 @@ public class ConseilController {
             description = "voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilDto> list(@RequestParam (required = false) Boolean status){
+    public List<ConseilAfficheDto> list(@RequestParam (required = false) Boolean status){
         if (status != null){
             //return conseilService.listConseilParStatus(status);
             return conseilService.listConseilParStatus(status).stream()
                     .map(
-                            conseil -> new ConseilDto(conseil.getTitre(), conseil.getDescription(),conseil.getAuteur(), conseil.getPsychologue().getId())
+                            conseil -> new ConseilAfficheDto(conseil.getTitre(),
+                                    conseil.getDescription(),conseil.getAuteur(),
+                                    conseil.getPsychologue().nomComplet())
                     ).toList();
         }
         //return conseilService.listeConseil();
         return conseilService.listeConseil().stream()
                 .map(
-                        conseil -> new ConseilDto(conseil.getTitre(), conseil.getDescription(),conseil.getAuteur(), conseil.getPsychologue().getId())
+                        conseil -> new ConseilAfficheDto(conseil.getTitre(),
+                                conseil.getDescription(),conseil.getAuteur(),
+                                conseil.getPsychologue().nomComplet())
                 ).toList();
     }
 
@@ -56,13 +64,14 @@ public class ConseilController {
             description = "recuperer un seul conseils par son identifiant"
     )
     @GetMapping(path = "{id}")
-    public ConseilDto conseilById(@PathVariable int id){
+    public ConseilAfficheDto conseilById(@PathVariable int id){
         Conseil conseil = conseilService.conseilParId(id);
-        ConseilDto conseilDto = new ConseilDto();
+        ConseilAfficheDto conseilDto = new ConseilAfficheDto();
         conseilDto.setTitre(conseil.getTitre());
         conseilDto.setDescription(conseil.getDescription());
         conseilDto.setAuteur(conseil.getAuteur());
-        conseilDto.setPsyId(conseil.getPsychologue().getId());
+        conseilDto.setPsyNom(conseil.getPsychologue().getNom());
+        //conseilDto.setPsyId(conseil.getPsychologue().getId());
         return conseilDto;
     }
 
@@ -71,7 +80,10 @@ public class ConseilController {
             description = "Inserer un conseils"
     )
     @PostMapping(path = "post")
-    public ConseilDto create(@RequestBody ConseilDto conseilDto){
+    public ConseilDto create(@RequestBody ConseilDto conseilDto, HttpSession session){
+
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+
         //System.out.println("***************" + utl);
         Conseil conseil =  new Conseil();
         conseil.setTitre(conseilDto.getTitre());
@@ -96,7 +108,9 @@ public class ConseilController {
             description = "modifier un conseil par son id"
     )
     @PutMapping(path = "update/{id}")
-    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto){
+    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto, HttpSession session){
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+
 
         Conseil conseil = conseilService.conseilParId(id);
         conseil.setTitre(conseilDto.getTitre());
