@@ -41,15 +41,27 @@ public class SeanceServiceImpl implements SeanceService {
         s.setStatut(StatutRdvEnum.RESERVER);
         s.setCitoyen(c);
         s.setCreneau(cr);
-        return seanceRepository.save(s);
+        seanceRepository.save(s);
+        SeanceDTO seanceDTO = new SeanceDTO();
+        seanceDTO.setDateRdv(s.getDateRdv());
+        seanceDTO.setStatut(s.getStatut());
+        seanceDTO.setCitoyenId(c.getId());
+        seanceDTO.setCreneauId(cr.getId());
+        return seanceDTO;
     }
 
     @Override
     public SeanceDTO cancelSeance(Long id) {
-        Seance seance = seanceRepository.findById(id)
+        Seance s = seanceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Séance " + id + "introuvable"));
-        seance.setStatut(StatutRdvEnum.ANNULER);
-        return seanceRepository.save(seance);
+        s.setStatut(StatutRdvEnum.ANNULER);
+        seanceRepository.save(s);
+        SeanceDTO seanceDTO = new SeanceDTO();
+        seanceDTO.setDateRdv(s.getDateRdv());
+        seanceDTO.setStatut(s.getStatut());
+        seanceDTO.setCitoyenId(s.getCitoyen().getId());
+        seanceDTO.setCreneauId(s.getCreneau().getId());
+        return seanceDTO;
     }
 
 
@@ -64,7 +76,7 @@ public class SeanceServiceImpl implements SeanceService {
     }
 
     @Override
-    public List<Seance> getSeancesByPsy(Long psyId) {
+    public List<Seance> getSeancesByPsy(int psyId) {
         return seanceRepository.findByPsyId(psyId);
     }
 }

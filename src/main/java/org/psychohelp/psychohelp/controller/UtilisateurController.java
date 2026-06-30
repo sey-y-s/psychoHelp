@@ -89,7 +89,7 @@ public class UtilisateurController {
 
         session.setAttribute("UtilisateurConnecte", utilisateur);
         ConnectionReponseDTO dto = new ConnectionReponseDTO();
-
+        dto.setId(utilisateur.getId());
         dto.setNom(utilisateur.getNom());
         dto.setPrenom(utilisateur.getPrenom());
         dto.setMail(utilisateur.getMail());

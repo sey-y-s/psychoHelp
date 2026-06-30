@@ -8,7 +8,7 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConnectionReponseDTO {
-
+    private int id;
     private String nom;
     private String prenom;
     private String mail;
