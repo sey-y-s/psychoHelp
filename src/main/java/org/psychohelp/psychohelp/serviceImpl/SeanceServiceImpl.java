@@ -6,12 +6,12 @@ import org.psychohelp.psychohelp.entity.Citoyen;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Seance;
 import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
+import org.psychohelp.psychohelp.exceptions.NotFoundException;
 import org.psychohelp.psychohelp.repository.SeanceRepository;
 import org.psychohelp.psychohelp.service.SeanceService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -29,7 +29,7 @@ public class SeanceServiceImpl implements SeanceService {
     @Override
     public Seance getSeanceById(Long id) {
         return seanceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Séance " + id + "introuvable"));
+                .orElseThrow(() -> new NotFoundException("Séance " + id + "introuvable"));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SeanceServiceImpl implements SeanceService {
     @Override
     public SeanceDTO cancelSeance(Long id) {
         Seance s = seanceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Séance " + id + "introuvable"));
+                .orElseThrow(() -> new NotFoundException("Séance " + id + "introuvable"));
         s.setStatut(StatutRdvEnum.ANNULER);
         seanceRepository.save(s);
         SeanceDTO seanceDTO = new SeanceDTO();

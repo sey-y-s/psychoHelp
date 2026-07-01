@@ -35,5 +35,17 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleAccesRefuse(NotFoundException conn){
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "NOT_FOUND");
+        body.put("message", conn.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+
+    }
+
 
 }
