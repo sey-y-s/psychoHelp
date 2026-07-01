@@ -7,6 +7,7 @@ import org.psychohelp.psychohelp.dto.CitoyenListeDto;
 import org.psychohelp.psychohelp.dto.CitoyenRequestDto;
 import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
 import org.psychohelp.psychohelp.entity.Citoyen;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.CitoyenService;
 import org.psychohelp.psychohelp.utils.Session;
@@ -90,13 +91,25 @@ public class CitoyenController {
 
     }
     @Operation(
-            summary = "affiche les predv pris par un citoyen",
+            summary = "affiche les rdv pris par un citoyen",
+            description = "affiche les rdv pris par un citoyen "
+    )
+    @GetMapping("/rdvs")
+    public  List<CitoyenSeanceWithPsychologueDto>  listeSeanceWithIsPsychologue(HttpSession session) {
+
+        Session.verifierRole(session,RoleEnum.CITOYEN);
+        Utilisateur citoyensession=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        System.out.println(citoyensession.getId());
+        return citoyenService.listeSeanceWithIsPsychologue(citoyensession.getId());
+    }
+    @Operation(
+            summary = "donne la possibilité à l'admin d'afficher les rdv pris par un citoyen ",
             description = "affiche les rdv pris par un citoyen "
     )
     @GetMapping("/{id}/rdvs")
-    public  List<CitoyenSeanceWithPsychologueDto>  listeSeanceWithIsPsychologue(@PathVariable int id,HttpSession session) {
-        Session.verifierRole(session,RoleEnum.CITOYEN);
+    public  List<CitoyenSeanceWithPsychologueDto>  listeSeanceWithIsPsychologue(@PathVariable int id, HttpSession session) {
 
+        Session.verifierRole(session,RoleEnum.ADMIN);
         return citoyenService.listeSeanceWithIsPsychologue(id);
     }
     
