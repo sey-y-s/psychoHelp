@@ -2,10 +2,7 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.psychohelp.psychohelp.dto.AdminDTO;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.QuestionsTestsDTO;
-import org.psychohelp.psychohelp.dto.TestDTO;
+import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
@@ -18,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +33,11 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PsychologueRepository psychologueRepository;
 
-    @Autowired
-    private TestService testService;
-
-    @Autowired
-    private QuestionsTestService questionsTestService;
+//    @Autowired
+//    private TestService testService;
+//
+//    @Autowired
+//    private QuestionsTestService questionsTestService;
 
 
     @Override
@@ -51,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setPrenom(dto.getPrenom());
         admin.setMail(dto.getMail());
         admin.setTelephone(dto.getTelephone());
-        admin.setMotDePasse(dto.getMotDePasse());
+        //admin.setMotDePasse(dto.getMotDePasse());
 
         admin.setRole(RoleEnum.ADMIN);
         admin.setDateCreation(LocalDate.now());
@@ -88,11 +86,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Admin> getAllAdmins() {
+    public List<AdminResponseDTO> getAllAdmins() {
 
-        return adminRepository.findAll();
+        return adminRepository.findAll()
+                .stream()
+                .map(admin -> {
+                    AdminResponseDTO dto = new AdminResponseDTO();
+
+                    dto.setId(admin.getId());
+                    dto.setNom(admin.getNom());
+                    dto.setPrenom(admin.getPrenom());
+                    dto.setMail(admin.getMail());
+                    dto.setTelephone(admin.getTelephone());
+                    dto.setRole(admin.getRole().name());
+
+                    return dto;
+                })
+                .toList();
     }
-
     @Override
     public void supprimerAdmin(Integer id) {
 
@@ -148,54 +159,54 @@ public class AdminServiceImpl implements AdminService {
         return psychologueRepository.save(psychologue);
     }
 
-    @Override
-    public List<Test> getAllTests() {
-        return testService.getAllTests();
-    }
-
-    @Override
-    public Optional<Test> getTestById(Integer id) {
-        return testService.getTestById(id);
-    }
-
-    @Override
-    public Test saveTest(TestDTO testDTO) {
-        return testService.saveTest(testDTO);
-    }
-
-    @Override
-    public Test updateTest(Integer id, TestDTO test) {
-        return testService.updateTest(id, test);
-    }
-
-    @Override
-    public void deleteTest(Integer id) {
-        testService.deleteTest(id);
-    }
-
-    @Override
-    public List<QuestionsTest> getAllQuestions() {
-        return questionsTestService.getallQuestions();
-    }
-
-    @Override
-    public QuestionsTest getQuestionById(Integer id) {
-        return questionsTestService.getQuestionsById(id)
-                .orElseThrow(() -> new RuntimeException("Question introuvable"));
-    }
-
-    @Override
-    public QuestionsTest saveQuestion(QuestionsTestsDTO question) {
-        return questionsTestService.saveQuestions(question);
-    }
-
-    @Override
-    public QuestionsTest updateQuestion(Integer id, QuestionsTestsDTO question) {
-        return questionsTestService.updateQuestions(id, question);
-    }
-
-    @Override
-    public void deleteQuestion(Integer id) {
-        questionsTestService.deleteQuestions(id);
-    }
+//    @Override
+//    public List<Test> getAllTests() {
+//        return testService.getAllTests();
+//    }
+//
+//    @Override
+//    public Optional<Test> getTestById(Integer id) {
+//        return testService.getTestById(id);
+//    }
+//
+//    @Override
+//    public Test saveTest(TestDTO testDTO) {
+//        return testService.saveTest(testDTO);
+//    }
+//
+//    @Override
+//    public Test updateTest(Integer id, TestDTO test) {
+//        return testService.updateTest(id, test);
+//    }
+//
+//    @Override
+//    public void deleteTest(Integer id) {
+//        testService.deleteTest(id);
+//    }
+//
+//    @Override
+//    public List<QuestionsTest> getAllQuestions() {
+//        return questionsTestService.getallQuestions();
+//    }
+//
+//    @Override
+//    public QuestionsTest getQuestionById(Integer id) {
+//        return questionsTestService.getQuestionsById(id)
+//                .orElseThrow(() -> new RuntimeException("Question introuvable"));
+//    }
+//
+//    @Override
+//    public QuestionsTest saveQuestion(QuestionsTestsDTO question) {
+//        return questionsTestService.saveQuestions(question);
+//    }
+//
+//    @Override
+//    public QuestionsTest updateQuestion(Integer id, QuestionsTestsDTO question) {
+//        return questionsTestService.updateQuestions(id, question);
+//    }
+//
+//    @Override
+//    public void deleteQuestion(Integer id) {
+//        questionsTestService.deleteQuestions(id);
+//    }
 }
