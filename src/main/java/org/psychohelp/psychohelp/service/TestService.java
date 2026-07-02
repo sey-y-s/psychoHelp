@@ -1,22 +1,23 @@
 package org.psychohelp.psychohelp.service;
 
-import org.psychohelp.psychohelp.dto.TestDTO;
+import org.psychohelp.psychohelp.dto.TestReponseDTO;
+import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Test;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TestService {
-    List<Test> getAllTests();
+    List<TestReponseDTO> getAllTests();
 
 
-    Optional<Test> getTestById(Integer id);
+    Optional<TestReponseDTO> getTestById(Integer id);
 
 
-    Test saveTest(TestDTO testDTO);
+    TestReponseDTO saveTest(TestRequestDTO testDTO, Integer categories_test_id);
 
 
-    Test updateTest(int id, TestDTO testDTO);
+    TestReponseDTO updateTest(int id, TestRequestDTO testDTO);
 
 
     void deleteTest(int id);

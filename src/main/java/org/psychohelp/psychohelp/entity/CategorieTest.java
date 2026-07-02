@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,5 +25,6 @@ public class CategorieTest {
     @OneToMany(mappedBy = "categorieTest",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonManagedReference
     private List<Test> tests = new ArrayList<>();
 }
