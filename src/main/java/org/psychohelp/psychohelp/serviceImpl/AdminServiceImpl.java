@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,11 +32,11 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PsychologueRepository psychologueRepository;
 
-    @Autowired
-    private TestService testService;
-
-    @Autowired
-    private QuestionsTestService questionsTestService;
+//    @Autowired
+//    private TestService testService;
+//
+//    @Autowired
+//    private QuestionsTestService questionsTestService;
 
 
     @Override
@@ -47,7 +48,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setPrenom(dto.getPrenom());
         admin.setMail(dto.getMail());
         admin.setTelephone(dto.getTelephone());
-        admin.setMotDePasse(dto.getMotDePasse());
+        //admin.setMotDePasse(dto.getMotDePasse());
 
         admin.setRole(RoleEnum.ADMIN);
         admin.setDateCreation(LocalDate.now());
@@ -84,11 +85,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Admin> getAllAdmins() {
+    public List<AdminResponseDTO> getAllAdmins() {
 
-        return adminRepository.findAll();
+        return adminRepository.findAll()
+                .stream()
+                .map(admin -> {
+                    AdminResponseDTO dto = new AdminResponseDTO();
+
+                    dto.setId(admin.getId());
+                    dto.setNom(admin.getNom());
+                    dto.setPrenom(admin.getPrenom());
+                    dto.setMail(admin.getMail());
+                    dto.setTelephone(admin.getTelephone());
+                    dto.setRole(admin.getRole().name());
+
+                    return dto;
+                })
+                .toList();
     }
-
     @Override
     public void supprimerAdmin(Integer id) {
 

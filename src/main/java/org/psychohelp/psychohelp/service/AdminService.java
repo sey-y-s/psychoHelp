@@ -13,7 +13,7 @@ public interface AdminService {
 
     Admin getAdminById(Integer id);
 
-    List<Admin> getAllAdmins();
+    List<AdminResponseDTO> getAllAdmins();
 
     void supprimerAdmin(Integer id);
 
