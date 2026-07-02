@@ -5,7 +5,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.psychohelp.psychohelp.dto.ChoixMultiplesDTO;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesReponseDTO;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesRequestDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.ChoixMultipleService;
@@ -36,7 +37,7 @@ public class ChoixMultipleController {
             description = "Retourne la liste de tous les choix multiples disponibles"
     )
     @GetMapping
-    public List<ChoixMultiple> getAllChoix(){
+    public List<ChoixMultiplesReponseDTO> getAllChoix(){
 
         return choixService.getAllChoix();
 
@@ -49,7 +50,7 @@ public class ChoixMultipleController {
             description = "Retourne un choix multiple selon son identifiant"
     )
     @GetMapping("/{id}")
-    public Optional<ChoixMultiple> getChoixById(
+    public Optional<ChoixMultiplesReponseDTO> getChoixById(
             @PathVariable int id){
 
         return choixService.getChoixById(id);
@@ -63,11 +64,11 @@ public class ChoixMultipleController {
             description = "Ajoute un nouveau choix de réponse pour une question"
     )
     @PostMapping
-    public ChoixMultiple saveChoix(
-            @RequestBody ChoixMultiplesDTO choix, HttpSession session){
+    public ChoixMultiplesReponseDTO saveChoix(
+            @RequestBody ChoixMultiplesRequestDTO choix, HttpSession session, Integer question_id){
         Session.verifierRole(session, RoleEnum.ADMIN);
 
-        return choixService.saveChoix(choix);
+        return choixService.saveChoix(choix, question_id);
 
     }
 
@@ -78,9 +79,9 @@ public class ChoixMultipleController {
             description = "Met à jour un choix multiple existant"
     )
     @PutMapping("/{id}")
-    public ChoixMultiple updateChoix(
+    public ChoixMultiplesReponseDTO updateChoix(
             @PathVariable int id,
-            @RequestBody ChoixMultiplesDTO choixDTO, HttpSession session){
+            @RequestBody ChoixMultiplesRequestDTO choixDTO, HttpSession session){
            Session.verifierRole(session, RoleEnum.ADMIN);
 
 
