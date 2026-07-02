@@ -3,6 +3,7 @@ package org.psychohelp.psychohelp.serviceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.AdminDTO;
+import org.psychohelp.psychohelp.dto.AdminResponseDTO;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
