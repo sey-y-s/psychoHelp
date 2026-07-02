@@ -107,7 +107,6 @@ public class UtilisateurController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody ConnectionDTO connectionDTO, HttpSession session){
         Utilisateur utilisateur = authentificationService.connecter(connectionDTO);
-
         session.setAttribute("UtilisateurConnecte", utilisateur);
         ConnectionReponseDTO dto = new ConnectionReponseDTO();
         dto.setId(utilisateur.getId());
