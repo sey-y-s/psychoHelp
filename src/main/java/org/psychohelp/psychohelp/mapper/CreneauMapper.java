@@ -9,7 +9,7 @@ import org.psychohelp.psychohelp.entity.Creneau;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreneauMapper {
+public class    CreneauMapper {
 
     @Mapping(
             target = "nomPsychologue",
