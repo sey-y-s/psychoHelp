@@ -7,6 +7,7 @@ import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.serviceImpl.ConseilServiceImpl;
@@ -36,7 +37,7 @@ public class ConseilController {
 
     @Operation(
             summary = "Liste",
-            description = "voir la liste des conseils"
+            description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
     public List<ConseilAfficheDto> list(@RequestParam (required = false) Boolean status){
@@ -84,6 +85,9 @@ public class ConseilController {
 
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+        Psychologue psy =  psyService.GetPsychologueById(utilisateur.getId());
+
         //System.out.println("***************" + utl);
         Conseil conseil =  new Conseil();
         conseil.setTitre(conseilDto.getTitre());
@@ -95,8 +99,7 @@ public class ConseilController {
                 conseilService.conseilParId(conseilDto.getPsy_id()).getPsychologue()
         );*/
 
-        Psychologue psy = psyService.GetPsychologueById(conseilDto.getPsyId());
-        //System.out.println("**********test" + psy);
+        //Psychologue psy = psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psy);
          conseilService.creer(conseil);
         return conseilDto;
@@ -110,16 +113,19 @@ public class ConseilController {
     @PutMapping(path = "update/{id}")
     public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto, HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
-
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
 
         Conseil conseil = conseilService.conseilParId(id);
+        if (conseil.getPsychologue().getId() == utilisateur.getId()){
+
         conseil.setTitre(conseilDto.getTitre());
         conseil.setAuteur(conseilDto.getAuteur());
         conseil.setDescription(conseilDto.getDescription());
-
-
         conseilService.modifier(id, conseil);
+
         return conseilDto;
+        }
+        return null;
     }
 
 
@@ -128,9 +134,15 @@ public class ConseilController {
             description = "Supprimer un conseil"
     )
     @DeleteMapping(path = "delete/{id}")
-    public String delete(@PathVariable int id){
-        conseilService.supConseil(id);
-        return "Conseils supprimer";
+    public String delete(@PathVariable int id, HttpSession session){
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+        Conseil conseil = conseilService.conseilParId(id);
+        if (conseil.getPsychologue().getId() == utilisateur.getId()){
+            conseilService.supConseil(id);
+            return "Conseils supprimer";
+        }
+        return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
     }
 
 

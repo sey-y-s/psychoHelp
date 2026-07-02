@@ -2,13 +2,17 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.AdminDTO;
+import org.psychohelp.psychohelp.dto.AdminResponseDTO;
 import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Test;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.AdminService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +35,8 @@ public class AdminController {
             description = "Ajoute un nouveau administrateur"
     )
     @PostMapping
-    public Admin ajouterAdmin(@RequestBody AdminDTO dto) {
+    public AdminResponseDTO  ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.ajouterAdmin(dto);
     }
 
@@ -41,10 +46,8 @@ public class AdminController {
     )
 
     @PutMapping("/{id}")
-    public Admin modifierAdmin(
-            @PathVariable Integer id,
-            @RequestBody AdminDTO dto) {
-
+    public AdminResponseDTO  modifierAdmin(@PathVariable Integer id, @RequestBody AdminDTO dto, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.modifierAdmin(id, dto);
     }
 
@@ -53,8 +56,8 @@ public class AdminController {
             description = "Affiche un  administrateur par son id"
     )
     @GetMapping("/{id}")
-    public Admin getAdminById(@PathVariable Integer id) {
-
+    public Admin getAdminById(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.getAdminById(id);
     }
 
@@ -64,8 +67,8 @@ public class AdminController {
     )
 
     @GetMapping
-    public List<Admin> getAllAdmins() {
-
+    public List<AdminResponseDTO> getAllAdmins(HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.getAllAdmins();
     }
 
@@ -74,9 +77,11 @@ public class AdminController {
             description = "Supprime un administrateur"
     )
     @DeleteMapping("/{id}")
-    public void supprimerAdmin(@PathVariable Integer id) {
-
+    public String  supprimerAdmin(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         adminService.supprimerAdmin(id);
+        return "Administrateur supprimé avec succès.";
+
     }
 
     @Operation(
@@ -84,8 +89,8 @@ public class AdminController {
             description = "valider un conseil poster par un psychologue "
     )
     @PutMapping("/conseils/{id}/valider")
-    public Conseil validerConseil(@PathVariable Integer id) {
-
+    public Conseil validerConseil(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerConseil(id);
     }
 
@@ -95,8 +100,8 @@ public class AdminController {
     )
 
     @PutMapping("/conseils/{id}/annuler")
-    public Conseil annulerConseil(@PathVariable Integer id) {
-
+    public Conseil annulerConseil(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerConseil(id);
     }
 
@@ -106,8 +111,8 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/valider")
-    public Psychologue validerInscriptionPsy(@PathVariable Integer id) {
-
+    public Psychologue validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerInscriptionPsy(id);
     }
 
@@ -117,8 +122,8 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/annuler")
-    public Psychologue annulerInscriptionPsy(@PathVariable Integer id) {
-
+    public Psychologue annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
 

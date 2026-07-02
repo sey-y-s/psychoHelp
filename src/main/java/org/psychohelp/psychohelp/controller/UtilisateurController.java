@@ -3,8 +3,10 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.AdminDTO;
 import org.psychohelp.psychohelp.dto.ConnectionDTO;
 import org.psychohelp.psychohelp.dto.ConnectionReponseDTO;
+import org.psychohelp.psychohelp.dto.UtilisateurListDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.service.AuthentificationService;
 import org.psychohelp.psychohelp.service.UtilisateurService;
@@ -34,12 +36,19 @@ public class UtilisateurController {
 
 
     @Operation(
-            summary = "Liste",
+            summary = "Listes",
             description = "voir la liste des utilisateurs"
     )
     @GetMapping(path = "list")
-    public List<Utilisateur> list(){
-        return utilisateurService.listeUtilisateur();
+    public List<UtilisateurListDTO> list(){
+        return utilisateurService.listeUtilisateur().stream()
+                .map(utilisateur -> new UtilisateurListDTO(
+                        utilisateur.getNom(),
+                        utilisateur.getPrenom(),
+                        utilisateur.getMail(),
+                        utilisateur.getTelephone()
+                )
+        ).toList();
     }
 
 
@@ -48,8 +57,15 @@ public class UtilisateurController {
             description = "Recuperer un utilisateur par son identifiant"
     )
     @GetMapping(path = "{id}")
-    public Utilisateur userById(@PathVariable int id){
-        return utilisateurService.utilisateurParId(id);
+    public UtilisateurListDTO userById(@PathVariable int id){
+        Utilisateur utilisateur = utilisateurService.utilisateurParId(id);
+        UtilisateurListDTO utilisateurDTO = new UtilisateurListDTO();
+        utilisateurDTO.setNom(utilisateur.getNom());
+        utilisateurDTO.setPrenom(utilisateur.getPrenom());
+        utilisateurDTO.setMail(utilisateur.getMail());
+        utilisateurDTO.setTelephone(utilisateur.getTelephone());
+
+        return utilisateurDTO;
     }
 
     @Operation(
@@ -68,7 +84,12 @@ public class UtilisateurController {
             description = "Modifier un utilisateur à partir de l'id"
     )
     @PutMapping(path = "update/{id}")
-    public Utilisateur update(@PathVariable int id, @RequestBody Utilisateur utl){
+    public Utilisateur update(@PathVariable int id, @RequestBody Utilisateur utl, HttpSession session){
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+
+        if (!(utilisateur.getId() == id)){
+            return null;
+        }
         return utilisateurService.modifier(id, utl);
     }
 
