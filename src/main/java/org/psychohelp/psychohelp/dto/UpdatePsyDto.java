@@ -1,0 +1,22 @@
+package org.psychohelp.psychohelp.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdatePsyDto {
+
+    private String nom;
+    private String prenom;
+    private String telephone;
+    private String mail;
+    //private LocalDate dateCreation;
+    private String description;
+    private String diplome_path;
+    private String  cv_path;
+    private Integer idSpecialite;
+}

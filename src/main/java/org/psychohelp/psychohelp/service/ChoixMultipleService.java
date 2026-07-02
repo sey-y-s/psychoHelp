@@ -1,21 +1,23 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.ChoixMultiplesReponseDTO;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesRequestDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ChoixMultipleService {
-    List<ChoixMultiple> getAllChoix();
+    List<ChoixMultiplesReponseDTO> getAllChoix();
 
 
-    Optional<ChoixMultiple> getChoixById(int id);
+    Optional<ChoixMultiplesReponseDTO> getChoixById(int id);
 
 
-    ChoixMultiple saveChoix(ChoixMultiple choix);
+    ChoixMultiplesReponseDTO saveChoix(ChoixMultiplesRequestDTO choix, Integer question_id);
 
 
-    ChoixMultiple updateChoix(int id, ChoixMultiple choix);
+    ChoixMultiplesReponseDTO updateChoix(int id, ChoixMultiplesRequestDTO choix);
 
 
     void deleteChoix(int id);

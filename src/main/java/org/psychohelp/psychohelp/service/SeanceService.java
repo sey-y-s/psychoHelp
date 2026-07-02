@@ -9,10 +9,10 @@ import java.util.List;
 public interface SeanceService {
     List<Seance> getAllSeances();
     Seance getSeanceById(Long id);
-    Seance createSeance(SeanceDTO seance);
-    Seance cancelSeance(Long id);
+    SeanceDTO createSeance(SeanceDTO seance);
+    SeanceDTO cancelSeance(Long id);
 
     List<Seance> getSeancesByCitoyen(Long citoyenId);
     List<Seance> getSeancesByStatut(StatutRdvEnum statut);
-    List<Seance> getSeancesByPsy(Long psyId);
+    List<Seance> getSeancesByPsy(int psyId);
 }

@@ -10,13 +10,10 @@ import org.psychohelp.psychohelp.service.ConseilService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -69,16 +66,25 @@ public class PsychologueController {
                 psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
         ).toList();
     }
-    @PutMapping("/{id}")
-    public Psychologue updatePsychologue( @RequestBody Psychologue psychologue ,@PathVariable("id") int PsychologueId){
-        return psyService.updatePsychologue(psychologue,PsychologueId);
-    }
-    @PatchMapping("/{id}/etat")
-    public Psychologue updateEtat(
-            @PathVariable int id,
-            @RequestBody Psychologue psychologue){
+    @Operation(
+            summary ="Modifier un psychologue ",
+            description = "Modifier un psychologue"
+    )
 
-        return psyService.UpdateEtat(id, psychologue);
+    @PutMapping("/{id}")
+    public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId){
+        return psyService.updatePsychologue(updatePsyDto,PsychologueId);
+    }
+    @Operation(
+            summary ="Modifier l'état d'un psychologue ",
+            description = "Modifier l'état d'un psychologue"
+    )
+    @PatchMapping("/{id}/etatStatus")
+    public PsychologueListeDto updateEtatStatus(
+            @PathVariable int id,
+            @RequestBody UpdateEtatStatusDto psychologue){
+
+        return psyService.UpdateEtatStatus(id, psychologue);
     }
     @Operation(
             summary = "Rechercher un psychologue",
@@ -118,7 +124,7 @@ public class PsychologueController {
         conseil.setDescription(conseilDto.getDescription());
         conseil.setAuteur(conseilDto.getAuteur());
         //recuperation de l'id psy à partir de conseil
-        Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsy_id());
+        Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psychologue);
         Conseil conseilcreer=conseilService.creer(conseil);
         return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());

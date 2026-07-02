@@ -3,9 +3,14 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesReponseDTO;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesRequestDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.ChoixMultipleService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +37,7 @@ public class ChoixMultipleController {
             description = "Retourne la liste de tous les choix multiples disponibles"
     )
     @GetMapping
-    public List<ChoixMultiple> getAllChoix(){
+    public List<ChoixMultiplesReponseDTO> getAllChoix(){
 
         return choixService.getAllChoix();
 
@@ -45,7 +50,7 @@ public class ChoixMultipleController {
             description = "Retourne un choix multiple selon son identifiant"
     )
     @GetMapping("/{id}")
-    public Optional<ChoixMultiple> getChoixById(
+    public Optional<ChoixMultiplesReponseDTO> getChoixById(
             @PathVariable int id){
 
         return choixService.getChoixById(id);
@@ -59,10 +64,11 @@ public class ChoixMultipleController {
             description = "Ajoute un nouveau choix de réponse pour une question"
     )
     @PostMapping
-    public ChoixMultiple saveChoix(
-            @RequestBody ChoixMultiple choix){
+    public ChoixMultiplesReponseDTO saveChoix(
+            @RequestBody ChoixMultiplesRequestDTO choix, HttpSession session, Integer question_id){
+        Session.verifierRole(session, RoleEnum.ADMIN);
 
-        return choixService.saveChoix(choix);
+        return choixService.saveChoix(choix, question_id);
 
     }
 
@@ -73,12 +79,13 @@ public class ChoixMultipleController {
             description = "Met à jour un choix multiple existant"
     )
     @PutMapping("/{id}")
-    public ChoixMultiple updateChoix(
+    public ChoixMultiplesReponseDTO updateChoix(
             @PathVariable int id,
-            @RequestBody ChoixMultiple choix){
+            @RequestBody ChoixMultiplesRequestDTO choixDTO, HttpSession session){
+           Session.verifierRole(session, RoleEnum.ADMIN);
 
 
-        return choixService.updateChoix(id, choix);
+        return choixService.updateChoix(id, choixDTO);
 
     }
 
@@ -90,7 +97,8 @@ public class ChoixMultipleController {
     )
     @DeleteMapping("/{id}")
     public void deleteChoix(
-            @PathVariable int id){
+            @PathVariable int id, HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
 
         choixService.deleteChoix(id);
 

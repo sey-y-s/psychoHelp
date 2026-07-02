@@ -3,9 +3,15 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.TestReponseDTO;
+import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Test;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.TestService;
+import org.psychohelp.psychohelp.utils.Session;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +35,7 @@ public class TestController {
             description = "Retourne la liste de tous les tests psychologiques disponibles"
     )
     @GetMapping
-    public List<Test> getAllTests() {
-
+    public List<TestReponseDTO> getAllTests() {
         return testService.getAllTests();
     }
 
@@ -39,7 +44,7 @@ public class TestController {
             description = "Retourne un test psychologique selon son ID"
     )
     @GetMapping("/{id}")
-    public Optional<Test> getTestById(@PathVariable int id) {
+    public Optional<TestReponseDTO> getTestById(@PathVariable int id) {
 
         return testService.getTestById(id);
     }
@@ -51,9 +56,11 @@ public class TestController {
             description = "Ajoute un nouveau test psychologique dans la base de données"
     )
     @PostMapping
-    public Test saveTest(@RequestBody Test test) {
-
-        return testService.saveTest(test);
+    public TestReponseDTO saveTest(@RequestBody TestRequestDTO testDTO, HttpSession session, Integer categories_test_id) {
+       // Test test = testService.saveTest(testDTO);
+       // return ResponseEntity.ok("Test ajouté avec succès");
+        Session.verifierRole(session, RoleEnum.ADMIN);
+        return testService.saveTest(testDTO,categories_test_id);
     }
 
 
@@ -62,13 +69,14 @@ public class TestController {
             description = "Met à jour les informations d'un test existant"
     )
     @PutMapping("/{id}")
-    public Test updateTest(
+    public TestReponseDTO updateTest(
             @PathVariable int id,
-            @RequestBody Test test) {
+            @RequestBody TestRequestDTO testDTO, HttpSession session) {
 
-        test.setId(id);
-
-        return testService.updateTest(id, test);
+        //Test test = testService.updateTest(id, testDTO);
+        //return ResponseEntity.ok("Test modifié avec succès");
+        Session.verifierRole(session, RoleEnum.ADMIN);
+        return testService.updateTest(id, testDTO);
     }
 
 
@@ -77,9 +85,10 @@ public class TestController {
             description = "Supprime un test psychologique selon son identifiant"
     )
     @DeleteMapping("/{id}")
-    public void deleteTest(@PathVariable int id) {
-
+    public ResponseEntity<String> deleteTest(@PathVariable int id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         testService.deleteTest(id);
+        return ResponseEntity.ok("Test supprimé avec succès");
 
     }
 

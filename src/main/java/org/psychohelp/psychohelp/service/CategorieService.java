@@ -1,13 +1,14 @@
 package org.psychohelp.psychohelp.service;
 
-import org.psychohelp.psychohelp.entity.CategorieTest;
+import org.psychohelp.psychohelp.dto.CategorieReponseDTO;
+import org.psychohelp.psychohelp.dto.CategorieRequestDTO;
 
 import java.util.List;
 
 public interface CategorieService {
-    CategorieTest creerCategorie(CategorieTest categorie);
-    List<CategorieTest> obtenirToutesLesCategories();
-    CategorieTest modifierCategorie(Integer id, CategorieTest categorieMiseAJour);
+    CategorieReponseDTO creerCategorie(CategorieRequestDTO categorie);
+    List<CategorieReponseDTO> obtenirToutesLesCategories();
+    CategorieReponseDTO modifierCategorie(Integer id, CategorieRequestDTO categorieMiseAJour);
     void supprimerCategorie(Integer id);
-    CategorieTest obtenirCategorieParId(Integer id);
+    CategorieReponseDTO obtenirCategorieParId(Integer id);
 }
