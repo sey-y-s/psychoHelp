@@ -98,4 +98,9 @@ Psychologue psychologue =psychologueRepository.save(psy);
     public List<Conseil> getConseilByPsy(int id) {
         return  psychologueRepository.getConseilByPsy(id);
     }
+
+    @Override
+    public List<Psychologue> getPsychologueValide() {
+        return psychologueRepository.getPsychologueValide();
+    }
 }

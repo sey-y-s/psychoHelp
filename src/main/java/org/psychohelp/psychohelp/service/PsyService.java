@@ -26,6 +26,7 @@ public interface PsyService {
     PsychologueListeDto updatePsychologue(UpdatePsyDto updatePsyDto, int psychologueId);
     public List<Conseil> getConseilByPsy( int id);
 
+     List<Psychologue> getPsychologueValide();
 
 
 }
