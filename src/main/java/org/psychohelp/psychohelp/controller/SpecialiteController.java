@@ -37,7 +37,7 @@ public class SpecialiteController{
     )
     @PostMapping
     public ResponseEntity<String> ajouter(@RequestBody UpdateSpecialiteDto updateSpecialiteDto,HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+        Session.verifierRole(session, RoleEnum.CITOYEN);
         specialiteService.ajouter(updateSpecialiteDto);
         return  ResponseEntity.status(HttpStatus.CREATED).body("specialite iseree avec succes");
     }
