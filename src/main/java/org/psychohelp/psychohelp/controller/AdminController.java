@@ -2,7 +2,9 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.AdminDTO;
+import org.psychohelp.psychohelp.dto.AdminResponseDTO;
 import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
