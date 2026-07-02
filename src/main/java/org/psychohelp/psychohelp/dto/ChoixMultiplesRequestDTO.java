@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoixMultiplesDTO {
-    private Integer id;
+public class ChoixMultiplesRequestDTO {
     private String choix;
     private int score;
 }

@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import org.psychohelp.psychohelp.dto.ChoixMultiplesReponseDTO;
 
 @Data
 @Entity
 @Table(name = "choixmultiples")
-public class ChoixMultiple {
+public class ChoixMultiple extends ChoixMultiplesReponseDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
