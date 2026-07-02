@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminDTO {
 
-    private Integer id;
+   // private Integer id;
 
     private String nom;
 
@@ -21,6 +21,6 @@ public class AdminDTO {
 
     private String motDePasse;
 
-    private String role;
+   // private String role;
 
 }

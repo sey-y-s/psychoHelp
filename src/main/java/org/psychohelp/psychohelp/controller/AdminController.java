@@ -2,7 +2,9 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.AdminDTO;
+import org.psychohelp.psychohelp.dto.AdminResponseDTO;
 import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
@@ -33,7 +35,7 @@ public class AdminController {
             description = "Ajoute un nouveau administrateur"
     )
     @PostMapping
-    public Admin ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
+    public AdminResponseDTO  ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.ajouterAdmin(dto);
     }
@@ -44,7 +46,7 @@ public class AdminController {
     )
 
     @PutMapping("/{id}")
-    public Admin modifierAdmin(@PathVariable Integer id, @RequestBody AdminDTO dto, HttpSession session) {
+    public AdminResponseDTO  modifierAdmin(@PathVariable Integer id, @RequestBody AdminDTO dto, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.modifierAdmin(id, dto);
     }
@@ -75,9 +77,11 @@ public class AdminController {
             description = "Supprime un administrateur"
     )
     @DeleteMapping("/{id}")
-    public void supprimerAdmin(@PathVariable Integer id, HttpSession session) {
+    public String  supprimerAdmin(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         adminService.supprimerAdmin(id);
+        return "Administrateur supprimé avec succès.";
+
     }
 
     @Operation(
