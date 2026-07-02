@@ -60,27 +60,21 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
         ChoixMultiple ancienChoix =
                 choixRepository.findById(id)
-                        .orElse(null);
+                        .orElseThrow(()->  new RuntimeException("Choix non trouvé"));
 
 
-        if(ancienChoix != null){
-
-            ancienChoix.setChoix(
-                    choixMultiplesDTO.getChoix()
-            );
+        ancienChoix.setChoix(
+                choixMultiplesDTO.getChoix()
+        );
 
 
-            ancienChoix.setScore(
-                    choixMultiplesDTO.getScore()
-            );
+        ancienChoix.setScore(
+                choixMultiplesDTO.getScore()
+        );
 
 
-            return choixRepository.save(ancienChoix);
+        return choixRepository.save(ancienChoix);
 
-        }
-
-
-        return null;
 
     }
 
