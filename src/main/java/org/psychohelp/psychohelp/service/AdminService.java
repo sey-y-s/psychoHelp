@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AdminService {
 
-    Admin ajouterAdmin(AdminDTO dto);
+    AdminResponseDTO  ajouterAdmin(AdminDTO dto);
 
-    Admin modifierAdmin(Integer id, AdminDTO dto);
+    AdminResponseDTO  modifierAdmin(Integer id, AdminDTO dto);
 
     Admin getAdminById(Integer id);
 
