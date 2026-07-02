@@ -3,6 +3,7 @@ package org.psychohelp.psychohelp.serviceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.AdminDTO;
+import org.psychohelp.psychohelp.dto.AdminResponseDTO;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
@@ -40,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Admin ajouterAdmin(AdminDTO dto) {
+    public AdminResponseDTO ajouterAdmin(AdminDTO dto) {
 
         Admin admin = new Admin();
 
@@ -48,16 +49,26 @@ public class AdminServiceImpl implements AdminService {
         admin.setPrenom(dto.getPrenom());
         admin.setMail(dto.getMail());
         admin.setTelephone(dto.getTelephone());
-        //admin.setMotDePasse(dto.getMotDePasse());
+        admin.setMotDePasse(dto.getMotDePasse());
 
         admin.setRole(RoleEnum.ADMIN);
         admin.setDateCreation(LocalDate.now());
 
-        return adminRepository.save(admin);
+        Admin adminSauvegarde = adminRepository.save(admin);
+
+        AdminResponseDTO response = new AdminResponseDTO();
+        response.setId(adminSauvegarde.getId());
+        response.setNom(adminSauvegarde.getNom());
+        response.setPrenom(adminSauvegarde.getPrenom());
+        response.setMail(adminSauvegarde.getMail());
+        response.setTelephone(adminSauvegarde.getTelephone());
+        response.setRole(adminSauvegarde.getRole().name());
+
+        return response;
     }
 
     @Override
-    public Admin modifierAdmin(Integer id, AdminDTO dto) {
+    public AdminResponseDTO  modifierAdmin(Integer id, AdminDTO dto) {
 
         Admin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin introuvable"));
@@ -73,7 +84,17 @@ public class AdminServiceImpl implements AdminService {
 
         admin.setRole(RoleEnum.ADMIN);
 
-        return adminRepository.save(admin);
+        Admin adminModifie = adminRepository.save(admin);
+
+        AdminResponseDTO response = new AdminResponseDTO();
+        response.setId(adminModifie.getId());
+        response.setNom(adminModifie.getNom());
+        response.setPrenom(adminModifie.getPrenom());
+        response.setMail(adminModifie.getMail());
+        response.setTelephone(adminModifie.getTelephone());
+        response.setRole(adminModifie.getRole().name());
+
+        return response;
     }
 
 
