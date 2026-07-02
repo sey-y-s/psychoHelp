@@ -2,12 +2,8 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.AdminDTO;
-import org.psychohelp.psychohelp.dto.AdminResponseDTO;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.TestDTO;
+import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
@@ -16,7 +12,6 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.AdminService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,60 +123,6 @@ public class AdminController {
         return adminService.annulerInscriptionPsy(id);
     }
 
-//    @Operation(
-//            summary = "Afficher les tests",
-//            description = "lister tout les test"
-//    )
-//
-//    @GetMapping("/tests")
-//    public List<Test> getAllTests(HttpSession session) {
-//        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.CITOYEN);
-//        return adminService.getAllTests();
-//    }
-//
-//    @Operation(
-//            summary = "Afficher un test",
-//            description = "lister un test á travers son id"
-//    )
-//    @GetMapping("/tests/{id}")
-//    public Optional<Test> getTestById(@PathVariable Integer id, HttpSession session)
-//    {
-//        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.CITOYEN);
-//        return adminService.getTestById(id);
-//    }
-//
-//    @Operation(
-//            summary = "Ajouter un test",
-//            description = "Créer un test"
-//    )
-//    @PostMapping("/tests")
-//    public Test saveTest(@RequestBody TestDTO testDTO, HttpSession session) {
-//        Session.verifierRole(session, RoleEnum.ADMIN);
-//        return adminService.saveTest(testDTO);
-//    }
-//
-//    @Operation(
-//            summary = "Modifier un test",
-//            description = "Mettre a jour un test"
-//    )
-//    @PutMapping("/tests/{id}")
-//    public Test updateTest(@PathVariable Integer id,
-//                           @RequestBody TestDTO test,HttpSession session) {
-//        Session.verifierRole(session, RoleEnum.ADMIN);
-//
-//        return adminService.updateTest(id, test);
-//    }
-//
-//    @Operation(
-//            summary = "Supprimer  un test",
-//            description = "supprimer un test déja existant"
-//    )
-//    @DeleteMapping("/tests/{id}")
-//    public void deleteTest(@PathVariable Integer id, HttpSession session) {
-//
-//        Session.verifierRole(session, RoleEnum.ADMIN);
-//
-//        adminService.deleteTest(id);
-//    }
+
 
 }

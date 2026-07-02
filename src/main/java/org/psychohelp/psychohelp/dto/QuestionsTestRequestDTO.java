@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TestDTO {
-    private Integer id;
-    private String nom_test;
-    private String description;
-    private Boolean etat ;
+public class QuestionsTestRequestDTO {
+    private String question;
 }
