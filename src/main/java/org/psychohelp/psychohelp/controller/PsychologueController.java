@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,10 +62,9 @@ public class PsychologueController {
             description = "Retourne la liste  des psychologues"
     )
     @GetMapping
+
     public List<PsychologueListeDto> psychologueList(){
-        return psyService.PSYCHOLOGUEList().stream().map(
-                psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
-        ).toList();
+        return  psyService.PSYCHOLOGUEList();
     }
     @Operation(
             summary ="Modifier un psychologue ",
@@ -117,8 +117,6 @@ public class PsychologueController {
     )
     @PostMapping(path = "/conseil")
     public ListConseilDto create(@RequestBody ConseilDto conseilDto){
-        //System.out.println("***************" + utl);
-        //return conseilService.creer(utl);
         Conseil conseil=new Conseil();
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
@@ -128,6 +126,18 @@ public class PsychologueController {
         conseil.setPsychologue(psychologue);
         Conseil conseilcreer=conseilService.creer(conseil);
         return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
+    }
+    @Operation(
+            summary = "Liste des Psy validés ",
+            description = "Liste des Psy validés par admin"
+    )
+
+    @GetMapping("/valide")
+    public List<PsyReponseDto> getPsychologueValide() {
+
+
+
+        return psyService.getPsychologueValide();
     }
 
 }

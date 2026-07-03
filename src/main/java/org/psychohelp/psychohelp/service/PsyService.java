@@ -1,9 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
-import org.psychohelp.psychohelp.dto.AddPsyDto;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.UpdateEtatStatusDto;
-import org.psychohelp.psychohelp.dto.UpdatePsyDto;
+import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +14,7 @@ public interface PsyService {
     Psychologue savePsychologue(Psychologue psychologue);
 
     // lecture operation
-    List<Psychologue> PSYCHOLOGUEList();
+    List<PsychologueListeDto> PSYCHOLOGUEList();
     PsychologueListeDto UpdateEtatStatus(int PsyId, UpdateEtatStatusDto updateEtatStatusDto);
     public Psychologue GetPsychologueById(int psychologueId);
 
@@ -26,6 +23,6 @@ public interface PsyService {
     PsychologueListeDto updatePsychologue(UpdatePsyDto updatePsyDto, int psychologueId);
     public List<Conseil> getConseilByPsy( int id);
 
-
+    List<PsyReponseDto> getPsychologueValide();
 
 }

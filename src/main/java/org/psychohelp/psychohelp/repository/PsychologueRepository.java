@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.repository;
 
+import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,9 @@ import java.util.List;
 public interface PsychologueRepository extends JpaRepository<Psychologue,Integer> {
     @Query("Select c from Conseil c Where c.psychologue.id=:id")
     public List<Conseil> getConseilByPsy(@Param("id") int id);
+
+@Query("SELECT p FROM Psychologue p WHERE p.status = true AND p.etat = true")
+     List<Psychologue> getPsychologueValide();
+
+
 }
