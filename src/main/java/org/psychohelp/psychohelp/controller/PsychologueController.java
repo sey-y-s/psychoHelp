@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,10 +62,9 @@ public class PsychologueController {
             description = "Retourne la liste  des psychologues"
     )
     @GetMapping
+
     public List<PsychologueListeDto> psychologueList(){
-        return psyService.PSYCHOLOGUEList().stream().map(
-                psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
-        ).toList();
+        return  psyService.PSYCHOLOGUEList();
     }
     @Operation(
             summary ="Modifier un psychologue ",
@@ -131,30 +131,13 @@ public class PsychologueController {
             summary = "Liste des Psy validés ",
             description = "Liste des Psy validés par admin"
     )
-   /* @GetMapping("/valide")
-    List<PsychologueListeDto> getPsychologueValide(){
-        return psyService.PSYCHOLOGUEList().stream().map(
-                psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
-        ).toList();
 
-    }*/
     @GetMapping("/valide")
-    public List<PsychologueListeDto> getPsychologueValide() {
-        return psyService.getPsychologueValide().stream()
-                .map(psychologue -> new PsychologueListeDto(
-                        psychologue.getId(),
-                        psychologue.getNom(),
-                        psychologue.getPrenom(),
-                        psychologue.getTelephone(),
-                        psychologue.getMail(),
-                        psychologue.getRole(),
-                        psychologue.getDateCreation(),
-                        psychologue.getStatus(),
-                        psychologue.getDescription(),
-                        psychologue.getDiplome_path(),
-                        psychologue.getCv_path(),
-                        psychologue.getEtat()
-                ))
-                .toList();
+    public List<PsyReponseDto> getPsychologueValide() {
+
+
+
+        return psyService.getPsychologueValide();
     }
+
 }

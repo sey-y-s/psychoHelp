@@ -1,9 +1,6 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
-import org.psychohelp.psychohelp.dto.AddPsyDto;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.UpdateEtatStatusDto;
-import org.psychohelp.psychohelp.dto.UpdatePsyDto;
+import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
@@ -14,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,8 +29,33 @@ public class PsyServiceImpl implements PsyService {
     }
 
     @Override
-    public List<Psychologue> PSYCHOLOGUEList() {
-        return psychologueRepository.findAll();
+    public List<PsychologueListeDto> PSYCHOLOGUEList() {
+
+        List<Psychologue> psychologues = psychologueRepository.findAll();
+
+        List<PsychologueListeDto> resultatPsy = new ArrayList<>();
+
+        for (Psychologue psychologue : psychologues) {
+
+            PsychologueListeDto psychologueListeDto = new PsychologueListeDto();
+            psychologueListeDto.setId(psychologue.getId());
+            psychologueListeDto.setNom(psychologue.getNom());
+            psychologueListeDto.setPrenom(psychologue.getPrenom());
+            psychologueListeDto.setMail(psychologue.getMail());
+            psychologueListeDto.setTelephone(psychologue.getTelephone());
+            psychologueListeDto.setDescription(psychologue.getDescription());
+            psychologueListeDto.setDiplome_path(psychologue.getDiplome_path());
+            psychologueListeDto.setCv_path(psychologue.getCv_path());
+            psychologueListeDto.setRole(psychologue.getRole());
+            psychologueListeDto.setDateCreation(psychologue.getDateCreation());
+            psychologueListeDto.setEtat(psychologue.getEtat());
+            psychologueListeDto.setStatus(psychologue.getStatus());
+
+            resultatPsy.add(psychologueListeDto);
+
+        }
+
+        return resultatPsy;
     }
 
     @Override
@@ -100,7 +123,29 @@ Psychologue psychologue =psychologueRepository.save(psy);
     }
 
     @Override
-    public List<Psychologue> getPsychologueValide() {
-        return psychologueRepository.getPsychologueValide();
+    public List<PsyReponseDto> getPsychologueValide() {
+        List<Psychologue> psychologues = psychologueRepository.getPsychologueValide();
+
+        List<PsyReponseDto> resultatPsy = new ArrayList<>();
+
+        for (Psychologue psychologue : psychologues) {
+
+            PsyReponseDto psyReponseDto = new PsyReponseDto();
+
+            psyReponseDto.setNom(psychologue.getNom());
+            psyReponseDto.setPrenom(psychologue.getPrenom());
+            psyReponseDto.setMail(psychologue.getMail());
+            psyReponseDto.setTelephone(psychologue.getTelephone());
+            psyReponseDto.setDescription(psychologue.getDescription());
+            psyReponseDto.setDiplome_path(psychologue.getDiplome_path());
+            psyReponseDto.setCv_path(psychologue.getCv_path());
+
+            resultatPsy.add(psyReponseDto);
+        }
+
+        return resultatPsy;
+
     }
+
+
 }

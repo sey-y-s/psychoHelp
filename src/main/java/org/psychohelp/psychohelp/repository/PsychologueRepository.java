@@ -16,7 +16,7 @@ public interface PsychologueRepository extends JpaRepository<Psychologue,Integer
     @Query("Select c from Conseil c Where c.psychologue.id=:id")
     public List<Conseil> getConseilByPsy(@Param("id") int id);
 
-@Query("SELECT p FROM Psychologue p WHERE p.status = TRUE AND p.etat = TRUE")
+@Query("SELECT p FROM Psychologue p WHERE p.status = true AND p.etat = true")
      List<Psychologue> getPsychologueValide();
 
 
