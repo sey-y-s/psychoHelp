@@ -1,5 +1,7 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.service.ConseilService;
@@ -20,8 +22,17 @@ public class ConseilServiceImpl implements ConseilService {
     }
 
     @Override
-    public List<Conseil> listeConseil() {
-        return conseilRepository.findAll();
+    public List<ConseilAfficheDto> listeConseil() {
+
+        return conseilRepository.trouverTousAvecPsychologue()
+                .stream()
+                .map(conseil -> new ConseilAfficheDto(
+                        conseil.getTitre(),
+                        conseil.getDescription(),
+                        conseil.getAuteur(),
+                        conseil.getPsychologue().nomComplet()
+                ))
+                .toList();
     }
 
     @Override
@@ -51,8 +62,17 @@ public class ConseilServiceImpl implements ConseilService {
     }
 
     @Override
-    public List<Conseil> listConseilParStatus(Boolean status) {
-        return conseilRepository.findByStatus(status);
+    public List<ConseilAfficheDto> listConseilParStatus(Boolean status) {
+
+        return conseilRepository.trouverParStatutAvecPsychologue(status)
+                .stream()
+                .map(conseil -> new ConseilAfficheDto(
+                        conseil.getTitre(),
+                        conseil.getDescription(),
+                        conseil.getAuteur(),
+                        conseil.getPsychologue().nomComplet()
+                ))
+                .toList();
     }
 
 

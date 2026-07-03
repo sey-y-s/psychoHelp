@@ -42,7 +42,6 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public List<CreneauResponseDTO> getAll() {
-
         return cp.findAll()
                 .stream()
                 .map(mapper::toDTO)
@@ -50,7 +49,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public CreneauResponseDTO getById(Long id) {
+    public CreneauResponseDTO getById(int id) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -60,7 +59,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public CreneauResponseDTO update(Long id, UpdateCreneauDTO dto) {
+    public CreneauResponseDTO update(int id, UpdateCreneauDTO dto) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -75,7 +74,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(int id) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->

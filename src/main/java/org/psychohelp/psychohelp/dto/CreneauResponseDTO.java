@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalTime;
 @Data
 public class CreneauResponseDTO {
-    private Long id;
+    private int id;
     private String jours;
     private LocalTime heureDebut;
     private LocalTime heureFin;

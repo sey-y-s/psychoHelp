@@ -79,7 +79,7 @@ public class CreneauController {
             )
     })
     @GetMapping("/{id}")
-    public CreneauResponseDTO getById(@PathVariable Long id) {
+    public CreneauResponseDTO getById(@PathVariable int id) {
         return cs.getById(id);
     }
 
@@ -99,7 +99,7 @@ public class CreneauController {
     })
     @PutMapping("/{id}")
     public CreneauResponseDTO update(
-            @PathVariable Long id,
+            @PathVariable int id,
             @RequestBody UpdateCreneauDTO dto,
             HttpSession session) {
 
@@ -123,7 +123,7 @@ public class CreneauController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id, HttpSession session) {
+    public void deleteById(@PathVariable int id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         cs.delete(id);
     }

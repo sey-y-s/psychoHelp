@@ -11,11 +11,11 @@ public interface CreneauService {
 
     List<CreneauResponseDTO> getAll();
 
-    CreneauResponseDTO getById(Long id);
+    CreneauResponseDTO getById(int id);
 
-    CreneauResponseDTO update(Long id, UpdateCreneauDTO dto);
+    CreneauResponseDTO update(int id, UpdateCreneauDTO dto);
 
-    void delete(Long id);
+    void delete(int id);
 
 
     List<CreneauResponseDTO> getDisponibles();

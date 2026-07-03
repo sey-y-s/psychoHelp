@@ -11,6 +11,7 @@ import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.AdminService;
+import org.psychohelp.psychohelp.service.EmailService;
 import org.psychohelp.psychohelp.service.QuestionsTestService;
 import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private PsychologueRepository psychologueRepository;
+
+    @Autowired
+    private EmailService emailService;
 
 //    @Autowired
 //    private TestService testService;
@@ -195,8 +199,13 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
         psychologue.setStatus(true);
-
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
+
+        emailService.envoyerCompteActif(
+                psySauvegarde.getMail(),
+                psySauvegarde.getPrenom(),
+                psySauvegarde.getNom()
+        );
 
         PsychologueListeDto response = new PsychologueListeDto();
 

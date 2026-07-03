@@ -16,5 +16,5 @@ public class SeanceDTO {
     private LocalDate dateRdv;
     private StatutRdvEnum statut;
     private int citoyenId;
-    private Long creneauId;
+    private int creneauId;
 }
