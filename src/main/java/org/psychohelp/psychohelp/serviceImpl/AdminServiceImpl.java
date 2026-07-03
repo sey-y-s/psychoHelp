@@ -1,7 +1,6 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.AdminDTO;
 import org.psychohelp.psychohelp.dto.AdminResponseDTO;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class AdminServiceImpl implements AdminService {
 
@@ -196,7 +194,7 @@ public class AdminServiceImpl implements AdminService {
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
-        psychologue.setEtat(true);
+        psychologue.setStatus(true);
 
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
 
@@ -224,7 +222,7 @@ public class AdminServiceImpl implements AdminService {
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
-        psychologue.setEtat(false);
+        psychologue.setStatus(false);
 
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
 

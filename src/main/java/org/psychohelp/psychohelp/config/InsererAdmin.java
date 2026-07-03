@@ -22,7 +22,7 @@ public class InsererAdmin {
                 admin.setPrenom("Mohamed");
                 admin.setMotDePasse("1234");
                 admin.setMail("mc@gmail.com");
-                admin.setTelephone("123456789");
+                admin.setTelephone("77990088");
                 admin.setRole(RoleEnum.ADMIN);
 
                 adminRepository.save(admin);
