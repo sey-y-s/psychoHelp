@@ -4,10 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.*;
-import org.psychohelp.psychohelp.entity.Admin;
-import org.psychohelp.psychohelp.entity.Conseil;
-import org.psychohelp.psychohelp.entity.Psychologue;
-import org.psychohelp.psychohelp.entity.Test;
+import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.AdminService;
 import org.psychohelp.psychohelp.utils.Session;
@@ -38,16 +35,17 @@ public class AdminController {
         return adminService.ajouterAdmin(dto);
     }
 
-    @Operation(
-            summary = "Modifier un administrateur",
-            description = "Modifie un administrateur"
-    )
+@Operation(
+        summary = "Modifier un administrateur",
+        description = "Modifie un administrateur"
+)
 
     @PutMapping("/{id}")
     public AdminResponseDTO  modifierAdmin(@PathVariable Integer id, @RequestBody AdminDTO dto, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.modifierAdmin(id, dto);
     }
+
 
     @Operation(
             summary = "Récuperer  un administrateur",
@@ -58,6 +56,8 @@ public class AdminController {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.getAdminById(id);
     }
+
+
 
     @Operation(
             summary = "Récuperer  la  liste des administrateurs",
@@ -115,8 +115,8 @@ public class AdminController {
     }
 
     @Operation(
-            summary = "Annuler un psychologue",
-            description = "Annuler l'inscription d'un psychologue "
+            summary = "Annuler l'inscription d'un psychologue",
+            description = "Annuler un psychologue "
     )
 
     @PutMapping("/psychologues/{id}/annuler")
@@ -126,5 +126,27 @@ public class AdminController {
     }
 
 
+    //    @GetMapping("/")
+//    public AdminResponseDTO getAdminById(HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
+//   Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+//    return new AdminResponseDTO(
+//        utilisateur.getId(),
+//        utilisateur.getNom(),
+//        utilisateur.getPrenom(),
+//        utilisateur.getMail(),
+//        utilisateur.getTelephone(),
+//        utilisateur.getRole().toString());
+//
+//    }
+
+    //
+//    @PutMapping("/")
+//    public AdminResponseDTO  modifierAdmin( @RequestBody AdminDTO dto, HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+//        return adminService.modifierAdmin(utilisateur.getId(),  dto);
+//
+//    }
 
 }
