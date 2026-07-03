@@ -1,9 +1,12 @@
 package org.psychohelp.psychohelp.service;
 
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
-import org.psychohelp.psychohelp.dto.UpdateSpecialiteDto;
+import org.psychohelp.psychohelp.dto.RequestSpecialiteDto;
+import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.repository.SpecialiteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,9 +17,13 @@ import java.util.List;
 public class SpecialiteService {
     @Autowired
     private SpecialiteRepo specialiteRepo;
-    public void ajouter(UpdateSpecialiteDto updateSpecialiteDto) {
+    public void ajouter(RequestSpecialiteDto updateSpecialiteDto, HttpSession session) {
+        Admin admin=new Admin();
         Specialite specialite=new Specialite();
         specialite.setNom(updateSpecialiteDto.getNom());
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        admin.setId(utilisateur.getId());
+        specialite.setAdmin(admin);
 
         specialiteRepo.save(specialite);
     }
@@ -32,11 +39,13 @@ public class SpecialiteService {
     public List<Psychologue>getSpecialiteIsPsycholoque(int id){
         return specialiteRepo.getSpecialiteIsPsychologue(id);
     }
-    public SpecialiteListeDto updateSpecialite(int id,UpdateSpecialiteDto updateSpecialiteDto){
+    public SpecialiteListeDto updateSpecialite(int id, RequestSpecialiteDto updateSpecialiteDto, HttpSession session) {
         Specialite specialite=specialiteRepo.findById(id).orElseThrow(()->new RuntimeException("cette specialite est introuvable"));
         specialite.setNom(updateSpecialiteDto.getNom());
         Specialite specialitemodif =specialiteRepo.save(specialite);
-        return new SpecialiteListeDto(specialitemodif.getId(),specialitemodif.getNom());
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+
+        return new SpecialiteListeDto(specialitemodif.getId(),specialitemodif.getNom(),utilisateur.getNom());
 
     }
 }
