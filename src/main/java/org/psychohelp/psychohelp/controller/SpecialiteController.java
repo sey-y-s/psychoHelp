@@ -10,12 +10,14 @@ import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.exceptions.AccesRefuseException;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class SpecialiteController{
     )
     @PostMapping
     public ResponseEntity<String> ajouter(@RequestBody RequestSpecialiteDto updateSpecialiteDto, HttpSession session){
-        Session.verifierRole(session, RoleEnum.CITOYEN);
+        Session.verifierRole(session, RoleEnum.ADMIN);
         specialiteService.ajouter(updateSpecialiteDto,session);
         return  ResponseEntity.status(HttpStatus.CREATED).body("specialite iseree avec succes");
     }
@@ -46,10 +48,8 @@ public class SpecialiteController{
     @GetMapping
     public List<SpecialiteListeDto> Liste(HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
-        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
-
-        return specialiteService.ListeSpecialite().stream().map(
-                specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom(),utilisateur.getNom())
+        return specialiteService.ListeSpecialite(session).stream().map(
+                specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom(),specialite.getAdmin().getNom())
         ).toList();
     }
     @Operation(
@@ -60,10 +60,6 @@ public class SpecialiteController{
     public ResponseEntity<SpecialiteListeDto> modifier(@PathVariable int id, @RequestBody RequestSpecialiteDto updateSpecialiteDto, HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
         SpecialiteListeDto specialiteListeDto   =specialiteService.updateSpecialite(id,updateSpecialiteDto,session);
-        if(specialiteListeDto==null){
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(specialiteListeDto);
 
     }
@@ -74,12 +70,7 @@ public class SpecialiteController{
     @DeleteMapping("/{id}")
     public ResponseEntity<String> supprimerSepecialite(@PathVariable int id,HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
-
-        Specialite specialite=specialiteService.getSpecialite(id);
-        if(specialite==null){
-            return ResponseEntity.notFound().build();
-        }
-        specialiteService.supprimer(id);
+        specialiteService.supprimer(id,session);
         return  ResponseEntity.status(HttpStatus.NO_CONTENT).body("suppression effectuee avec succes");
     }
     @Operation(
@@ -88,16 +79,8 @@ public class SpecialiteController{
     )
     @GetMapping("/{id}")
     public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id, HttpSession session){
-
         Session.verifierRole(session, RoleEnum.ADMIN);
-
-        Specialite specialite=specialiteService.getSpecialite(id);
-        if(specialite==null){
-            return  ResponseEntity.notFound().build();
-        }
-        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
-
-        return ResponseEntity.ok(new SpecialiteListeDto(specialite.getId(),specialite.getNom(),utilisateur.getNom()));
+        return ResponseEntity.ok(specialiteService.getSpecialite(id, session));
     }
     @Operation(
             summary = "les pychologues qui ont cette specialité",

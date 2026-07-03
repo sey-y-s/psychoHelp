@@ -7,9 +7,12 @@ import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
 import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.exceptions.AccesRefuseException;
+import org.psychohelp.psychohelp.exceptions.NotFoundException;
 import org.psychohelp.psychohelp.repository.SpecialiteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,25 +30,53 @@ public class SpecialiteService {
 
         specialiteRepo.save(specialite);
     }
-    public List<Specialite> ListeSpecialite(){
-        return specialiteRepo.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    public List<Specialite> ListeSpecialite( HttpSession session) {
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        return specialiteRepo.getSpecialiteByAdmin_Id(utilisateur.getId());
     }
-    public Specialite getSpecialite(int id){
-        return specialiteRepo.findById(id).orElse(null);
+    public SpecialiteListeDto getSpecialite(int id, HttpSession session) {
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        Specialite specialite=specialiteRepo.getSpecialiteById(id);
+        if(specialite==null){
+            throw new NotFoundException("Le specialite n'existe pas");
+        }
+        if(specialite.getAdmin().getId()!=utilisateur.getId()){
+            throw new AccesRefuseException("cette specialité ne vous appartient pas");
+        }
+
+        return new SpecialiteListeDto(specialite.getId(),specialite.getNom(),specialite.getAdmin().getNom());
     }
-    public void supprimer(int id){
+    public void supprimer(int id,HttpSession session){
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        Specialite specialite=specialiteRepo.getSpecialiteById(id);
+        if(specialite.getAdmin().getId()!=utilisateur.getId()){
+            throw new AccesRefuseException("cette specialité ne vous appartient pas");
+        }
+        if(specialiteRepo.specialiteIsUsed(specialite.getId())>0){
+            throw new AccesRefuseException("vous ne pouvez pas supprimer cette specialite cars elle est affectée à au moins un psychologue");
+        }
         specialiteRepo.deleteById(id);
     }
+
     public List<Psychologue>getSpecialiteIsPsycholoque(int id){
+
         return specialiteRepo.getSpecialiteIsPsychologue(id);
     }
     public SpecialiteListeDto updateSpecialite(int id, RequestSpecialiteDto updateSpecialiteDto, HttpSession session) {
-        Specialite specialite=specialiteRepo.findById(id).orElseThrow(()->new RuntimeException("cette specialite est introuvable"));
-        specialite.setNom(updateSpecialiteDto.getNom());
-        Specialite specialitemodif =specialiteRepo.save(specialite);
+
+        Specialite specialite=specialiteRepo.getSpecialiteById(id);
+        if(specialite==null){
+            throw new NotFoundException("Specialite n'existe pas");
+        }
         Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
 
-        return new SpecialiteListeDto(specialitemodif.getId(),specialitemodif.getNom(),utilisateur.getNom());
+        if(specialite.getAdmin().getId()!=utilisateur.getId()){
+            throw new AccesRefuseException("cette specialité ne vous appartient pas");
+        }
+        specialite.setNom(updateSpecialiteDto.getNom());
+        Specialite specialitemodif =specialiteRepo.save(specialite);
+
+        return new SpecialiteListeDto(specialitemodif.getId(),specialitemodif.getNom(),specialitemodif.getAdmin().getNom());
 
     }
 }
