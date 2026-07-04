@@ -3,9 +3,7 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
-import org.psychohelp.psychohelp.dto.AdminDTO;
-import org.psychohelp.psychohelp.dto.AdminResponseDTO;
-import org.psychohelp.psychohelp.dto.TestRequestDTO;
+import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
@@ -89,7 +87,7 @@ public class AdminController {
             description = "valider un conseil poster par un psychologue "
     )
     @PutMapping("/conseils/{id}/valider")
-    public Conseil validerConseil(@PathVariable Integer id, HttpSession session) {
+    public ConseilAfficheDto validerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerConseil(id);
     }
@@ -100,7 +98,7 @@ public class AdminController {
     )
 
     @PutMapping("/conseils/{id}/annuler")
-    public Conseil annulerConseil(@PathVariable Integer id, HttpSession session) {
+    public ConseilAfficheDto annulerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerConseil(id);
     }
@@ -111,7 +109,7 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/valider")
-    public Psychologue validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
+    public PsychologueListeDto validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerInscriptionPsy(id);
     }
@@ -122,7 +120,7 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/annuler")
-    public Psychologue annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
+    public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
