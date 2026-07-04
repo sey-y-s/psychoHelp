@@ -7,17 +7,13 @@ import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
 import org.psychohelp.psychohelp.dto.RequestSpecialiteDto;
 import org.psychohelp.psychohelp.entity.Psychologue;
-import org.psychohelp.psychohelp.entity.Specialite;
-import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
-import org.psychohelp.psychohelp.exceptions.AccesRefuseException;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
@@ -48,7 +44,7 @@ public class SpecialiteController{
     @GetMapping
     public List<SpecialiteListeDto> Liste(HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return specialiteService.ListeSpecialite(session).stream().map(
+        return specialiteService.listeSpecialite(session).stream().map(
                 specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom(),specialite.getAdmin().getNom())
         ).toList();
     }

@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.CitoyenListeDto;
 import org.psychohelp.psychohelp.dto.CitoyenRequestDto;
 import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
-import org.psychohelp.psychohelp.entity.Citoyen;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.CitoyenService;

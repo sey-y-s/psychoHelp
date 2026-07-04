@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CitoyenRepository extends JpaRepository <Citoyen, Integer> {
-    public Citoyen getByCitoyenId(Integer citoyenId);
+
+    public Citoyen getById(Integer id);
     //cette requete retourne le redv d'un citoyen en se basant sur son id
     @Query("select new org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto(py.nom,se.date,se.dateRdv,se.statut,cre.heureDebut,cre.heureFin,cre.jours)" +
             "from Seance se " +
