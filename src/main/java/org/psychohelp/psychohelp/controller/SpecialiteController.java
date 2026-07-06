@@ -53,10 +53,10 @@ public class SpecialiteController{
             description = "ici on modifie une specialité specifique"
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<SpecialiteListeDto> modifier(@PathVariable int id, @RequestBody RequestSpecialiteDto updateSpecialiteDto, HttpSession session){
+    public SpecialiteListeDto modifier(@PathVariable int id, @RequestBody RequestSpecialiteDto updateSpecialiteDto, HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
         SpecialiteListeDto specialiteListeDto   =specialiteService.updateSpecialite(id,updateSpecialiteDto,session);
-        return ResponseEntity.ok(specialiteListeDto);
+        return specialiteListeDto;
 
     }
     @Operation(
@@ -74,9 +74,9 @@ public class SpecialiteController{
             description = "ici on affiche une specialité specifique"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<SpecialiteListeDto> getSpecialite(@PathVariable  int id, HttpSession session){
+    public SpecialiteListeDto getSpecialite(@PathVariable  int id, HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return ResponseEntity.ok(specialiteService.getSpecialite(id, session));
+        return specialiteService.getSpecialite(id, session);
     }
     @Operation(
             summary = "les pychologues qui ont cette specialité",
