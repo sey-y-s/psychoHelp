@@ -37,7 +37,6 @@ public class PsychologueController {
     @PostMapping
     public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto, HttpSession session){
        // psychologue.setDateCreation(LocalDate.now());
-        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
         Psychologue psychologue=new Psychologue();
         psychologue.setNom(addPsyDto.getNom());

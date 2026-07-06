@@ -19,10 +19,9 @@ public class AddPsyDto {
 
     private RoleEnum role;
     //private LocalDate dateCreation;
-    private Boolean status=false;
     private String description;
     private String diplome_path;
     private String  cv_path;
-    private Boolean etat=true;
+
     private Integer idSpecialite;
 }
