@@ -17,7 +17,6 @@ public class AddPsyDto {
     private String mail;
     private  String motDePasse;
 
-    private RoleEnum role;
     //private LocalDate dateCreation;
     private String description;
     private String diplome_path;
