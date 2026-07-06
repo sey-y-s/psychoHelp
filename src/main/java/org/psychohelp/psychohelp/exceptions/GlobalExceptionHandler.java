@@ -47,5 +47,16 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleAccesRefuse(BadRequestException conn){
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "BAD_REQUEST");
+        body.put("message", conn.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+
+    }
 
 }
