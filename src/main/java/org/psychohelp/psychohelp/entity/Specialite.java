@@ -18,6 +18,9 @@ public class Specialite {
     @OneToMany(mappedBy = "specialite")
     @JsonIgnore
     private List<Psychologue> psychologues;
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 
 
 }
