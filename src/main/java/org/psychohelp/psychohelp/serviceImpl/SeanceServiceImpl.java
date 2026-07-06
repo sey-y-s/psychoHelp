@@ -6,19 +6,27 @@ import org.psychohelp.psychohelp.entity.Citoyen;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Seance;
 import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
+import org.psychohelp.psychohelp.exceptions.BadRequestException;
 import org.psychohelp.psychohelp.exceptions.NotFoundException;
+import org.psychohelp.psychohelp.repository.CitoyenRepository;
+import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.repository.SeanceRepository;
 import org.psychohelp.psychohelp.service.SeanceService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
 public class SeanceServiceImpl implements SeanceService {
 
     private final SeanceRepository seanceRepository;
+    private final CitoyenRepository citoyenRepository;
+    private final CreneauRepository creneauRepository;
 
     @Override
     public List<Seance> getAllSeances() {
@@ -34,20 +42,30 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     public SeanceDTO createSeance(SeanceDTO seance) {
-        Citoyen c = new Citoyen(); c.setId(seance.getCitoyenId());
-        Creneau cr = new Creneau(); cr.setId(seance.getCreneauId());
+        Citoyen c = citoyenRepository.findById(seance.getCitoyenId())
+                .orElseThrow(() -> new NotFoundException("Citoyen " + seance.getCitoyenId() + "introuvable"));
+
+        Creneau cr = creneauRepository.findById(seance.getCreneauId())
+                .orElseThrow(() -> new NotFoundException("Creneau " + seance.getCreneauId() + "introuvable"));
+
+        String jourSeance = seance.getDateRdv()
+                .getDayOfWeek()
+                .getDisplayName(TextStyle.FULL, Locale.FRENCH)
+                .toUpperCase();
+
+        Boolean creneauIsActive = cr.getStatut();
+
+        if(!(cr.getJours().toUpperCase().equals(jourSeance)) || !creneauIsActive) {
+            throw new BadRequestException("Gros problème : ce créneau n'est pas disponible");
+        }
+
         Seance s = new  Seance();
         s.setDateRdv(seance.getDateRdv());
         s.setStatut(StatutRdvEnum.RESERVER);
         s.setCitoyen(c);
         s.setCreneau(cr);
         seanceRepository.save(s);
-        SeanceDTO seanceDTO = new SeanceDTO();
-        seanceDTO.setDateRdv(s.getDateRdv());
-        seanceDTO.setStatut(s.getStatut());
-        seanceDTO.setCitoyenId(c.getId());
-        seanceDTO.setCreneauId(cr.getId());
-        return seanceDTO;
+        return mapSeanceToDTO(s);
     }
 
     @Override
@@ -56,12 +74,7 @@ public class SeanceServiceImpl implements SeanceService {
                 .orElseThrow(() -> new NotFoundException("Séance " + id + "introuvable"));
         s.setStatut(StatutRdvEnum.ANNULER);
         seanceRepository.save(s);
-        SeanceDTO seanceDTO = new SeanceDTO();
-        seanceDTO.setDateRdv(s.getDateRdv());
-        seanceDTO.setStatut(s.getStatut());
-        seanceDTO.setCitoyenId(s.getCitoyen().getId());
-        seanceDTO.setCreneauId(s.getCreneau().getId());
-        return seanceDTO;
+        return mapSeanceToDTO(s);
     }
 
 
@@ -79,4 +92,14 @@ public class SeanceServiceImpl implements SeanceService {
     public List<Seance> getSeancesByPsy(int psyId) {
         return seanceRepository.findByPsyId(psyId);
     }
+
+    public SeanceDTO mapSeanceToDTO(Seance seance) {
+        SeanceDTO seanceDTO = new SeanceDTO();
+        seanceDTO.setDateRdv(seance.getDateRdv());
+        seanceDTO.setStatut(seance.getStatut());
+        seanceDTO.setCitoyenId(seance.getCitoyen().getId());
+        seanceDTO.setCreneauId(seance.getCreneau().getId());
+        return seanceDTO;
+    }
+
 }
