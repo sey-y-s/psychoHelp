@@ -52,7 +52,9 @@ public class PsychologueController {
         psychologue.setCv_path(addPsyDto.getCv_path());
         //psychologue.setEtat(addPsyDto.getEtat());
         //recupere la specialité à partir de l'id
-        Specialite specialite=specialiteService.getSpecialite(addPsyDto.getIdSpecialite());
+        //Specialite specialite=specialiteService.getSpecialite(addPsyDto.getIdSpecialite());
+        Specialite specialite=new Specialite();
+        specialite.setId(addPsyDto.getIdSpecialite());
         psychologue.setSpecialite(specialite);
         Psychologue psychologuecreer=psyService.savePsychologue(psychologue);
 

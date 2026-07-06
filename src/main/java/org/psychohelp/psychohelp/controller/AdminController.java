@@ -3,13 +3,8 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
-import org.psychohelp.psychohelp.dto.AdminDTO;
-import org.psychohelp.psychohelp.dto.AdminResponseDTO;
-import org.psychohelp.psychohelp.dto.TestRequestDTO;
-import org.psychohelp.psychohelp.entity.Admin;
-import org.psychohelp.psychohelp.entity.Conseil;
-import org.psychohelp.psychohelp.entity.Psychologue;
-import org.psychohelp.psychohelp.entity.Test;
+import org.psychohelp.psychohelp.dto.*;
+import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.AdminService;
 import org.psychohelp.psychohelp.utils.Session;
@@ -40,16 +35,17 @@ public class AdminController {
         return adminService.ajouterAdmin(dto);
     }
 
-    @Operation(
-            summary = "Modifier un administrateur",
-            description = "Modifie un administrateur"
-    )
+@Operation(
+        summary = "Modifier un administrateur",
+        description = "Modifie un administrateur"
+)
 
     @PutMapping("/{id}")
     public AdminResponseDTO  modifierAdmin(@PathVariable Integer id, @RequestBody AdminDTO dto, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.modifierAdmin(id, dto);
     }
+
 
     @Operation(
             summary = "Récuperer  un administrateur",
@@ -60,6 +56,8 @@ public class AdminController {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.getAdminById(id);
     }
+
+
 
     @Operation(
             summary = "Récuperer  la  liste des administrateurs",
@@ -89,7 +87,7 @@ public class AdminController {
             description = "valider un conseil poster par un psychologue "
     )
     @PutMapping("/conseils/{id}/valider")
-    public Conseil validerConseil(@PathVariable Integer id, HttpSession session) {
+    public ConseilAfficheDto validerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerConseil(id);
     }
@@ -100,7 +98,7 @@ public class AdminController {
     )
 
     @PutMapping("/conseils/{id}/annuler")
-    public Conseil annulerConseil(@PathVariable Integer id, HttpSession session) {
+    public ConseilAfficheDto annulerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerConseil(id);
     }
@@ -111,22 +109,44 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/valider")
-    public Psychologue validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
+    public PsychologueListeDto validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerInscriptionPsy(id);
     }
 
     @Operation(
-            summary = "Annuler un psychologue",
-            description = "Annuler l'inscription d'un psychologue "
+            summary = "Annuler l'inscription d'un psychologue",
+            description = "Annuler un psychologue "
     )
 
     @PutMapping("/psychologues/{id}/annuler")
-    public Psychologue annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
+    public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
 
 
+    //    @GetMapping("/")
+//    public AdminResponseDTO getAdminById(HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
+//   Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+//    return new AdminResponseDTO(
+//        utilisateur.getId(),
+//        utilisateur.getNom(),
+//        utilisateur.getPrenom(),
+//        utilisateur.getMail(),
+//        utilisateur.getTelephone(),
+//        utilisateur.getRole().toString());
+//
+//    }
+
+    //
+//    @PutMapping("/")
+//    public AdminResponseDTO  modifierAdmin( @RequestBody AdminDTO dto, HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+//        return adminService.modifierAdmin(utilisateur.getId(),  dto);
+//
+//    }
 
 }

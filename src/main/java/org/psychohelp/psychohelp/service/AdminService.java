@@ -2,6 +2,8 @@ package org.psychohelp.psychohelp.service;
 
 import org.psychohelp.psychohelp.dto.AdminDTO;
 import org.psychohelp.psychohelp.dto.AdminResponseDTO;
+import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
+import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.*;
 
 import java.util.List;
@@ -18,13 +20,13 @@ public interface AdminService {
 
     void supprimerAdmin(Integer id);
 
-    Conseil validerConseil(Integer conseilId);
+    ConseilAfficheDto validerConseil(Integer conseilId);
 
-    Conseil annulerConseil(Integer conseilId);
+    ConseilAfficheDto annulerConseil(Integer conseilId);
 
-    Psychologue validerInscriptionPsy(Integer id);
+    PsychologueListeDto validerInscriptionPsy (Integer id);
 
-    Psychologue annulerInscriptionPsy(Integer id);
+    PsychologueListeDto annulerInscriptionPsy(Integer id);
 
 
 }
