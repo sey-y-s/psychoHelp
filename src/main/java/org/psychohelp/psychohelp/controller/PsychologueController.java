@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
@@ -9,6 +10,7 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.ConseilService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,8 +35,10 @@ public class PsychologueController {
             description = "Ajoute un nouveau psychologue"
     )
     @PostMapping
-    public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto){
+    public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto, HttpSession session){
        // psychologue.setDateCreation(LocalDate.now());
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+
         Psychologue psychologue=new Psychologue();
         psychologue.setNom(addPsyDto.getNom());
         psychologue.setPrenom(addPsyDto.getPrenom());
@@ -42,6 +46,7 @@ public class PsychologueController {
         psychologue.setMail(addPsyDto.getMail());
         psychologue.setMotDePasse(addPsyDto.getMotDePasse());
         psychologue.setRole(RoleEnum.PSYCHOLOGUE);
+
         psychologue.setDescription(addPsyDto.getDescription());
         psychologue.setDiplome_path(addPsyDto.getDiplome_path());
         psychologue.setCv_path(addPsyDto.getCv_path());
@@ -63,7 +68,9 @@ public class PsychologueController {
     )
     @GetMapping
 
-    public List<PsychologueListeDto> psychologueList(){
+    public List<PsychologueListeDto> psychologueList(HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
         return  psyService.PSYCHOLOGUEList();
     }
     @Operation(
@@ -72,7 +79,9 @@ public class PsychologueController {
     )
 
     @PutMapping("/{id}")
-    public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId){
+    public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId,HttpSession session){
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+
         return psyService.updatePsychologue(updatePsyDto,PsychologueId);
     }
     @Operation(
@@ -82,7 +91,9 @@ public class PsychologueController {
     @PatchMapping("/{id}/etatStatus")
     public PsychologueListeDto updateEtatStatus(
             @PathVariable int id,
-            @RequestBody UpdateEtatStatusDto psychologue){
+            @RequestBody UpdateEtatStatusDto psychologue,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
 
         return psyService.UpdateEtatStatus(id, psychologue);
     }
@@ -92,7 +103,9 @@ public class PsychologueController {
     )
 
     @GetMapping("/{id}")
-    public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id){
+    public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
         Psychologue psychologue=psyService.GetPsychologueById(id);
 
         return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
@@ -103,7 +116,9 @@ public class PsychologueController {
     )
 
     @GetMapping("/{id}/conseils")
-    public List<Conseil> getConseilByPsy(@PathVariable Integer id){
+    public List<Conseil> getConseilByPsy(@PathVariable Integer id,HttpSession session){
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
         return psyService.getConseilByPsy(id);
         //Psychologue psychologue=psyService.GetPsychologueById(id);
 
@@ -133,7 +148,10 @@ public class PsychologueController {
     )
 
     @GetMapping("/valide")
-    public List<PsyReponseDto> getPsychologueValide() {
+    public List<PsyReponseDto> getPsychologueValide(HttpSession session) {
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
+
 
 
 
