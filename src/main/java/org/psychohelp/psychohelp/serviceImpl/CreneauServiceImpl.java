@@ -1,11 +1,13 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.mapper.CreneauMapper;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
@@ -25,13 +27,23 @@ public class CreneauServiceImpl implements CreneauService {
     private final CreneauMapper mapper;
 
     @Override
-    public CreneauResponseDTO creer(CreneauDTO dto) {
+    public CreneauResponseDTO creer(CreneauDTO dto, HttpSession session) {
 
-        Psychologue psychologue = pp.findById(dto.getPsychologueId().intValue())
+        /*Psychologue psychologue = pp.findById(dto.getPsychologueId().intValue())
                 .orElseThrow(() ->
                         new RuntimeException("Psychologue introuvable"));
 
-        Creneau creneau = mapper.toEntity(dto);
+         */
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        Psychologue psychologue=new Psychologue();
+        psychologue.setId(utilisateur.getId());
+
+        //Creneau creneau = mapper.toEntity(dto);
+        Creneau creneau=new Creneau();
+        creneau.setJours(dto.getJours());
+        creneau.setHeureDebut(dto.getHeureDebut());
+        creneau.setHeureFin(dto.getHeureFin());
+        creneau.setStatut(dto.getStatut());
 
         creneau.setPsychologue(psychologue);
 
@@ -45,7 +57,9 @@ public class CreneauServiceImpl implements CreneauService {
 
         return cp.findAll()
                 .stream()
-                .map(mapper::toDTO)
+                .map(
+                        creneau -> new CreneauResponseDTO(creneau.getId(),creneau.getJours(),creneau.getHeureDebut(),creneau.getHeureFin(),creneau.getStatut(),creneau.getPsychologue().getNom())
+                )
                 .toList();
     }
 

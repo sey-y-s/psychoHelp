@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.psychohelp.psychohelp.entity.Seance;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
+@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api/seances")
@@ -46,7 +47,7 @@ public class SeanceController {
     @Operation(summary = "Créer une séance", description = "Ajoute une nouvelle séance de RDV dans le système.")
     @ApiResponse(responseCode = "201", description = "Séance créée avec succès")
     public SeanceDTO create(@RequestBody SeanceDTO seance, HttpSession session) {
-        Session.verifierRole(session, RoleEnum.CITOYEN);
+       // Session.verifierRole(session, RoleEnum.CITOYEN);
         return seanceService.createSeance(seance);
     }
 

@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface CreneauService {
 
-    CreneauResponseDTO creer(CreneauDTO dto);
+    CreneauResponseDTO creer(CreneauDTO dto, HttpSession session);
 
     List<CreneauResponseDTO> getAll();
 

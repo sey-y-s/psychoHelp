@@ -49,7 +49,7 @@ public class CreneauController {
                                     HttpSession session) {
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
-        return cs.creer(dto);
+        return cs.creer(dto,session);
     }
 
     @Operation(
