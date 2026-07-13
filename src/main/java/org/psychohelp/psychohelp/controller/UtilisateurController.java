@@ -103,7 +103,7 @@ public class UtilisateurController {
         utilisateurService.supUtilisateur(id);
     }
 
-
+    @CrossOrigin("http://localhost:4200")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody ConnectionDTO connectionDTO, HttpSession session){
         Utilisateur utilisateur = authentificationService.connecter(connectionDTO);
