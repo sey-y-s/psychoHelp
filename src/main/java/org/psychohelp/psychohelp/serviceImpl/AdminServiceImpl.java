@@ -250,7 +250,7 @@ public class AdminServiceImpl implements AdminService {
                 psychologueRepository.findByStatusFalse();
 
         return psychologues.stream()
-                .map(this::convertirEnDto)
+                .map(psy -> new PsychologueListeDto())
                 .toList();
     }
 
