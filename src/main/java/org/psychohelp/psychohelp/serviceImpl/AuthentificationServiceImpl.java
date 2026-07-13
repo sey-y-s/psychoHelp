@@ -2,7 +2,9 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 import jakarta.transaction.Transactional;
 import org.psychohelp.psychohelp.dto.ConnectionDTO;
+import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.exceptions.ConnexionException;
 import org.psychohelp.psychohelp.repository.UtilisateurRepository;
 import org.psychohelp.psychohelp.service.AuthentificationService;
@@ -36,6 +38,16 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
         if(!utilisateur.getMotDePasse().equals(connectionDTO.getMotDePasse())){
             throw new ConnexionException(msg);
+        }
+
+        if(utilisateur instanceof Psychologue){
+            Psychologue psychologue = (Psychologue) utilisateur;
+            if(Boolean.FALSE.equals(psychologue.getStatus())){
+                throw new ConnexionException("Votre compte est en attente de validation par l'administrateur. Veuillez patienter.");
+            }
+            if(Boolean.FALSE.equals(psychologue.getEtat())){
+                throw new ConnexionException("Ce compte a été désactivé.");
+            }
         }
 
         return utilisateur;
