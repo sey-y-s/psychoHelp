@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/psychologues")
 @Tag(
         name = "Psychologues",
