@@ -59,9 +59,7 @@ public class PsychologueController {
         Psychologue psychologuecreer=psyService.savePsychologue(psychologue);
 
 
-
-        return new PsychologueListeDto(psychologuecreer.getId(),psychologuecreer.getNom(),psychologuecreer.getPrenom(),psychologuecreer.getTelephone(),psychologuecreer.getMail(),psychologuecreer.getRole(),psychologuecreer.getDateCreation(),psychologuecreer.getStatus(),psychologuecreer.getDescription(),psychologuecreer.getDiplome_path(),psychologuecreer.getCv_path(),psychologuecreer.getEtat());
-
+        return mapPsytoDto(psychologuecreer);
 
     }
     @Operation(
@@ -109,8 +107,9 @@ public class PsychologueController {
         Session.verifierRole(session, RoleEnum.ADMIN);
 
         Psychologue psychologue=psyService.GetPsychologueById(id);
-
-        return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
+        PsychologueListeDto psy = mapPsytoDto(psychologue);
+        psy.setSpecialite(psychologue.getSpecialite().getNom());
+        return psy;
     }
     @Operation(
             summary = "Rechercher un conseil d'un  psychologue",
@@ -158,6 +157,23 @@ public class PsychologueController {
 
 
         return psyService.getPsychologueValide();
+    }
+
+    public PsychologueListeDto mapPsytoDto (Psychologue psychologue) {
+        PsychologueListeDto dto=new PsychologueListeDto();
+        dto.setId(psychologue.getId());
+        dto.setNom(psychologue.getNom());
+        dto.setPrenom(psychologue.getPrenom());
+        dto.setTelephone(psychologue.getTelephone());
+        dto.setMail(psychologue.getMail());
+        dto.setRole(psychologue.getRole());
+        dto.setDateCreation(psychologue.getDateCreation());
+        dto.setStatus(psychologue.getStatus());
+        dto.setDescription(psychologue.getDescription());
+        dto.setCv_path(psychologue.getCv_path());
+        dto.setDiplome_path(psychologue.getDiplome_path());
+        dto.setEtat(psychologue.getEtat());
+        return dto;
     }
 
 }
