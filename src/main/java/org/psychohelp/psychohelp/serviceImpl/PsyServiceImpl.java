@@ -49,7 +49,8 @@ public class PsyServiceImpl implements PsyService {
             psychologueListeDto.setRole(psychologue.getRole());
             psychologueListeDto.setDateCreation(psychologue.getDateCreation());
             psychologueListeDto.setEtat(psychologue.getEtat());
-            psychologueListeDto.setStatus(psychologue.getStatus());
+            Boolean status = psychologue.getStatus();
+            psychologueListeDto.setStatus(status != null ? status : false);
 
             resultatPsy.add(psychologueListeDto);
 
