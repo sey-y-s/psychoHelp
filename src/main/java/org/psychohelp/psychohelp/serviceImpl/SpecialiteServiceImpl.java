@@ -75,4 +75,9 @@ public class SpecialiteServiceImpl implements SpecialiteService {
         return new SpecialiteListeDto(specialitemodif.getId(),specialitemodif.getNom(),specialitemodif.getAdmin().getNom());
 
     }
+
+    @Override
+    public List<Specialite> listePublique() {
+        return specialiteRepo.findAll();
+    }
 }
