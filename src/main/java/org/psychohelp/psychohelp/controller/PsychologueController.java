@@ -69,7 +69,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        //Session.verifierRole(session, RoleEnum.ADMIN);
+        Session.verifierRole(session, RoleEnum.ADMIN);
 
         return  psyService.PSYCHOLOGUEList();
     }
@@ -104,7 +104,7 @@ public class PsychologueController {
 
     @GetMapping("/{id}")
     public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id,HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Session.verifierRole(session, RoleEnum.ADMIN);
 
         Psychologue psychologue=psyService.GetPsychologueById(id);
         PsychologueListeDto psy = mapPsytoDto(psychologue);
@@ -159,7 +159,7 @@ public class PsychologueController {
         return psyService.getPsychologueValide();
     }
 
-    public PsychologueListeDto mapPsytoDto (Psychologue psychologue) {
+    public static PsychologueListeDto mapPsytoDto (Psychologue psychologue) {
         PsychologueListeDto dto=new PsychologueListeDto();
         dto.setId(psychologue.getId());
         dto.setNom(psychologue.getNom());
