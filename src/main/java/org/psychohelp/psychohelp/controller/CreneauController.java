@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.psychohelp.psychohelp.utils.Session;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequiredArgsConstructor
