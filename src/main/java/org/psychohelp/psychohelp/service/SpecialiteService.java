@@ -19,4 +19,7 @@ public interface SpecialiteService {
     List<Psychologue> getSpecialiteIsPsycholoque(int id);
 
     SpecialiteListeDto updateSpecialite(int id, RequestSpecialiteDto updateSpecialiteDto, HttpSession session);
+
+    List<Specialite> listePublique();
+
 }

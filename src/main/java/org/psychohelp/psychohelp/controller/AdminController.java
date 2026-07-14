@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/admins")
 @Tag(
         name = "Administrateur",
@@ -31,7 +32,7 @@ public class AdminController {
     )
     @PostMapping
     public AdminResponseDTO  ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
-        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.ajouterAdmin(dto);
     }
 

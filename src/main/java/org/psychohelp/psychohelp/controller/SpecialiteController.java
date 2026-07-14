@@ -24,6 +24,7 @@ import java.util.List;
         name = "Specialité des psychologues",
         description = "Gestion de la specialité des psychologues"
 )
+@CrossOrigin(origins = "*")
 public class SpecialiteController{
     @Autowired
     private SpecialiteService specialiteService;
@@ -43,7 +44,7 @@ public class SpecialiteController{
     )
     @GetMapping
     public List<SpecialiteListeDto> Liste(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.PSYCHOLOGUE);
         return specialiteService.listeSpecialite(session).stream().map(
                 specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom(),specialite.getAdmin().getNom())
         ).toList();
@@ -95,5 +96,18 @@ public class SpecialiteController{
                                 psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat()
                                 )
         ).toList();
+    }
+
+    @GetMapping("/public")
+    public List<SpecialiteListeDto> listePublique() {
+
+        return specialiteService.listePublique()
+                .stream()
+                .map(s -> new SpecialiteListeDto(
+                        s.getId(),
+                        s.getNom(),
+                        ""
+                ))
+                .toList();
     }
 }
