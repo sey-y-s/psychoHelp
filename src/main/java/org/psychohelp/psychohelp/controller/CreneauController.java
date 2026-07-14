@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
+import org.psychohelp.psychohelp.dto.DateRdvPourCitoyen;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.CreneauService;
@@ -161,5 +162,9 @@ public class CreneauController {
             @PathVariable Integer psychologueId) {
 
         return cs.getDisponiblesByPsychologueId(psychologueId);
+    }
+    @GetMapping("/{id}/disponiblePourCitoyen")
+    public List<DateRdvPourCitoyen> getDateRv(@PathVariable Integer id) {
+        return cs.getToutesLesDatesDisponibles(id);
     }
 }
