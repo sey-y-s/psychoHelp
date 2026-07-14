@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import org.psychohelp.psychohelp.controller.PsychologueController;
 import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
@@ -74,8 +75,7 @@ public class PsyServiceImpl implements PsyService {
         psy.setStatus(updateEtatStatusDto.getStatus());
         Psychologue psychologue=psychologueRepository.save(psy);
 
-           return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
-
+           return PsychologueController.mapPsytoDto(psychologue);
     }
 
 
@@ -115,7 +115,7 @@ public class PsyServiceImpl implements PsyService {
 
 
 Psychologue psychologue =psychologueRepository.save(psy);
-        return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
+        return PsychologueController.mapPsytoDto(psychologue);
     }
 
     @Override
