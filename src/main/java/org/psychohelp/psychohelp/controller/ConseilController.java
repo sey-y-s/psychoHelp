@@ -10,6 +10,7 @@ import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.serviceImpl.ConseilServiceImpl;
 import org.psychohelp.psychohelp.utils.Session;
@@ -42,14 +43,15 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam (required = false) Boolean status){
+    public List<ConseilAfficheDto> list(@RequestParam (required = false) String status){
         if (status != null){
             //return conseilService.listConseilParStatus(status);
-            return conseilService.listConseilParStatus(status).stream()
+            return conseilService.  listConseilParStatus(StatusConseilEnum.valueOf(status)).stream()
                     .map(
                             conseil -> new ConseilAfficheDto(conseil.getTitre(),
                                     conseil.getDescription(),conseil.getAuteur(),
-                                    conseil.getPsychologue().nomComplet())
+                                    conseil.getPsychologue().nomComplet(),
+                                     conseil.getDatePublication(), conseil.getStatus().toString())
                     ).toList();
         }
         //return conseilService.listeConseil();
@@ -57,7 +59,9 @@ public class ConseilController {
                 .map(
                         conseil -> new ConseilAfficheDto(conseil.getTitre(),
                                 conseil.getDescription(),conseil.getAuteur(),
-                                conseil.getPsychologue().nomComplet())
+                                conseil.getPsychologue().nomComplet(),
+                                 conseil.getDatePublication(),
+                                conseil.getStatus().toString())
                 ).toList();
     }
 
@@ -95,7 +99,7 @@ public class ConseilController {
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
         conseil.setAuteur(conseilDto.getDescription());
-        conseil.setStatus(false);
+        conseil.setStatus(StatusConseilEnum.ENATTENTE);
         conseil.setDatePublication(LocalDate.now());
         /*conseil.setPsychologue(
                 conseilService.conseilParId(conseilDto.getPsy_id()).getPsychologue()
