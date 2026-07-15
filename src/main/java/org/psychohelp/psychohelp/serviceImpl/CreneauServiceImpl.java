@@ -159,7 +159,7 @@ public class CreneauServiceImpl implements CreneauService {
 
 
             if(date.getDayOfWeek().equals(convertirJour(creneau.getJours()))) {
-
+                //on verifie ici si la date en question est prise
                 int reserve= seanceRepository.rdvDejaPris(date,creneau.getId());
                 if(reserve==0){
                     DateRdvPourCitoyen dto = new DateRdvPourCitoyen();
