@@ -163,7 +163,9 @@ public class CreneauController {
         return cs.getDisponiblesByPsychologueId(psychologueId);
     }
     @GetMapping("/{id}/disponiblePourCitoyen")
-    public List<DateRdvPourCitoyen> getDateRv(@PathVariable Integer id) {
+    public List<DateRdvPourCitoyen> getDateRv(@PathVariable Integer id,HttpSession session) {
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
         return cs.getToutesLesDatesDisponibles(id);
     }
 }

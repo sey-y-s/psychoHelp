@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.entity.Seance;
 import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface SeanceService {
     List<Seance> getAllSeances();
     Seance getSeanceById(Long id);
-    SeanceDTO createSeance(SeanceDTO seance);
+    SeanceDTO createSeance(SeanceDTO seance, HttpSession session);
     SeanceDTO cancelSeance(Long id);
 
     List<Seance> getSeancesByCitoyen(Long citoyenId);

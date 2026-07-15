@@ -1,10 +1,12 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.entity.Citoyen;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Seance;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
 import org.psychohelp.psychohelp.exceptions.BadRequestException;
 import org.psychohelp.psychohelp.exceptions.NotFoundException;
@@ -41,9 +43,13 @@ public class SeanceServiceImpl implements SeanceService {
     }
 
     @Override
-    public SeanceDTO createSeance(SeanceDTO seance) {
+    public SeanceDTO createSeance(SeanceDTO seance, HttpSession session) {
+        /*
         Citoyen c = citoyenRepository.findById(seance.getCitoyenId())
                 .orElseThrow(() -> new NotFoundException("Citoyen " + seance.getCitoyenId() + "introuvable"));
+                */
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+
 
         Creneau cr = creneauRepository.findById(seance.getCreneauId())
                 .orElseThrow(() -> new NotFoundException("Creneau " + seance.getCreneauId() + "introuvable"));
@@ -58,11 +64,12 @@ public class SeanceServiceImpl implements SeanceService {
         if(!(cr.getJours().toUpperCase().equals(jourSeance)) || !creneauIsActive) {
             throw new BadRequestException("Gros problème : ce créneau n'est pas disponible");
         }
-
+        Citoyen citoyen=new Citoyen();
+        citoyen.setId(utilisateur.getId());
         Seance s = new  Seance();
         s.setDateRdv(seance.getDateRdv());
         s.setStatut(StatutRdvEnum.RESERVER);
-        s.setCitoyen(c);
+        s.setCitoyen(citoyen);
         s.setCreneau(cr);
         seanceRepository.save(s);
         return mapSeanceToDTO(s);
@@ -97,7 +104,7 @@ public class SeanceServiceImpl implements SeanceService {
         SeanceDTO seanceDTO = new SeanceDTO();
         seanceDTO.setDateRdv(seance.getDateRdv());
         seanceDTO.setStatut(seance.getStatut());
-        seanceDTO.setCitoyenId(seance.getCitoyen().getId());
+        //seanceDTO.setCitoyenId(seance.getCitoyen().getId());
         seanceDTO.setCreneauId(seance.getCreneau().getId());
         return seanceDTO;
     }

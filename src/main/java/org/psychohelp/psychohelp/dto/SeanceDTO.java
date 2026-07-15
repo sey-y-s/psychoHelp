@@ -14,6 +14,6 @@ import java.time.LocalDate;
 public class SeanceDTO {
     private LocalDate dateRdv;
     private StatutRdvEnum statut;
-    private int citoyenId;
+    //private int citoyenId;
     private Long creneauId;
 }
