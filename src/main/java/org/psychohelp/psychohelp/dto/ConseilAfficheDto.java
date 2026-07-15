@@ -21,7 +21,7 @@ public class ConseilAfficheDto {
 
         private String status;
 
-
+        private Integer id;
 
 
 }

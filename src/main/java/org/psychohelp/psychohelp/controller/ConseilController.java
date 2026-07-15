@@ -51,7 +51,7 @@ public class ConseilController {
                             conseil -> new ConseilAfficheDto(conseil.getTitre(),
                                     conseil.getDescription(),conseil.getAuteur(),
                                     conseil.getPsychologue().nomComplet(),
-                                     conseil.getDatePublication(), conseil.getStatus().toString())
+                                     conseil.getDatePublication(), conseil.getStatus().toString(), conseil.getId())
                     ).toList();
         }
         //return conseilService.listeConseil();
@@ -61,7 +61,7 @@ public class ConseilController {
                                 conseil.getDescription(),conseil.getAuteur(),
                                 conseil.getPsychologue().nomComplet(),
                                  conseil.getDatePublication(),
-                                conseil.getStatus().toString())
+                                conseil.getStatus().toString(), conseil.getId())
                 ).toList();
     }
 
@@ -78,6 +78,9 @@ public class ConseilController {
         conseilDto.setDescription(conseil.getDescription());
         conseilDto.setAuteur(conseil.getAuteur());
         conseilDto.setPsyNom(conseil.getPsychologue().getNom());
+        conseilDto.setDatePublication(conseil.getDatePublication());
+        conseilDto.setStatus(conseil.getStatus().name());
+        conseilDto.setId(conseil.getId());
         //conseilDto.setPsyId(conseil.getPsychologue().getId());
         return conseilDto;
     }
