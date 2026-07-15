@@ -18,6 +18,6 @@ public interface PsychologueRepository extends JpaRepository<Psychologue,Integer
 
 @Query("SELECT p FROM Psychologue p WHERE p.status = true AND p.etat = true")
      List<Psychologue> getPsychologueValide();
-
+     List<Psychologue> findByStatusFalse();
 
 }

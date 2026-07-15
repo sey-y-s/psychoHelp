@@ -243,6 +243,14 @@ public class AdminServiceImpl implements AdminService {
 
         return response;
     }
+    @Override
+    public List<PsychologueListeDto> listerPsychologuesEnAttente() {
+
+        List<Psychologue> psychologues =
+                psychologueRepository.findByStatusFalse();
+
+        return null;
+    }
 
 
 }

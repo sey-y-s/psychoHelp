@@ -27,6 +27,7 @@ public interface AdminService {
     PsychologueListeDto validerInscriptionPsy (Integer id);
 
     PsychologueListeDto annulerInscriptionPsy(Integer id);
+    List<PsychologueListeDto> listerPsychologuesEnAttente();
 
 
 }
