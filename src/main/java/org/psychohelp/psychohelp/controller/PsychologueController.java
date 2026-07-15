@@ -100,9 +100,22 @@ public class PsychologueController {
         return psyService.UpdateEtatStatus(id, psychologue);
     }
     @Operation(
+            summary = "Lister toutes les spécialités",
+            description = "Retourne la liste complète des spécialités enregistrées en base de données"
+    )
+    @GetMapping("/specialites")
+    public List<Specialite> getSpecialites() {
+        return specialiteService.listePublique();
+    }
+
+    @Operation(
             summary = "Rechercher un psychologue",
             description = "Retourne un psychologue à partir de son identifiant"
     )
+
+
+
+
 
     @GetMapping("/{id}")
     public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id,HttpSession session){
