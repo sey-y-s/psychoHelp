@@ -22,6 +22,7 @@ import java.util.List;
         name = "Utilisateur",
         description = "Les opération sur l'utilisateur"
 )
+
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
@@ -105,6 +106,7 @@ public class UtilisateurController {
 
 
     @PostMapping("/login")
+
     public ResponseEntity<?> login(@RequestBody ConnectionDTO connectionDTO, HttpSession session){
         Utilisateur utilisateur = authentificationService.connecter(connectionDTO);
 

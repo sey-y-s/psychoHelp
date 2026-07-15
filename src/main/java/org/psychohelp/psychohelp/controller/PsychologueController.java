@@ -25,7 +25,7 @@ import java.util.List;
         name = "Psychologues",
         description = "Gestion des Psychologues"
 )
-
+@CrossOrigin(origins = "*")
 public class PsychologueController {
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;
