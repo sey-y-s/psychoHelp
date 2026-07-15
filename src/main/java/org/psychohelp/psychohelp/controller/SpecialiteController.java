@@ -89,12 +89,7 @@ public class SpecialiteController{
         List<Psychologue>psychologues=specialiteService.getSpecialiteIsPsycholoque(id);
 
         return psychologues.stream().map(
-                psychologue ->
-                        new PsychologueListeDto(psychologue.getId(),
-                        psychologue.getNom(), psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),
-                                psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),
-                                psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat()
-                                )
+                PsychologueController::mapPsytoDto
         ).toList();
     }
 
