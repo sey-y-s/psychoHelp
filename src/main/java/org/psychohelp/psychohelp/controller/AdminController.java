@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/admins")
 @CrossOrigin(origins = "http://localhost:4200")
 @Tag(
@@ -32,7 +33,7 @@ public class AdminController {
     )
     @PostMapping
     public AdminResponseDTO  ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
-        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.ajouterAdmin(dto);
     }
 
@@ -124,6 +125,18 @@ public class AdminController {
     public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
+    }
+    @Operation(
+            summary = "Liste des psychologues en attente",
+            description = "Retourne tous les psychologues en attente de validation"
+    )
+    @GetMapping("/psychologues/en-attente")
+    public List<PsychologueListeDto> listerPsychologuesEnAttente(HttpSession session){
+
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
+        return adminService.listerPsychologuesEnAttente();
+
     }
 
 
