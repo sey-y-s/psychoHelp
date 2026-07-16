@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/admins")
+@CrossOrigin(origins = "http://localhost:4200")
 @Tag(
         name = "Administrateur",
         description = "Gestion des categories, de la validation et l'annulation des psychologue ainsi que la validation et annullation des conseils publier par les administrateur"
@@ -31,7 +33,7 @@ public class AdminController {
     )
     @PostMapping
     public AdminResponseDTO  ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
-        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.ajouterAdmin(dto);
     }
 
