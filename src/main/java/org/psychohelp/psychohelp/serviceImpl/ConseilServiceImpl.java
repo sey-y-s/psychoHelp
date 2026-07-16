@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import org.psychohelp.psychohelp.entity.Conseil;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.service.ConseilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,9 @@ public class ConseilServiceImpl implements ConseilService {
         conseilRepository.deleteById(id);
     }
 
+
     @Override
-    public List<Conseil> listConseilParStatus(Boolean status) {
+    public List<Conseil> listConseilParStatus(StatusConseilEnum status) {
         return conseilRepository.findByStatus(status);
     }
 
