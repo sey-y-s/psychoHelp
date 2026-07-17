@@ -1,7 +1,7 @@
 package org.psychohelp.psychohelp.repository;
 
 import org.psychohelp.psychohelp.entity.Conseil;
-import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.service;
 
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.entity.Conseil;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 
 import java.util.List;
 

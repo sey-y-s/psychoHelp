@@ -62,6 +62,8 @@ public class SeanceController {
         );
     }
 
+    // TODO : Notifier la seconde entité (citoyen OU psy) de l'annulation d'un rdv
+
 
 //    @GetMapping("/citoyen/{citoyenId}")
 //    @Operation(summary = "Lister les séances d'un citoyen", description = "Récupère l'historique complet des séances associées à un citoyen spécifique.")

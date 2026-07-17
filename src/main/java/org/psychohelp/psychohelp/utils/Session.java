@@ -48,4 +48,17 @@ public final class Session {
         dto.setRole(u.getRole().toString());
         return dto;
     }
+
+
+    public static AdminResponseDTO getConnectedUser(HttpSession session){
+        Utilisateur u = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+        if (u==null){return null;}
+        AdminResponseDTO dto = new AdminResponseDTO();
+        dto.setId(u.getId());
+        dto.setNom(u.getNom());
+        dto.setPrenom(u.getPrenom());
+        dto.setMail(u.getMail());
+        dto.setRole(u.getRole().toString());
+        return dto;
+    }
 }

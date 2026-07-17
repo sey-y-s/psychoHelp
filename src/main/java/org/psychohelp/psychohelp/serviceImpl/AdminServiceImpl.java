@@ -8,6 +8,7 @@ import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
@@ -145,7 +146,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        conseil.setStatus(true);
+        conseil.setStatus(StatusConseilEnum.VALIDER);
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
         notificationService.envoyer(
@@ -178,7 +179,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        conseil.setStatus(false);
+        conseil.setStatus(StatusConseilEnum.REFUSER);
 
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
@@ -265,6 +266,14 @@ public class AdminServiceImpl implements AdminService {
         response.setEtat(psySauvegarde.getEtat()); // ou isEtat() selon ton entité
 
         return response;
+    }
+    @Override
+    public List<PsychologueListeDto> listerPsychologuesEnAttente() {
+
+        List<Psychologue> psychologues =
+                psychologueRepository.findByStatusFalse();
+
+        return null;
     }
 
 

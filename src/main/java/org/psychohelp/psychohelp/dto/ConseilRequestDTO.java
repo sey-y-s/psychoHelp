@@ -5,8 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class UpdateSpecialiteDto {
-    private String nom;
+@AllArgsConstructor
+public class ConseilRequestDTO {
+        private String titre;
+        private String description;
+        private String auteur;
+
+
+
 }

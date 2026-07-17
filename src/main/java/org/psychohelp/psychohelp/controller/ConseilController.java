@@ -6,10 +6,12 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDto;
+import org.psychohelp.psychohelp.dto.ConseilRequestDTO;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.serviceImpl.ConseilServiceImpl;
 import org.psychohelp.psychohelp.utils.Session;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/conseils")
+@CrossOrigin(origins = "http://localhost:4200")
 @Tag(
         name = "Conseils",
         description = "Gestion des conseils"
@@ -62,6 +65,9 @@ public class ConseilController {
         conseilDto.setDescription(conseil.getDescription());
         conseilDto.setAuteur(conseil.getAuteur());
         conseilDto.setPsyNom(conseil.getPsychologue().getNom());
+        conseilDto.setDatePublication(conseil.getDatePublication());
+        conseilDto.setStatus(conseil.getStatus().name());
+        conseilDto.setId(conseil.getId());
         //conseilDto.setPsyId(conseil.getPsychologue().getId());
         return conseilDto;
     }
@@ -71,7 +77,7 @@ public class ConseilController {
             description = "Inserer un conseils"
     )
     @PostMapping(path = "post")
-    public ConseilDto create(@RequestBody ConseilDto conseilDto, HttpSession session){
+    public ConseilRequestDTO create(@RequestBody ConseilRequestDTO conseilDto, HttpSession session){
 
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
@@ -83,7 +89,7 @@ public class ConseilController {
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
         conseil.setAuteur(conseilDto.getDescription());
-        conseil.setStatus(false);
+        conseil.setStatus(StatusConseilEnum.ENATTENTE);
         conseil.setDatePublication(LocalDate.now());
         /*conseil.setPsychologue(
                 conseilService.conseilParId(conseilDto.getPsy_id()).getPsychologue()
@@ -101,7 +107,7 @@ public class ConseilController {
             description = "modifier un conseil par son id"
     )
     @PutMapping(path = "update/{id}")
-    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto, HttpSession session){
+    public ConseilRequestDTO update(@PathVariable int id, @RequestBody ConseilRequestDTO conseilDto, HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
 

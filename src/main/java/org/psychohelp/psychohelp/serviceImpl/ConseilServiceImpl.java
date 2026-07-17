@@ -8,6 +8,7 @@ import org.psychohelp.psychohelp.repository.UtilisateurRepository;
 import org.psychohelp.psychohelp.service.NotificationService;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.entity.Conseil;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.service.ConseilService;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,7 @@ public class ConseilServiceImpl implements ConseilService {
     public void supConseil(Integer id) {
         conseilRepository.deleteById(id);
     }
+
 
     @Override
     public List<ConseilAfficheDto> listConseilParStatus(Boolean status) {

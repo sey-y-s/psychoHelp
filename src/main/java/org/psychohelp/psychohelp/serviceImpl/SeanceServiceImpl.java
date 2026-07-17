@@ -20,7 +20,10 @@ import org.psychohelp.psychohelp.service.SeanceService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class SeanceServiceImpl implements SeanceService {
     private final CreneauRepository creneauRepository;
     private final CitoyenRepository citoyenRepository;
     private final NotificationService notificationService;
+    private final CitoyenRepository citoyenRepository;
+    private final CreneauRepository creneauRepository;
 
     @Override
     public List<Seance> getAllSeances() {
@@ -185,4 +190,14 @@ public class SeanceServiceImpl implements SeanceService {
 
         return dto;
     }
+
+    public SeanceDTO mapSeanceToDTO(Seance seance) {
+        SeanceDTO seanceDTO = new SeanceDTO();
+        seanceDTO.setDateRdv(seance.getDateRdv());
+        seanceDTO.setStatut(seance.getStatut());
+        seanceDTO.setCitoyenId(seance.getCitoyen().getId());
+        seanceDTO.setCreneauId(seance.getCreneau().getId());
+        return seanceDTO;
+    }
+
 }
