@@ -22,7 +22,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/conseils")
-@CrossOrigin(origins = "http://localhost:4200")
 @Tag(
         name = "Conseils",
         description = "Gestion des conseils"
