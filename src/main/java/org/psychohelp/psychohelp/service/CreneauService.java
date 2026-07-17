@@ -1,7 +1,9 @@
 package org.psychohelp.psychohelp.service;
 
+import jakarta.servlet.http.HttpSession;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
+import org.psychohelp.psychohelp.dto.DateRdvPourCitoyen;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 
@@ -25,4 +27,5 @@ public interface CreneauService {
     List<CreneauResponseDTO> getDisponibles();
 
     List<CreneauResponseDTO> getDisponiblesByPsychologueId(Integer psychologueId);
+    List<DateRdvPourCitoyen>getToutesLesDatesDisponibles(int p);
 }

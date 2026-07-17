@@ -33,8 +33,8 @@ public class SeanceServiceImpl implements SeanceService {
     private final CreneauRepository creneauRepository;
     private final CitoyenRepository citoyenRepository;
     private final NotificationService notificationService;
-    private final CitoyenRepository citoyenRepository;
-    private final CreneauRepository creneauRepository;
+
+
 
     @Override
     public List<Seance> getAllSeances() {
@@ -191,13 +191,5 @@ public class SeanceServiceImpl implements SeanceService {
         return dto;
     }
 
-    public SeanceDTO mapSeanceToDTO(Seance seance) {
-        SeanceDTO seanceDTO = new SeanceDTO();
-        seanceDTO.setDateRdv(seance.getDateRdv());
-        seanceDTO.setStatut(seance.getStatut());
-        seanceDTO.setCitoyenId(seance.getCitoyen().getId());
-        seanceDTO.setCreneauId(seance.getCreneau().getId());
-        return seanceDTO;
-    }
 
 }

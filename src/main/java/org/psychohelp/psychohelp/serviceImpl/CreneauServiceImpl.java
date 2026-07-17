@@ -1,8 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
-
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
+import org.psychohelp.psychohelp.dto.DateRdvPourCitoyen;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Psychologue;
@@ -10,11 +10,16 @@ import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.mapper.CreneauMapper;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
+import org.psychohelp.psychohelp.repository.SeanceRepository;
 import org.psychohelp.psychohelp.service.CreneauService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +29,8 @@ public class CreneauServiceImpl implements CreneauService {
     private final CreneauRepository cp;
     private final PsychologueRepository pp;
     private final CreneauMapper mapper;
+    @Autowired
+    private SeanceRepository seanceRepository;
 
     @Override
     public CreneauResponseDTO creer(CreneauDTO dto,
@@ -120,4 +127,63 @@ public class CreneauServiceImpl implements CreneauService {
 
         return creneaux;
     }
+    @Override
+    public List<DateRdvPourCitoyen> getToutesLesDatesDisponibles(int psychologueId) {
+        List<DateRdvPourCitoyen>listes=new ArrayList<>();
+        for (Creneau creneau : cp.findByPsychologueIdAndStatutTrue(psychologueId)) {
+            genererDisponibilites(creneau,listes);
+        }
+        return listes;
+    }
+
+    private void genererDisponibilites(Creneau creneau, List<DateRdvPourCitoyen> disponibilites) {
+
+        LocalDate debut = LocalDate.now();
+        LocalDate fin = debut.plusDays(30); // générer les 30 prochains jours
+
+
+        for(LocalDate date = debut; !date.isAfter(fin); date = date.plusDays(1)) {
+
+
+            if(date.getDayOfWeek().equals(convertirJour(creneau.getJours()))) {
+                //on verifie ici si la date en question est prise
+                int reserve= seanceRepository.rdvDejaPris(date,creneau.getId());
+                if(reserve==0){
+                    DateRdvPourCitoyen dto = new DateRdvPourCitoyen();
+
+                    dto.setDate(date);
+                    dto.setHeureDebut(creneau.getHeureDebut());
+                    dto.setHeureFin(creneau.getHeureFin());
+                    dto.setCreneauId(creneau.getId());
+                    dto.setJours(creneau.getJours());
+
+                    dto.setPsyId(creneau.getPsychologue().getId());
+                    dto.setNomPsychologue(creneau.getPsychologue().getNom());
+
+
+                    disponibilites.add(dto);
+                }
+
+
+
+            }
+        }
+    }
+    private DayOfWeek convertirJour(String jour) {
+
+        return switch(jour.toUpperCase()) {
+
+            case "LUNDI" -> DayOfWeek.MONDAY;
+            case "MARDI" -> DayOfWeek.TUESDAY;
+            case "MERCREDI" -> DayOfWeek.WEDNESDAY;
+            case "JEUDI" -> DayOfWeek.THURSDAY;
+            case "VENDREDI" -> DayOfWeek.FRIDAY;
+            case "SAMEDI" -> DayOfWeek.SATURDAY;
+            case "DIMANCHE" -> DayOfWeek.SUNDAY;
+
+            default -> throw new RuntimeException("Jour invalide");
+        };
+    }
+
+
 }

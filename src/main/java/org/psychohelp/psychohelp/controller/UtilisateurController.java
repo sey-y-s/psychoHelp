@@ -36,12 +36,12 @@ public class UtilisateurController {
     public List<UtilisateurListDTO> list(){
         return utilisateurService.listeUtilisateur().stream()
                 .map(utilisateur -> new UtilisateurListDTO(
-                        utilisateur.getNom(),
-                        utilisateur.getPrenom(),
-                        utilisateur.getMail(),
-                        utilisateur.getTelephone()
-                )
-        ).toList();
+                                utilisateur.getNom(),
+                                utilisateur.getPrenom(),
+                                utilisateur.getMail(),
+                                utilisateur.getTelephone()
+                        )
+                ).toList();
     }
 
 
@@ -98,21 +98,6 @@ public class UtilisateurController {
 
         return ResponseEntity.ok(dto);
     }
-
-    @GetMapping("/session")
-    @Operation( summary = "Récupérer le user courant", description = "Vérifier si une session existe déjà et renvoyer l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Utilisateur connecté récupéré avec succès")
-    public AdminResponseDTO getCurrentUser(HttpSession session) {
-        return Session.getConnectedUser(session);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpSession session) {
-        session.invalidate();
-        return ResponseEntity.ok().body(Map.of("message", "Déconnecté avec succès"));
-    }
-
-
 
     @GetMapping("/session")
     @Operation( summary = "Récupérer le user courant", description = "Vérifier si une session existe déjà et renvoyer l'utilisateur")

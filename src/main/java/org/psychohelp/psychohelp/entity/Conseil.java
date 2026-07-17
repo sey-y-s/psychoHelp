@@ -22,9 +22,9 @@ public class Conseil {
     private String description;
 
     //le conseil doit etre valider par l'admin
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private StatusConseilEnum status;
+    private Boolean status=false;
 
     @Column(name = "date_publication")
     private LocalDate datePublication=LocalDate.now();

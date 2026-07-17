@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.service.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
