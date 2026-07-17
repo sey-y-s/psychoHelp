@@ -69,7 +69,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+       // Session.verifierRole(session, RoleEnum.ADMIN);
 
         return  psyService.PSYCHOLOGUEList();
     }
@@ -101,15 +101,9 @@ public class PsychologueController {
             summary = "Lister toutes les spécialités",
             description = "Retourne la liste complète des spécialités enregistrées en base de données"
     )
-    @GetMapping("/specialites")
-    public List<Specialite> getSpecialites() {
-        return specialiteService.listePublique();
-    }
 
-    @Operation(
-            summary = "Rechercher un psychologue",
-            description = "Retourne un psychologue à partir de son identifiant"
-    )
+
+
 
 
 
