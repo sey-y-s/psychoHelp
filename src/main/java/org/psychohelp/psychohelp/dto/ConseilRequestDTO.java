@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConseilDto {
+public class ConseilRequestDTO {
         private String titre;
         private String description;
-        //private Boolean status=false;
         private String auteur;
-        private Integer psyId;
+
+
+
 }

@@ -126,10 +126,12 @@ public class PsychologueController {
         //return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
 
     }
+
     @Operation(
             summary = "Crée un conseil ",
             description = "Ajoute un nouveau conseil"
     )
+
     @PostMapping(path = "/conseil")
     public ListConseilDto create(@RequestBody ConseilDto conseilDto){
         Conseil conseil=new Conseil();
@@ -142,6 +144,8 @@ public class PsychologueController {
         Conseil conseilcreer=conseilService.creer(conseil);
         return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
     }
+
+
     @Operation(
             summary = "Liste des Psy validés ",
             description = "Liste des Psy validés par admin"

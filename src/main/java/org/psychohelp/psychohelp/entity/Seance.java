@@ -30,6 +30,7 @@ public class Seance {
     private LocalDate dateRdv;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
     private StatutRdvEnum statut;
 
     @ManyToOne

@@ -13,7 +13,7 @@ public class DateRdvPourCitoyen {
     private LocalDate date;
     private LocalTime heureDebut;
     private LocalTime heureFin;
-    private Long creneauId;
+    private int creneauId;
     private int psyId;
     private String nomPsychologue;
 

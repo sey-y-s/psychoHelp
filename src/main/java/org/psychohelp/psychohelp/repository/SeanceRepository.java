@@ -19,5 +19,5 @@ public interface SeanceRepository extends JpaRepository<Seance, Long> {
     @Query("SELECT s FROM Seance s JOIN s.creneau c WHERE c.psychologue.id = :psyId")
     List<Seance> findByPsyId(@Param("psyId") int psyId);
     @Query("select  count(s.id) from Seance s where s.dateRdv=:dateRdv and s.creneau.id=:id ")
-    int rdvDejaPris(@Param("dateRdv") LocalDate dateRv,@Param("id") Long id);
+    int rdvDejaPris(@Param("dateRdv") LocalDate dateRv,@Param("id") int id);
 }

@@ -1,6 +1,4 @@
 package org.psychohelp.psychohelp.serviceImpl;
-
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
@@ -35,23 +33,14 @@ public class CreneauServiceImpl implements CreneauService {
     private SeanceRepository seanceRepository;
 
     @Override
-    public CreneauResponseDTO creer(CreneauDTO dto, HttpSession session) {
+    public CreneauResponseDTO creer(CreneauDTO dto,
+                                    Utilisateur utilisateurConnecte) {
 
-        /*Psychologue psychologue = pp.findById(dto.getPsychologueId().intValue())
+        Psychologue psychologue = pp.findById(utilisateurConnecte.getId())
                 .orElseThrow(() ->
                         new RuntimeException("Psychologue introuvable"));
 
-         */
-        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
-        Psychologue psychologue=new Psychologue();
-        psychologue.setId(utilisateur.getId());
-
-        //Creneau creneau = mapper.toEntity(dto);
-        Creneau creneau=new Creneau();
-        creneau.setJours(dto.getJours());
-        creneau.setHeureDebut(dto.getHeureDebut());
-        creneau.setHeureFin(dto.getHeureFin());
-        creneau.setStatut(dto.getStatut());
+        Creneau creneau = mapper.toEntity(dto);
 
         creneau.setPsychologue(psychologue);
 
@@ -62,17 +51,14 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public List<CreneauResponseDTO> getAll() {
-
         return cp.findAll()
                 .stream()
-                .map(
-                        creneau -> new CreneauResponseDTO(creneau.getId(),creneau.getJours(),creneau.getHeureDebut(),creneau.getHeureFin(),creneau.getStatut(),creneau.getPsychologue().getNom())
-                )
+                .map(mapper::toDTO)
                 .toList();
     }
 
     @Override
-    public CreneauResponseDTO getById(Long id) {
+    public CreneauResponseDTO getById(int id) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -82,7 +68,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public CreneauResponseDTO update(Long id, UpdateCreneauDTO dto) {
+    public CreneauResponseDTO update(int id, UpdateCreneauDTO dto) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -97,7 +83,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(int id) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -107,14 +93,19 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
+    public List<CreneauResponseDTO> getMesCreneaux(Utilisateur utilisateurConnecte) {
+        return cp.findByPsychologueId(utilisateurConnecte.getId())
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
+    @Override
     public List<CreneauResponseDTO> getDisponibles() {
 
         return cp.findByStatutTrue()
                 .stream()
-                .map(
-                        creneau -> new CreneauResponseDTO(creneau.getId(),creneau.getJours(),creneau.getHeureDebut(),creneau.getHeureFin(),creneau.getStatut(),creneau.getPsychologue().getNom())
-
-                )
+                .map(mapper::toDTO)
                 .toList();
     }
 
@@ -124,10 +115,7 @@ public class CreneauServiceImpl implements CreneauService {
         List<CreneauResponseDTO> creneaux =
                 cp.findByPsychologueIdAndStatutTrue(psychologueId)
                         .stream()
-                        .map(
-                                creneau -> new CreneauResponseDTO(creneau.getId(),creneau.getJours(),creneau.getHeureDebut(),creneau.getHeureFin(),creneau.getStatut(),creneau.getPsychologue().getNom())
-
-                        )
+                        .map(mapper::toDTO)
                         .toList();
 
         if (creneaux.isEmpty()) {
@@ -139,10 +127,9 @@ public class CreneauServiceImpl implements CreneauService {
 
         return creneaux;
     }
-
     @Override
     public List<DateRdvPourCitoyen> getToutesLesDatesDisponibles(int psychologueId) {
-        List<DateRdvPourCitoyen>listes=new ArrayList<DateRdvPourCitoyen>();
+        List<DateRdvPourCitoyen>listes=new ArrayList<>();
         for (Creneau creneau : cp.findByPsychologueIdAndStatutTrue(psychologueId)) {
             genererDisponibilites(creneau,listes);
         }
@@ -197,5 +184,6 @@ public class CreneauServiceImpl implements CreneauService {
             default -> throw new RuntimeException("Jour invalide");
         };
     }
+
 
 }

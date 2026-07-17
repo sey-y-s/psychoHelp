@@ -17,7 +17,7 @@ public class Psychologue extends Utilisateur{
     private String description;
     private String diplome_path;
     private String  cv_path;
-    private Boolean etat=true;
+    private Boolean etat=false;
     @ManyToOne
     @JoinColumn(name="specialite_id",nullable = false)
     private Specialite specialite;
