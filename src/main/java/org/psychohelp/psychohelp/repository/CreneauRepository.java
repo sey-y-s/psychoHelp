@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CreneauRepository extends JpaRepository<Creneau, Long> {
+public interface CreneauRepository extends JpaRepository<Creneau, Integer> {
 
     List<Creneau> findByStatutTrue();
 
     List<Creneau> findByPsychologueIdAndStatutTrue(int psychologue_id);
+
+    List<Creneau> findByPsychologueId(int psychologueId);
 }
