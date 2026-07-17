@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") //<-- AJOUTE CECI
 @RequestMapping("/api/psychologues")
 @Tag(
         name = "Psychologues",
@@ -98,9 +99,16 @@ public class PsychologueController {
         return psyService.UpdateEtatStatus(id, psychologue);
     }
     @Operation(
-            summary = "Rechercher un psychologue",
-            description = "Retourne un psychologue à partir de son identifiant"
+            summary = "Lister toutes les spécialités",
+            description = "Retourne la liste complète des spécialités enregistrées en base de données"
     )
+
+
+
+
+
+
+
 
     @GetMapping("/{id}")
     public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id,HttpSession session){
