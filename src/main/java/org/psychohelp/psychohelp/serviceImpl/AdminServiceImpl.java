@@ -7,13 +7,11 @@ import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
-import org.psychohelp.psychohelp.service.AdminService;
-import org.psychohelp.psychohelp.service.EmailService;
-import org.psychohelp.psychohelp.service.QuestionsTestService;
-import org.psychohelp.psychohelp.service.TestService;
+import org.psychohelp.psychohelp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +34,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private NotificationService notificationService;
 
 //    @Autowired
 //    private TestService testService;
@@ -147,7 +148,13 @@ public class AdminServiceImpl implements AdminService {
         conseil.setStatus(true);
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
-
+        notificationService.envoyer(
+                conseilSauvegarde.getPsychologue(),
+                "Conseil validé",
+                "Votre conseil \"" + conseilSauvegarde.getTitre()
+                        + "\" a été validé par l'administrateur.",
+                TypeNotificationEnum.CONSEIL
+        );
         ConseilAfficheDto response = new ConseilAfficheDto();
 
         response.setTitre(conseilSauvegarde.getTitre());
@@ -175,6 +182,13 @@ public class AdminServiceImpl implements AdminService {
 
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
+        notificationService.envoyer(
+                conseilSauvegarde.getPsychologue(),
+                "Conseil refusé",
+                "Votre conseil \"" + conseilSauvegarde.getTitre()
+                        + "\" n'a pas été validé.",
+                TypeNotificationEnum.CONSEIL
+        );
 
         ConseilAfficheDto response = new ConseilAfficheDto();
 

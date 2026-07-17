@@ -4,6 +4,7 @@ public enum StatutRdvEnum {
     ANNULER,
     RESERVER,
     TERMINER,
-    DISPONIBLE
+    DISPONIBLE,
+    CONFIRMER
 
 }

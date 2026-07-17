@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
+import org.psychohelp.psychohelp.dto.SeanceResponseDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
@@ -37,7 +38,7 @@ public class SeanceController {
     @GetMapping("/{id}")
     @Operation( summary = "Récupérer une séance par ID", description = "Retourne la séance avec l'ID mentionné.")
     @ApiResponse(responseCode = "200", description = "Séance récupérée avec succès")
-    public Seance getSeanceById(Long id, HttpSession session) {
+    public Seance getSeanceById(@PathVariable Long id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return seanceService.getSeanceById(id);
     }
@@ -47,7 +48,8 @@ public class SeanceController {
     @ApiResponse(responseCode = "201", description = "Séance créée avec succès")
     public SeanceDTO create(@RequestBody SeanceDTO seance, HttpSession session) {
         Session.verifierRole(session, RoleEnum.CITOYEN);
-        return seanceService.createSeance(seance);
+        Utilisateur utilisateur = Session.getUtilisateur(session);
+        return seanceService.createSeance(seance, utilisateur);
     }
 
     @PutMapping("/{id}/annuler")
@@ -55,7 +57,9 @@ public class SeanceController {
     @ApiResponse(responseCode = "200", description = "Séance annulée avec succès")
     public ResponseEntity<SeanceDTO> annuler(@PathVariable Long id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.CITOYEN, RoleEnum.PSYCHOLOGUE);
-        return ResponseEntity.ok(seanceService.cancelSeance(id));
+        Utilisateur utilisateur = Session.getUtilisateur(session);
+        return ResponseEntity.ok(seanceService.cancelSeance(id, utilisateur)
+        );
     }
 
 
@@ -75,11 +79,21 @@ public class SeanceController {
     }
 
     @GetMapping("/mes-rdv")
-    @Operation(summary = "Lister les rdv d'un psychologue", description = "Récupère l'agenda et l'historique des séances associées à un psychologue spécifique.")
-    @ApiResponse(responseCode = "200", description = "Liste des séances du psy récupérée avec succès")
-    public List<Seance> getByPsy(HttpSession session) {
+    @Operation(summary = "Lister les rendez-vous du psychologue connecté", description = "Retourne l'agenda et l'historique des rendez-vous du psychologue connecté.")
+    @ApiResponse(responseCode = "200", description = "Liste des rendez-vous récupérée avec succès")
+    public List<SeanceResponseDTO> getMesRendezVous(HttpSession session) {
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
-        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+        Utilisateur utilisateur = Session.getUtilisateur(session);
         return seanceService.getSeancesByPsy(utilisateur.getId());
+    }
+
+    @PutMapping("/{id}/confirmer")
+    public ResponseEntity<SeanceDTO> confirmer(@PathVariable Long id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        Utilisateur utilisateur = Session.getUtilisateur(session);
+
+        return ResponseEntity.ok(seanceService.confirmerSeance(id, utilisateur)
+
+        );
     }
 }

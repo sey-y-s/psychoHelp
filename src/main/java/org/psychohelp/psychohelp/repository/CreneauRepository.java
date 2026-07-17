@@ -12,4 +12,6 @@ public interface CreneauRepository extends JpaRepository<Creneau, Integer> {
     List<Creneau> findByStatutTrue();
 
     List<Creneau> findByPsychologueIdAndStatutTrue(int psychologue_id);
+
+    List<Creneau> findByPsychologueId(int psychologueId);
 }

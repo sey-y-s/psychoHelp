@@ -6,6 +6,7 @@ import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.mapper.CreneauMapper;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
@@ -25,9 +26,10 @@ public class CreneauServiceImpl implements CreneauService {
     private final CreneauMapper mapper;
 
     @Override
-    public CreneauResponseDTO creer(CreneauDTO dto) {
+    public CreneauResponseDTO creer(CreneauDTO dto,
+                                    Utilisateur utilisateurConnecte) {
 
-        Psychologue psychologue = pp.findById(dto.getPsychologueId().intValue())
+        Psychologue psychologue = pp.findById(utilisateurConnecte.getId())
                 .orElseThrow(() ->
                         new RuntimeException("Psychologue introuvable"));
 
@@ -81,6 +83,14 @@ public class CreneauServiceImpl implements CreneauService {
                         new RuntimeException("Créneau introuvable"));
 
         cp.delete(creneau);
+    }
+
+    @Override
+    public List<CreneauResponseDTO> getMesCreneaux(Utilisateur utilisateurConnecte) {
+        return cp.findByPsychologueId(utilisateurConnecte.getId())
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
     }
 
     @Override
