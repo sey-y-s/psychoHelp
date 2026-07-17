@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") //<-- AJOUTE CECI
 @RequestMapping("/api/psychologues")
 @Tag(
         name = "Psychologues",
@@ -69,7 +68,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+        Session.verifierRole(session, RoleEnum.ADMIN,RoleEnum.CITOYEN);
 
         return  psyService.PSYCHOLOGUEList();
     }
