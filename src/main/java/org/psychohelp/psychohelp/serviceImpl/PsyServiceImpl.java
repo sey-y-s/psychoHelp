@@ -52,6 +52,7 @@ public class PsyServiceImpl implements PsyService {
             psychologueListeDto.setEtat(psychologue.getEtat());
             Boolean status = psychologue.getStatus();
             psychologueListeDto.setStatus(status != null ? status : false);
+            psychologueListeDto.setSpecialite(psychologue.getSpecialite().getNom());
 
             resultatPsy.add(psychologueListeDto);
 

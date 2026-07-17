@@ -69,7 +69,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+       // Session.verifierRole(session, RoleEnum.ADMIN);
 
         return  psyService.PSYCHOLOGUEList();
     }
@@ -98,9 +98,16 @@ public class PsychologueController {
         return psyService.UpdateEtatStatus(id, psychologue);
     }
     @Operation(
-            summary = "Rechercher un psychologue",
-            description = "Retourne un psychologue à partir de son identifiant"
+            summary = "Lister toutes les spécialités",
+            description = "Retourne la liste complète des spécialités enregistrées en base de données"
     )
+
+
+
+
+
+
+
 
     @GetMapping("/{id}")
     public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id,HttpSession session){
