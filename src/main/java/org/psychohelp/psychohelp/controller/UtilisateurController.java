@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.*;
 import lombok.AllArgsConstructor;
 import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Seance;
@@ -35,12 +36,12 @@ public class UtilisateurController {
     public List<UtilisateurListDTO> list(){
         return utilisateurService.listeUtilisateur().stream()
                 .map(utilisateur -> new UtilisateurListDTO(
-                        utilisateur.getNom(),
-                        utilisateur.getPrenom(),
-                        utilisateur.getMail(),
-                        utilisateur.getTelephone()
-                )
-        ).toList();
+                                utilisateur.getNom(),
+                                utilisateur.getPrenom(),
+                                utilisateur.getMail(),
+                                utilisateur.getTelephone()
+                        )
+                ).toList();
     }
 
 
@@ -97,8 +98,6 @@ public class UtilisateurController {
 
         return ResponseEntity.ok(dto);
     }
-
-
 
     @GetMapping("/session")
     @Operation( summary = "Récupérer le user courant", description = "Vérifier si une session existe déjà et renvoyer l'utilisateur")

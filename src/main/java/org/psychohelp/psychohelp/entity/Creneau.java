@@ -17,7 +17,7 @@ import java.util.List;
 public class Creneau {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  id;
+    private int  id;
     private String jours;
     @Column(name = "heure_debut", nullable = false)
     private LocalTime heureDebut;
