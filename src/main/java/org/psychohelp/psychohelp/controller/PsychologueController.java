@@ -148,7 +148,7 @@ public class PsychologueController {
         Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psychologue);
         Conseil conseilcreer=conseilService.creer(conseil);
-        return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
+        return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getAuteur());
     }
     @Operation(
             summary = "Liste des Psy validés ",
