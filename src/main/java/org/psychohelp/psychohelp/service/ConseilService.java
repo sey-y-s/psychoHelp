@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.service;
 
 import org.psychohelp.psychohelp.entity.Conseil;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface ConseilService {
 
     public void supConseil(Integer id);
 
-    public List<Conseil> listConseilParStatus(Boolean status);
+    public List<Conseil> listConseilParStatus(StatusConseilEnum status);
+
+    //List<Conseil> listConseilParStatus(Boolean status);
 }
