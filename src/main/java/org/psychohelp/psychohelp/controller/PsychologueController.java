@@ -20,13 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") //<-- AJOUTE CECI
 @RequestMapping("/api/psychologues")
 @Tag(
         name = "Psychologues",
         description = "Gestion des Psychologues"
 )
-@CrossOrigin(origins = "*")
 public class PsychologueController {
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;
