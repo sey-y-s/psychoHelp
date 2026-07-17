@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.*;
 import lombok.AllArgsConstructor;
 import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Seance;
@@ -96,6 +97,19 @@ public class UtilisateurController {
         dto.setRole(utilisateur.getRole());
 
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/session")
+    @Operation( summary = "Récupérer le user courant", description = "Vérifier si une session existe déjà et renvoyer l'utilisateur")
+    @ApiResponse(responseCode = "200", description = "Utilisateur connecté récupéré avec succès")
+    public AdminResponseDTO getCurrentUser(HttpSession session) {
+        return Session.getConnectedUser(session);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok().body(Map.of("message", "Déconnecté avec succès"));
     }
 
 

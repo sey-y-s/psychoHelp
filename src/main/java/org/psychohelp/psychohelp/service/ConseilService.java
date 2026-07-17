@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 
@@ -9,7 +10,7 @@ public interface ConseilService {
 
     public Conseil creer(Conseil utl);
 
-    public List<Conseil> listeConseil();
+    List<ConseilAfficheDto> listeConseil();
 
     public Conseil conseilParId(Integer id);
 
@@ -17,7 +18,7 @@ public interface ConseilService {
 
     public void supConseil(Integer id);
 
-    public List<Conseil> listConseilParStatus(StatusConseilEnum status);
+    public List<ConseilAfficheDto> listConseilParStatus(Boolean status);
 
-    //List<Conseil> listConseilParStatus(Boolean status);
+
 }

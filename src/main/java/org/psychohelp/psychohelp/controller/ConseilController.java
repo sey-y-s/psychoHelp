@@ -3,6 +3,7 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDto;
 import org.psychohelp.psychohelp.dto.ConseilRequestDTO;
@@ -43,26 +44,12 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam (required = false) String status){
-        if (status != null){
-            //return conseilService.listConseilParStatus(status);
-            return conseilService.  listConseilParStatus(StatusConseilEnum.valueOf(status)).stream()
-                    .map(
-                            conseil -> new ConseilAfficheDto(conseil.getTitre(),
-                                    conseil.getDescription(),conseil.getAuteur(),
-                                    conseil.getPsychologue().nomComplet(),
-                                     conseil.getDatePublication(), conseil.getStatus().toString(), conseil.getId())
-                    ).toList();
+    public List<ConseilAfficheDto> list(@RequestParam(required = false) Boolean status) {
+
+        if (status != null) {
+            return conseilService.listConseilParStatus(status);
         }
-        //return conseilService.listeConseil();
-        return conseilService.listeConseil().stream()
-                .map(
-                        conseil -> new ConseilAfficheDto(conseil.getTitre(),
-                                conseil.getDescription(),conseil.getAuteur(),
-                                conseil.getPsychologue().nomComplet(),
-                                 conseil.getDatePublication(),
-                                conseil.getStatus().toString(), conseil.getId())
-                ).toList();
+        return conseilService.listeConseil();
     }
 
 
@@ -153,7 +140,5 @@ public class ConseilController {
         }
         return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
     }
-
-
 
 }

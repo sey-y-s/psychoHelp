@@ -16,7 +16,7 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 225)
     private String nom_test ;
     private String description ;
     private Boolean etat ;

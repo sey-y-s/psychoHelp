@@ -6,6 +6,7 @@ import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Psychologue;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.mapper.CreneauMapper;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
@@ -25,9 +26,10 @@ public class CreneauServiceImpl implements CreneauService {
     private final CreneauMapper mapper;
 
     @Override
-    public CreneauResponseDTO creer(CreneauDTO dto) {
+    public CreneauResponseDTO creer(CreneauDTO dto,
+                                    Utilisateur utilisateurConnecte) {
 
-        Psychologue psychologue = pp.findById(dto.getPsychologueId().intValue())
+        Psychologue psychologue = pp.findById(utilisateurConnecte.getId())
                 .orElseThrow(() ->
                         new RuntimeException("Psychologue introuvable"));
 
@@ -42,7 +44,6 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public List<CreneauResponseDTO> getAll() {
-
         return cp.findAll()
                 .stream()
                 .map(mapper::toDTO)
@@ -50,7 +51,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public CreneauResponseDTO getById(Long id) {
+    public CreneauResponseDTO getById(int id) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -60,7 +61,7 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public CreneauResponseDTO update(Long id, UpdateCreneauDTO dto) {
+    public CreneauResponseDTO update(int id, UpdateCreneauDTO dto) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
@@ -75,13 +76,21 @@ public class CreneauServiceImpl implements CreneauService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(int id) {
 
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Créneau introuvable"));
 
         cp.delete(creneau);
+    }
+
+    @Override
+    public List<CreneauResponseDTO> getMesCreneaux(Utilisateur utilisateurConnecte) {
+        return cp.findByPsychologueId(utilisateurConnecte.getId())
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
     }
 
     @Override
