@@ -6,14 +6,19 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDto;
+import org.psychohelp.psychohelp.dto.ConseilDtoForPyschologue;
+import org.psychohelp.psychohelp.dto.ConseilRequestDTO;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.serviceImpl.ConseilServiceImpl;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -71,7 +76,7 @@ public class ConseilController {
             description = "Inserer un conseils"
     )
     @PostMapping(path = "post")
-    public ConseilDto create(@RequestBody ConseilDto conseilDto, HttpSession session){
+    public ResponseEntity<ConseilDtoForPyschologue> create(@RequestBody ConseilRequestDTO conseilDto, HttpSession session){
 
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
@@ -82,8 +87,8 @@ public class ConseilController {
         Conseil conseil =  new Conseil();
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
-        conseil.setAuteur(conseilDto.getDescription());
-        conseil.setStatus(false);
+        conseil.setAuteur("");
+        conseil.setStatus(StatusConseilEnum.ENATTENTE);
         conseil.setDatePublication(LocalDate.now());
         /*conseil.setPsychologue(
                 conseilService.conseilParId(conseilDto.getPsy_id()).getPsychologue()
@@ -91,8 +96,11 @@ public class ConseilController {
 
         //Psychologue psy = psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psy);
-        conseilService.creer(conseil);
-        return conseilDto;
+        Conseil conseilrer=conseilService.creer(conseil);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ConseilDtoForPyschologue(conseilrer.getId(), conseilrer.getTitre(),conseilrer.getDescription(),conseilrer.getStatus(),conseilrer.getDatePublication())
+        );
     }
 
 
@@ -134,5 +142,9 @@ public class ConseilController {
         }
         return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
     }
-
+    @GetMapping("mes-conseils")
+    public  List<ConseilDtoForPyschologue> ConseilsByPyschologueId(HttpSession session){
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        return conseilService.ConseilsByPyschologueId(session);
+    }
 }

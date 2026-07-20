@@ -1,6 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.psychohelp.psychohelp.dto.ConseilDtoForPyschologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
@@ -11,6 +13,7 @@ import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.service.ConseilService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConseilServiceImpl implements ConseilService {
-
+@Autowired
     private ConseilRepository conseilRepository;
     private final NotificationService notificationService;
     private final UtilisateurRepository utilisateurRepository;
@@ -94,6 +97,15 @@ public class ConseilServiceImpl implements ConseilService {
                         conseil.getPsychologue().nomComplet()
                 ))
                 .toList();
+    }
+
+    @Override
+    public List<ConseilDtoForPyschologue> ConseilsByPyschologueId(HttpSession session) {
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        return  conseilRepository.ConseilsByPyschologueId(utilisateur.getId()).stream().map(
+                conseil -> new ConseilDtoForPyschologue(conseil.getId(),conseil.getTitre(),conseil.getDescription(),
+                        conseil.getStatus(),conseil.getDatePublication())
+        ).toList();
     }
 
 
