@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateSpecialiteDto {
+public class AdminResponseDTO {
+
+    private Integer id;
     private String nom;
+    private String prenom;
+    private String mail;
+    private String telephone;
+    private String role;
 }

@@ -4,16 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConseilAfficheDto {
         private String titre;
         private String description;
-        //private Boolean status=false;
-        private String auteur;
-        private String psyNom;
 
+        private String auteur;
+
+        private String psyNom;
 
 
 }

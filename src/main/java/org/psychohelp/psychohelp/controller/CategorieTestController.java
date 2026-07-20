@@ -1,7 +1,12 @@
 package org.psychohelp.psychohelp.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.CategorieReponseDTO;
+import org.psychohelp.psychohelp.dto.CategorieRequestDTO;
 import org.psychohelp.psychohelp.entity.CategorieTest;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.CategorieService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +36,9 @@ public class CategorieTestController {
     )
 
     @PostMapping
-    public ResponseEntity<CategorieTest>
-    creerCategorie(
-            @RequestBody CategorieTest categorie) {
+    public ResponseEntity<CategorieReponseDTO> creerCategorie(
+            @RequestBody CategorieRequestDTO categorie, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
 
         return new ResponseEntity<>(
                 categorieService.creerCategorie(categorie),
@@ -46,7 +51,7 @@ public class CategorieTestController {
     )
 
     @GetMapping
-    public ResponseEntity<List<CategorieTest>>
+    public ResponseEntity<List<CategorieReponseDTO>>
     obtenirToutesLesCategories() {
 
         return ResponseEntity.ok(
@@ -60,7 +65,7 @@ public class CategorieTestController {
     )
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategorieTest>
+    public ResponseEntity<CategorieReponseDTO>
     obtenirCategorieParId(
             @PathVariable Integer id) {
 
@@ -75,10 +80,11 @@ public class CategorieTestController {
     )
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategorieTest>
+    public ResponseEntity<CategorieReponseDTO>
     modifierCategorie(
             @PathVariable Integer id,
-            @RequestBody CategorieTest categorie) {
+            @RequestBody CategorieRequestDTO categorie, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
 
         return ResponseEntity.ok(
                 categorieService
@@ -93,7 +99,8 @@ public class CategorieTestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>
     supprimerCategorie(
-            @PathVariable Integer id) {
+            @PathVariable Integer id, HttpSession session) {
+           Session.verifierRole(session, RoleEnum.ADMIN);
 
         categorieService.supprimerCategorie(id);
 

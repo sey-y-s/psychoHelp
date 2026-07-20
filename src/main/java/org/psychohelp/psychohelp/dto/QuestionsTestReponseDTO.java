@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionsTestsDTO {
+public class QuestionsTestReponseDTO {
     private Integer id;
     private String question;
+    private String nom_test;
 }

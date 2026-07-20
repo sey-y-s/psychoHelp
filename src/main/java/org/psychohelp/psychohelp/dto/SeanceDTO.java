@@ -1,6 +1,5 @@
 package org.psychohelp.psychohelp.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,6 @@ import java.time.LocalDate;
 
 public class SeanceDTO {
     private LocalDate dateRdv;
-    private StatutRdvEnum statut;
-    private int citoyenId;
-    private Long creneauId;
+    //private int citoyenId;
+    private int creneauId;
 }

@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
@@ -9,11 +10,13 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.ConseilService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,8 +35,9 @@ public class PsychologueController {
             description = "Ajoute un nouveau psychologue"
     )
     @PostMapping
-    public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto){
+    public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto, HttpSession session){
        // psychologue.setDateCreation(LocalDate.now());
+
         Psychologue psychologue=new Psychologue();
         psychologue.setNom(addPsyDto.getNom());
         psychologue.setPrenom(addPsyDto.getPrenom());
@@ -41,19 +45,20 @@ public class PsychologueController {
         psychologue.setMail(addPsyDto.getMail());
         psychologue.setMotDePasse(addPsyDto.getMotDePasse());
         psychologue.setRole(RoleEnum.PSYCHOLOGUE);
+
         psychologue.setDescription(addPsyDto.getDescription());
         psychologue.setDiplome_path(addPsyDto.getDiplome_path());
         psychologue.setCv_path(addPsyDto.getCv_path());
         //psychologue.setEtat(addPsyDto.getEtat());
         //recupere la specialité à partir de l'id
-        Specialite specialite=specialiteService.getSpecialite(addPsyDto.getIdSpecialite());
+        //Specialite specialite=specialiteService.getSpecialite(addPsyDto.getIdSpecialite());
+        Specialite specialite=new Specialite();
+        specialite.setId(addPsyDto.getIdSpecialite());
         psychologue.setSpecialite(specialite);
         Psychologue psychologuecreer=psyService.savePsychologue(psychologue);
 
 
-
-        return new PsychologueListeDto(psychologuecreer.getId(),psychologuecreer.getNom(),psychologuecreer.getPrenom(),psychologuecreer.getTelephone(),psychologuecreer.getMail(),psychologuecreer.getRole(),psychologuecreer.getDateCreation(),psychologuecreer.getStatus(),psychologuecreer.getDescription(),psychologuecreer.getDiplome_path(),psychologuecreer.getCv_path(),psychologuecreer.getEtat());
-
+        return mapPsytoDto(psychologuecreer);
 
     }
     @Operation(
@@ -61,10 +66,11 @@ public class PsychologueController {
             description = "Retourne la liste  des psychologues"
     )
     @GetMapping
-    public List<PsychologueListeDto> psychologueList(){
-        return psyService.PSYCHOLOGUEList().stream().map(
-                psychologue -> new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat())
-        ).toList();
+
+    public List<PsychologueListeDto> psychologueList(HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN,RoleEnum.CITOYEN);
+
+        return  psyService.PSYCHOLOGUEList();
     }
     @Operation(
             summary ="Modifier un psychologue ",
@@ -72,7 +78,9 @@ public class PsychologueController {
     )
 
     @PutMapping("/{id}")
-    public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId){
+    public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId,HttpSession session){
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+
         return psyService.updatePsychologue(updatePsyDto,PsychologueId);
     }
     @Operation(
@@ -82,7 +90,9 @@ public class PsychologueController {
     @PatchMapping("/{id}/etatStatus")
     public PsychologueListeDto updateEtatStatus(
             @PathVariable int id,
-            @RequestBody UpdateEtatStatusDto psychologue){
+            @RequestBody UpdateEtatStatusDto psychologue,HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
 
         return psyService.UpdateEtatStatus(id, psychologue);
     }
@@ -92,10 +102,13 @@ public class PsychologueController {
     )
 
     @GetMapping("/{id}")
-    public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id){
-        Psychologue psychologue=psyService.GetPsychologueById(id);
+    public PsychologueListeDto GetPsychologueById(@PathVariable  Integer id,HttpSession session){
+//        Session.verifierRole(session, RoleEnum.ADMIN);
 
-        return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
+        Psychologue psychologue=psyService.GetPsychologueById(id);
+        PsychologueListeDto psy = mapPsytoDto(psychologue);
+        psy.setSpecialite(psychologue.getSpecialite().getNom());
+        return psy;
     }
     @Operation(
             summary = "Rechercher un conseil d'un  psychologue",
@@ -103,7 +116,9 @@ public class PsychologueController {
     )
 
     @GetMapping("/{id}/conseils")
-    public List<Conseil> getConseilByPsy(@PathVariable Integer id){
+    public List<Conseil> getConseilByPsy(@PathVariable Integer id,HttpSession session){
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
         return psyService.getConseilByPsy(id);
         //Psychologue psychologue=psyService.GetPsychologueById(id);
 
@@ -111,14 +126,14 @@ public class PsychologueController {
         //return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
 
     }
+
     @Operation(
             summary = "Crée un conseil ",
             description = "Ajoute un nouveau conseil"
     )
+
     @PostMapping(path = "/conseil")
     public ListConseilDto create(@RequestBody ConseilDto conseilDto){
-        //System.out.println("***************" + utl);
-        //return conseilService.creer(utl);
         Conseil conseil=new Conseil();
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
@@ -128,6 +143,40 @@ public class PsychologueController {
         conseil.setPsychologue(psychologue);
         Conseil conseilcreer=conseilService.creer(conseil);
         return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
+    }
+
+
+    @Operation(
+            summary = "Liste des Psy validés ",
+            description = "Liste des Psy validés par admin"
+    )
+
+    @GetMapping("/valide")
+    public List<PsyReponseDto> getPsychologueValide(HttpSession session) {
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
+
+
+
+
+        return psyService.getPsychologueValide();
+    }
+
+    public static PsychologueListeDto mapPsytoDto (Psychologue psychologue) {
+        PsychologueListeDto dto=new PsychologueListeDto();
+        dto.setId(psychologue.getId());
+        dto.setNom(psychologue.getNom());
+        dto.setPrenom(psychologue.getPrenom());
+        dto.setTelephone(psychologue.getTelephone());
+        dto.setMail(psychologue.getMail());
+        dto.setRole(psychologue.getRole());
+        dto.setDateCreation(psychologue.getDateCreation());
+        dto.setStatus(psychologue.getStatus());
+        dto.setDescription(psychologue.getDescription());
+        dto.setCv_path(psychologue.getCv_path());
+        dto.setDiplome_path(psychologue.getDiplome_path());
+        dto.setEtat(psychologue.getEtat());
+        return dto;
     }
 
 }

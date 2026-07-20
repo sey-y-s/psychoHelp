@@ -1,5 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import org.psychohelp.psychohelp.dto.CategorieReponseDTO;
+import org.psychohelp.psychohelp.dto.CategorieRequestDTO;
+import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
 import org.psychohelp.psychohelp.entity.CategorieTest;
 import org.psychohelp.psychohelp.repository.CategorieRepository;
 import org.psychohelp.psychohelp.service.CategorieService;
@@ -20,34 +23,41 @@ public class CategorieServiceImpl
     }
 
     @Override
-    public CategorieTest creerCategorie(
-            CategorieTest categorie) {
+    public CategorieReponseDTO creerCategorie(
+            CategorieRequestDTO categorie) {
+        CategorieTest categorieTest1= new CategorieTest();
+        categorieTest1.setNomCategorie(categorie.getNomCategorie());
+        categorieTest1.setDescription(categorie.getDescription());
+        CategorieTest categorieTest = categorieRepository.save(categorieTest1);
 
-        return categorieRepository.save(categorie);
+        return new CategorieReponseDTO(categorieTest.getId(), categorieTest.getNomCategorie(), categorieTest.getDescription());
     }
 
     @Override
-    public List<CategorieTest>
+    public List<CategorieReponseDTO>
     obtenirToutesLesCategories() {
-
-        return categorieRepository.findAll();
+        return categorieRepository.findAll().stream().map(
+                categorie -> new CategorieReponseDTO(categorie.getId(), categorie.getNomCategorie(), categorie.getDescription())
+        ).toList();
     }
 
     @Override
-    public CategorieTest obtenirCategorieParId(
+    public CategorieReponseDTO obtenirCategorieParId(
             Integer id) {
-
-        return categorieRepository.findById(id)
+        CategorieTest categorieTest = categorieRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException(
                                 "Categorie introuvable avec l'ID : "
                                         + id));
+
+        return new CategorieReponseDTO(categorieTest.getId(), categorieTest.getNomCategorie(), categorieTest.getDescription());
+
     }
 
     @Override
-    public CategorieTest modifierCategorie(
+    public CategorieReponseDTO modifierCategorie(
             Integer id,
-            CategorieTest categorieMiseAJour) {
+            CategorieRequestDTO categorieMiseAJour) {
 
         CategorieTest categorie =
                 categorieRepository.findById(id)
@@ -61,8 +71,9 @@ public class CategorieServiceImpl
 
         categorie.setDescription(
                 categorieMiseAJour.getDescription());
+        categorieRepository.save(categorie);
 
-        return categorieRepository.save(categorie);
+        return new CategorieReponseDTO(categorie.getId(), categorie.getNomCategorie(), categorie.getDescription());
     }
 
     @Override

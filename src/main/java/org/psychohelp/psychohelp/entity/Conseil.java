@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 
 import java.time.LocalDate;
 
@@ -21,7 +22,9 @@ public class Conseil {
     private String description;
 
     //le conseil doit etre valider par l'admin
-    private Boolean status = false;
+    //@Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private Boolean status=false;
 
     @Column(name = "date_publication")
     private LocalDate datePublication=LocalDate.now();
@@ -32,5 +35,7 @@ public class Conseil {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "psy_id")
     private Psychologue psychologue;
+
+
 
 }

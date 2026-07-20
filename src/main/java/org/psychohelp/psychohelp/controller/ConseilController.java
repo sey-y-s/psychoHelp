@@ -3,9 +3,9 @@ package org.psychohelp.psychohelp.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDto;
-import org.psychohelp.psychohelp.dto.ConseilRequestDTO;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
@@ -41,23 +41,12 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam (required = false) Boolean status){
-        if (status != null){
-            //return conseilService.listConseilParStatus(status);
-            return conseilService.listConseilParStatus(status).stream()
-                    .map(
-                            conseil -> new ConseilAfficheDto(conseil.getTitre(),
-                                    conseil.getDescription(),conseil.getAuteur(),
-                                    conseil.getPsychologue().nomComplet())
-                    ).toList();
+    public List<ConseilAfficheDto> list(@RequestParam(required = false) Boolean status) {
+
+        if (status != null) {
+            return conseilService.listConseilParStatus(status);
         }
-        //return conseilService.listeConseil();
-        return conseilService.listeConseil().stream()
-                .map(
-                        conseil -> new ConseilAfficheDto(conseil.getTitre(),
-                                conseil.getDescription(),conseil.getAuteur(),
-                                conseil.getPsychologue().nomComplet())
-                ).toList();
+        return conseilService.listeConseil();
     }
 
 
@@ -82,7 +71,7 @@ public class ConseilController {
             description = "Inserer un conseils"
     )
     @PostMapping(path = "post")
-    public ConseilRequestDTO create(@RequestBody ConseilRequestDTO conseilDto, HttpSession session){
+    public ConseilDto create(@RequestBody ConseilDto conseilDto, HttpSession session){
 
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
@@ -102,7 +91,7 @@ public class ConseilController {
 
         //Psychologue psy = psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psy);
-         conseilService.creer(conseil);
+        conseilService.creer(conseil);
         return conseilDto;
     }
 
@@ -112,19 +101,19 @@ public class ConseilController {
             description = "modifier un conseil par son id"
     )
     @PutMapping(path = "update/{id}")
-    public ConseilRequestDTO update(@PathVariable int id, @RequestBody ConseilRequestDTO conseilDto, HttpSession session){
+    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto, HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
 
         Conseil conseil = conseilService.conseilParId(id);
         if (conseil.getPsychologue().getId() == utilisateur.getId()){
 
-        conseil.setTitre(conseilDto.getTitre());
-        conseil.setAuteur(conseilDto.getAuteur());
-        conseil.setDescription(conseilDto.getDescription());
-        conseilService.modifier(id, conseil);
+            conseil.setTitre(conseilDto.getTitre());
+            conseil.setAuteur(conseilDto.getAuteur());
+            conseil.setDescription(conseilDto.getDescription());
+            conseilService.modifier(id, conseil);
 
-        return conseilDto;
+            return conseilDto;
         }
         return null;
     }
@@ -145,7 +134,5 @@ public class ConseilController {
         }
         return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
     }
-
-
 
 }

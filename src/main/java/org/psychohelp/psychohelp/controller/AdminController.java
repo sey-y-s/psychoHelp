@@ -2,17 +2,13 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.psychohelp.psychohelp.dto.AdminDTO;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.TestDTO;
-import org.psychohelp.psychohelp.entity.Admin;
-import org.psychohelp.psychohelp.entity.Conseil;
-import org.psychohelp.psychohelp.entity.Psychologue;
-import org.psychohelp.psychohelp.entity.Test;
+import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.*;
+import org.psychohelp.psychohelp.entity.*;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.AdminService;
+import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,32 +30,34 @@ public class AdminController {
             description = "Ajoute un nouveau administrateur"
     )
     @PostMapping
-    public Admin ajouterAdmin(@RequestBody AdminDTO dto) {
+    public AdminResponseDTO  ajouterAdmin(@RequestBody AdminDTO dto, HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.ajouterAdmin(dto);
     }
 
-    @Operation(
-            summary = "Modifier un administrateur",
-            description = "Modifie un administrateur"
-    )
+@Operation(
+        summary = "Modifier un administrateur",
+        description = "Modifie un administrateur"
+)
 
     @PutMapping("/{id}")
-    public Admin modifierAdmin(
-            @PathVariable Integer id,
-            @RequestBody AdminDTO dto) {
-
+    public AdminResponseDTO  modifierAdmin(@PathVariable Integer id, @RequestBody AdminDTO dto, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.modifierAdmin(id, dto);
     }
+
 
     @Operation(
             summary = "Récuperer  un administrateur",
             description = "Affiche un  administrateur par son id"
     )
     @GetMapping("/{id}")
-    public Admin getAdminById(@PathVariable Integer id) {
-
+    public Admin getAdminById(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.getAdminById(id);
     }
+
+
 
     @Operation(
             summary = "Récuperer  la  liste des administrateurs",
@@ -67,8 +65,8 @@ public class AdminController {
     )
 
     @GetMapping
-    public List<Admin> getAllAdmins() {
-
+    public List<AdminResponseDTO> getAllAdmins(HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.getAllAdmins();
     }
 
@@ -77,9 +75,11 @@ public class AdminController {
             description = "Supprime un administrateur"
     )
     @DeleteMapping("/{id}")
-    public void supprimerAdmin(@PathVariable Integer id) {
-
+    public String  supprimerAdmin(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         adminService.supprimerAdmin(id);
+        return "Administrateur supprimé avec succès.";
+
     }
 
     @Operation(
@@ -87,8 +87,8 @@ public class AdminController {
             description = "valider un conseil poster par un psychologue "
     )
     @PutMapping("/conseils/{id}/valider")
-    public Conseil validerConseil(@PathVariable Integer id) {
-
+    public ConseilAfficheDto validerConseil(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerConseil(id);
     }
 
@@ -98,8 +98,8 @@ public class AdminController {
     )
 
     @PutMapping("/conseils/{id}/annuler")
-    public Conseil annulerConseil(@PathVariable Integer id) {
-
+    public ConseilAfficheDto annulerConseil(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerConseil(id);
     }
 
@@ -109,67 +109,56 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/valider")
-    public Psychologue validerInscriptionPsy(@PathVariable Integer id) {
-
+    public PsychologueListeDto validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerInscriptionPsy(id);
     }
 
     @Operation(
-            summary = "Annuler un psychologue",
-            description = "Annuler l'inscription d'un psychologue "
+            summary = "Annuler l'inscription d'un psychologue",
+            description = "Annuler un psychologue "
     )
 
     @PutMapping("/psychologues/{id}/annuler")
-    public Psychologue annulerInscriptionPsy(@PathVariable Integer id) {
-
+    public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
-
     @Operation(
-            summary = "Afficher les tests",
-            description = "lister tout les test"
+            summary = "Liste des psychologues en attente",
+            description = "Retourne tous les psychologues en attente de validation"
     )
+    @GetMapping("/psychologues/en-attente")
+    public List<PsychologueListeDto> listerPsychologuesEnAttente(HttpSession session){
 
-    @GetMapping("/tests")
-    public List<Test> getAllTests() {
-        return adminService.getAllTests();
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
+        return adminService.listerPsychologuesEnAttente();
+
     }
 
-    @Operation(
-            summary = "Afficher un test",
-            description = "lister un test á travers son id"
-    )
-    @GetMapping("/tests/{id}")
-    public Optional<Test> getTestById(@PathVariable Integer id) {
-        return adminService.getTestById(id);
-    }
 
-    @Operation(
-            summary = "Ajouter un test",
-            description = "Créer un test"
-    )
-    @PostMapping("/tests")
-    public Test saveTest(@RequestBody TestDTO testDTO) {
-        return adminService.saveTest(testDTO);
-    }
+    //    @GetMapping("/")
+//    public AdminResponseDTO getAdminById(HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
+//   Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+//    return new AdminResponseDTO(
+//        utilisateur.getId(),
+//        utilisateur.getNom(),
+//        utilisateur.getPrenom(),
+//        utilisateur.getMail(),
+//        utilisateur.getTelephone(),
+//        utilisateur.getRole().toString());
+//
+//    }
 
-    @Operation(
-            summary = "Modifier un test",
-            description = "Mettre a jour un test"
-    )
-    @PutMapping("/tests/{id}")
-    public Test updateTest(@PathVariable Integer id,
-                           @RequestBody TestDTO test) {
-        return adminService.updateTest(id, test);
-    }
-
-    @Operation(
-            summary = "Supprimer  un test",
-            description = "supprimer un test déja existant"
-    )
-    @DeleteMapping("/tests/{id}")
-    public void deleteTest(@PathVariable Integer id) {
-        adminService.deleteTest(id);
-    }
+    //
+//    @PutMapping("/")
+//    public AdminResponseDTO  modifierAdmin( @RequestBody AdminDTO dto, HttpSession session) {
+//        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
+//        return adminService.modifierAdmin(utilisateur.getId(),  dto);
+//
+//    }
 
 }
