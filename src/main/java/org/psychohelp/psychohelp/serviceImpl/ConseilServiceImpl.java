@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConseilServiceImpl implements ConseilService {
 
-    private ConseilRepository conseilRepository;
+    private final  ConseilRepository conseilRepository;
     private final NotificationService notificationService;
     private final UtilisateurRepository utilisateurRepository;
 
