@@ -1,6 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 
+import org.psychohelp.psychohelp.dto.CitoyenRendezVousResponseDTO;
+import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.dto.SeanceResponseDTO;
 import org.psychohelp.psychohelp.entity.Citoyen;
@@ -21,9 +23,7 @@ import org.psychohelp.psychohelp.service.SeanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.format.TextStyle;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -191,5 +191,8 @@ public class SeanceServiceImpl implements SeanceService {
         return dto;
     }
 
-
+    @Override
+    public List<CitoyenRendezVousResponseDTO> getSeancesByCitoyenConnecte(Long citoyenId) {
+        return seanceRepository.findSeancesByCitoyenConnecte(citoyenId);
+    }
 }

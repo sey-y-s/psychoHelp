@@ -1,5 +1,7 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.CitoyenRendezVousResponseDTO;
+import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.dto.SeanceResponseDTO;
 import org.psychohelp.psychohelp.entity.Seance;
@@ -17,4 +19,5 @@ public interface SeanceService {
     List<Seance> getSeancesByStatut(StatutRdvEnum statut);
     List<SeanceResponseDTO> getSeancesByPsy(int psyId);
     SeanceDTO confirmerSeance(Long id, Utilisateur utilisateurConnecte);
-}
+
+    List<CitoyenRendezVousResponseDTO> getSeancesByCitoyenConnecte(Long citoyenId);}
