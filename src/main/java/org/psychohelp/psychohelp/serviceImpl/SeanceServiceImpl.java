@@ -23,6 +23,7 @@ import org.psychohelp.psychohelp.service.SeanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -135,8 +136,9 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     public List<SeanceResponseDTO> getSeancesByPsy(int psyId) {
-        return seanceRepository.findByPsyId(psyId)
-                .stream()
+        List<Seance> seances = seanceRepository.findByPsyId(psyId);
+        seances.forEach(this::mettreAJourStatutSiPasse);
+        return seances.stream()
                 .map(this::toResponseDTO)
                 .toList();
     }
@@ -171,6 +173,20 @@ public class SeanceServiceImpl implements SeanceService {
         dto.setCreneauId(seance.getCreneau().getId());
 
         return dto;
+    }
+
+    private void mettreAJourStatutSiPasse(Seance seance) {
+        if (seance.getStatut() != StatutRdvEnum.RESERVER && seance.getStatut() != StatutRdvEnum.CONFIRMER) {
+            return;
+        }
+        if (seance.getDateRdv() == null || seance.getCreneau() == null || seance.getCreneau().getHeureFin() == null) {
+            return;
+        }
+        LocalDateTime finRendezVous = LocalDateTime.of(seance.getDateRdv(), seance.getCreneau().getHeureFin());
+        if (finRendezVous.isBefore(LocalDateTime.now())) {
+            seance.setStatut(StatutRdvEnum.TERMINER);
+            seanceRepository.save(seance);
+        }
     }
 
     private SeanceResponseDTO toResponseDTO(Seance seance) {
