@@ -11,6 +11,6 @@ public class ListConseilDto {
 
     private String titre;
     private String description;
-    //private Boolean status;
+    private Boolean status;
     private String auteur;
 }

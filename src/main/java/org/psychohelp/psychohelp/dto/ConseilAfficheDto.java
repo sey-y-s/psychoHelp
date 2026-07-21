@@ -15,13 +15,8 @@ public class ConseilAfficheDto {
         private String description;
 
         private String auteur;
+
         private String psyNom;
-
-        private LocalDate datePublication;
-
-        private String status;
-
-        private Integer id;
 
 
 }

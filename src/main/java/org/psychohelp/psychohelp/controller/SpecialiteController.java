@@ -24,6 +24,7 @@ import java.util.List;
         name = "Specialité des psychologues",
         description = "Gestion de la specialité des psychologues"
 )
+
 public class SpecialiteController{
     @Autowired
     private SpecialiteService specialiteService;
@@ -43,7 +44,7 @@ public class SpecialiteController{
     )
     @GetMapping
     public List<SpecialiteListeDto> Liste(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.PSYCHOLOGUE);
+        //Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.PSYCHOLOGUE);
         return specialiteService.listeSpecialite(session).stream().map(
                 specialite -> new SpecialiteListeDto(specialite.getId(),specialite.getNom(),specialite.getAdmin().getNom())
         ).toList();
