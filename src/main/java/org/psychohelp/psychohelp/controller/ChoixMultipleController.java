@@ -65,7 +65,7 @@ public class ChoixMultipleController {
     )
     @PostMapping
     public ChoixMultiplesReponseDTO saveChoix(
-            @RequestBody ChoixMultiplesRequestDTO choix, HttpSession session, Integer question_id){
+            @RequestBody ChoixMultiplesRequestDTO choix, @RequestParam Integer question_id, HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
 
         return choixService.saveChoix(choix, question_id);
