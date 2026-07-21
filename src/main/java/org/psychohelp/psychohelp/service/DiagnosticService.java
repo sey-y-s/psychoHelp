@@ -1,5 +1,9 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.DiagnosticResponseDTO;
+import org.psychohelp.psychohelp.entity.Utilisateur;
+
 public interface DiagnosticService {
-    String genererDiagnosticScientifique(String nomTest, int score);
+
+    DiagnosticResponseDTO genererDiagnostic(Integer testId, Integer score);
 }
