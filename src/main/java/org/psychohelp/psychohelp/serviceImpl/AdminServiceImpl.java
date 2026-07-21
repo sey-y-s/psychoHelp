@@ -7,6 +7,7 @@ import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.StatusValidationPsy;
 import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
@@ -130,6 +131,7 @@ public class AdminServiceImpl implements AdminService {
                 })
                 .toList();
     }
+
     @Override
     public void supprimerAdmin(Integer id) {
 
@@ -213,7 +215,7 @@ public class AdminServiceImpl implements AdminService {
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
-        psychologue.setStatus(true);
+        psychologue.setStatus(StatusValidationPsy.VALIDER);
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
 
         emailService.envoyerCompteActif(
@@ -246,7 +248,7 @@ public class AdminServiceImpl implements AdminService {
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
-        psychologue.setStatus(false);
+        psychologue.setStatus(StatusValidationPsy.REFUSER);
 
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
 
@@ -271,7 +273,7 @@ public class AdminServiceImpl implements AdminService {
     public List<PsychologueListeDto> listerPsychologuesEnAttente() {
 
         List<Psychologue> psychologues =
-                psychologueRepository.findByStatusFalse();
+                psychologueRepository.findByStatusEnAttente();
 
         return null;
     }
