@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.persistence.Access;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
@@ -11,6 +12,7 @@ import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.service.ConseilService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConseilServiceImpl implements ConseilService {
 
+    @Autowired
     private ConseilRepository conseilRepository;
     private final NotificationService notificationService;
     private final UtilisateurRepository utilisateurRepository;
@@ -37,13 +40,11 @@ public class ConseilServiceImpl implements ConseilService {
                         + " a soumis un nouveau conseil.",
                 TypeNotificationEnum.CONSEIL
         );
-
         return saved;
     }
 
     @Override
     public List<ConseilAfficheDto> listeConseil() {
-
         return conseilRepository.trouverTousAvecPsychologue()
                 .stream()
                 .map(conseil -> new ConseilAfficheDto(
@@ -84,7 +85,6 @@ public class ConseilServiceImpl implements ConseilService {
 
     @Override
     public List<ConseilAfficheDto> listConseilParStatus(Boolean status) {
-
         return conseilRepository.trouverParStatutAvecPsychologue(status)
                 .stream()
                 .map(conseil -> new ConseilAfficheDto(
