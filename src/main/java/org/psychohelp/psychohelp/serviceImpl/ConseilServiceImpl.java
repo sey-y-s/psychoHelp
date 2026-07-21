@@ -1,7 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
-import jakarta.persistence.Access;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.psychohelp.psychohelp.dto.ConseilDtoForPyschologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
@@ -20,8 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConseilServiceImpl implements ConseilService {
-
-    @Autowired
+@Autowired
     private ConseilRepository conseilRepository;
     private final NotificationService notificationService;
     private final UtilisateurRepository utilisateurRepository;
@@ -40,11 +40,13 @@ public class ConseilServiceImpl implements ConseilService {
                         + " a soumis un nouveau conseil.",
                 TypeNotificationEnum.CONSEIL
         );
+
         return saved;
     }
 
     @Override
     public List<ConseilAfficheDto> listeConseil() {
+
         return conseilRepository.trouverTousAvecPsychologue()
                 .stream()
                 .map(conseil -> new ConseilAfficheDto(
@@ -85,6 +87,7 @@ public class ConseilServiceImpl implements ConseilService {
 
     @Override
     public List<ConseilAfficheDto> listConseilParStatus(Boolean status) {
+
         return conseilRepository.trouverParStatutAvecPsychologue(status)
                 .stream()
                 .map(conseil -> new ConseilAfficheDto(
@@ -94,6 +97,15 @@ public class ConseilServiceImpl implements ConseilService {
                         conseil.getPsychologue().nomComplet()
                 ))
                 .toList();
+    }
+
+    @Override
+    public List<ConseilDtoForPyschologue> ConseilsByPyschologueId(HttpSession session) {
+        Utilisateur utilisateur=(Utilisateur)session.getAttribute("UtilisateurConnecte");
+        return  conseilRepository.ConseilsByPyschologueId(utilisateur.getId()).stream().map(
+                conseil -> new ConseilDtoForPyschologue(conseil.getId(),conseil.getTitre(),conseil.getDescription(),
+                        conseil.getStatus(),conseil.getDatePublication())
+        ).toList();
     }
 
 

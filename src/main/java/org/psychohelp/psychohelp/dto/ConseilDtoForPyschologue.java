@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ListConseilDto {
+import java.time.LocalDate;
+import java.time.LocalTime;
 
+@AllArgsConstructor @NoArgsConstructor @Data
+public class ConseilDtoForPyschologue {
+    private int id;
     private String titre;
     private String description;
-    private StatusConseilEnum status;
-    private String auteur;
+    private StatusConseilEnum statusConseil;
+    private LocalDate datePublication;
 }
