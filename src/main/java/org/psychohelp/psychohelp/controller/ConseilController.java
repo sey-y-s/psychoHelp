@@ -13,6 +13,8 @@ import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
+import org.psychohelp.psychohelp.exceptions.AccesRefuseException;
+import org.psychohelp.psychohelp.exceptions.UnauthorizedException;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.serviceImpl.ConseilServiceImpl;
 import org.psychohelp.psychohelp.utils.Session;
@@ -60,15 +62,16 @@ public class ConseilController {
             description = "recuperer un seul conseils par son identifiant"
     )
     @GetMapping(path = "{id}")
-    public ConseilAfficheDto conseilById(@PathVariable int id){
+    public ConseilDtoForPyschologue conseilById(@PathVariable int id){
         Conseil conseil = conseilService.conseilParId(id);
-        ConseilAfficheDto conseilDto = new ConseilAfficheDto();
-        conseilDto.setTitre(conseil.getTitre());
-        conseilDto.setDescription(conseil.getDescription());
-        conseilDto.setAuteur(conseil.getAuteur());
-        conseilDto.setPsyNom(conseil.getPsychologue().getNom());
-        //conseilDto.setPsyId(conseil.getPsychologue().getId());
-        return conseilDto;
+        ConseilDtoForPyschologue conseilDtoForPyschologue = new ConseilDtoForPyschologue();
+        conseilDtoForPyschologue.setTitre(conseil.getTitre());
+        conseilDtoForPyschologue.setDescription(conseil.getDescription());
+        conseilDtoForPyschologue.setDatePublication(conseil.getDatePublication());
+        conseilDtoForPyschologue.setId(conseil.getId());
+        conseilDtoForPyschologue.setStatusConseil(conseil.getStatus());
+
+        return conseilDtoForPyschologue;
     }
 
     @Operation(
@@ -109,7 +112,7 @@ public class ConseilController {
             description = "modifier un conseil par son id"
     )
     @PutMapping(path = "update/{id}")
-    public ConseilDto update(@PathVariable int id, @RequestBody ConseilDto conseilDto, HttpSession session){
+    public ConseilDtoForPyschologue update(@PathVariable int id, @RequestBody ConseilRequestDTO conseilDto, HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
 
@@ -117,13 +120,14 @@ public class ConseilController {
         if (conseil.getPsychologue().getId() == utilisateur.getId()){
 
             conseil.setTitre(conseilDto.getTitre());
-            conseil.setAuteur(conseilDto.getAuteur());
             conseil.setDescription(conseilDto.getDescription());
-            conseilService.modifier(id, conseil);
 
-            return conseilDto;
+            Conseil conseilModif= conseilService.modifier(id, conseil);
+
+            return new ConseilDtoForPyschologue(conseilModif.getId(),conseilModif.getTitre(),conseilModif.getDescription(),
+                    conseilModif.getStatus(),conseilModif.getDatePublication());
         }
-        return null;
+           throw new UnauthorizedException("ce conseil ne vous appartient pas!");
     }
 
 
