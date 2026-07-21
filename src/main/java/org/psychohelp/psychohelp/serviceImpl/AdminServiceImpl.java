@@ -146,7 +146,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        conseil.setStatus(true);
+        conseil.setStatus(StatusConseilEnum.VALIDER);
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
         notificationService.envoyer(
@@ -179,7 +179,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        conseil.setStatus(false);
+        conseil.setStatus(StatusConseilEnum.REFUSER);
 
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
