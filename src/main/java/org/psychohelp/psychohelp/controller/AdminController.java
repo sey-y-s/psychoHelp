@@ -16,8 +16,14 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
+/*@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
+        allowCredentials = "true"
+)*/
 @RequestMapping("/api/admins")
-@CrossOrigin(origins = "http://localhost:4200")
+//  @CrossOrigin(origins = "http://localhost:4200")
 @Tag(
         name = "Administrateur",
         description = "Gestion des categories, de la validation et l'annulation des psychologue ainsi que la validation et annullation des conseils publier par les administrateur"
