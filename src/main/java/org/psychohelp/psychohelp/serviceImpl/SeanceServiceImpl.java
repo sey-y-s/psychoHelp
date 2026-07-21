@@ -1,6 +1,8 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 
+import org.psychohelp.psychohelp.dto.CitoyenRendezVousResponseDTO;
+import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.dto.SeanceResponseDTO;
 import org.psychohelp.psychohelp.entity.Citoyen;
@@ -205,5 +207,8 @@ public class SeanceServiceImpl implements SeanceService {
         return dto;
     }
 
-
+    @Override
+    public List<CitoyenRendezVousResponseDTO> getSeancesByCitoyenConnecte(Long citoyenId) {
+        return seanceRepository.findSeancesByCitoyenConnecte(citoyenId);
+    }
 }
