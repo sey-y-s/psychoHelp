@@ -48,12 +48,33 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam(required = false) Boolean status) {
+    public List<ConseilAfficheDto> list(@RequestParam(required = false) String status) {
 
         if (status != null) {
-            return conseilService.listConseilParStatus(status);
+            return conseilService.listConseilParStatus(StatusConseilEnum.valueOf(status)).stream().map(
+                    conseil -> new ConseilAfficheDto(
+                            conseil.getTitre(),
+                            conseil.getDescription(),
+                            conseil.getAuteur(),
+                            conseil.getPsychologue().nomComplet(),
+                            conseil.getDatePublication(),
+                            conseil.getStatus().toString(),
+                            conseil.getId()
+                    )
+            ).toList();
         }
-        return conseilService.listeConseil();
+
+        return conseilService.listeConseil().stream().map(
+                conseil -> new ConseilAfficheDto(
+                        conseil.getTitre(),
+                        conseil.getDescription(),
+                        conseil.getAuteur(),
+                        conseil.getPsychologue().nomComplet(),
+                        conseil.getDatePublication(),
+                        conseil.getStatus().toString(),
+                        conseil.getId()
+                )
+        ).toList();
     }
 
 

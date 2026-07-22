@@ -8,7 +8,6 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
 import org.psychohelp.psychohelp.repository.UtilisateurRepository;
 import org.psychohelp.psychohelp.service.NotificationService;
-import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
@@ -45,17 +44,18 @@ public class ConseilServiceImpl implements ConseilService {
     }
 
     @Override
-    public List<ConseilAfficheDto> listeConseil() {
+    public List<Conseil> listeConseil() {
+        return conseilRepository.findAll();
 
-        return conseilRepository.trouverTousAvecPsychologue()
-                .stream()
-                .map(conseil -> new ConseilAfficheDto(
-                        conseil.getTitre(),
-                        conseil.getDescription(),
-                        conseil.getAuteur(),
-                        conseil.getPsychologue().nomComplet()
-                ))
-                .toList();
+//        return conseilRepository.trouverTousAvecPsychologue()
+//                .stream()
+//                .map(conseil -> new ConseilAfficheDto(
+//                        conseil.getTitre(),
+//                        conseil.getDescription(),
+//                        conseil.getAuteur(),
+//                        conseil.getPsychologue().nomComplet()
+//                ))
+//                .toList();
     }
 
     @Override
@@ -86,17 +86,18 @@ public class ConseilServiceImpl implements ConseilService {
 
 
     @Override
-    public List<ConseilAfficheDto> listConseilParStatus(Boolean status) {
+    public List<Conseil> listConseilParStatus(StatusConseilEnum status) {
 
-        return conseilRepository.trouverParStatutAvecPsychologue(status)
-                .stream()
-                .map(conseil -> new ConseilAfficheDto(
-                        conseil.getTitre(),
-                        conseil.getDescription(),
-                        conseil.getAuteur(),
-                        conseil.getPsychologue().nomComplet()
-                ))
-                .toList();
+//        return conseilRepository.trouverParStatutAvecPsychologue(status)
+//                .stream()
+//                .map(conseil -> new ConseilAfficheDto(
+//                        conseil.getTitre(),
+//                        conseil.getDescription(),
+//                        conseil.getAuteur(),
+//                        conseil.getPsychologue().nomComplet()
+//                ))
+//                .toList();
+        return conseilRepository.findByStatus(status);
     }
 
     @Override
