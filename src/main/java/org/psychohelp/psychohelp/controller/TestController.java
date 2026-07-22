@@ -44,7 +44,7 @@ public class TestController {
             description = "Retourne un test psychologique selon son ID"
     )
     @GetMapping("/{id}")
-    public Optional<TestReponseDTO> getTestById(@PathVariable int id) {
+    public Optional<Test> getTestById(@PathVariable int id) {
 
         return testService.getTestById(id);
     }

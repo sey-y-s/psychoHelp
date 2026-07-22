@@ -11,7 +11,7 @@ public interface TestService {
     List<TestReponseDTO> getAllTests();
 
 
-    Optional<TestReponseDTO> getTestById(Integer id);
+    Optional<Test> getTestById(Integer id);
 
 
     TestReponseDTO saveTest(TestRequestDTO testDTO, Integer categories_test_id);
