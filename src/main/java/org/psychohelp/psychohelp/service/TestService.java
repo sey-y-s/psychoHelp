@@ -21,4 +21,7 @@ public interface TestService {
 
 
     void deleteTest(int id);
+
+
+    List<TestReponseDTO> getTestsByCategorie(int categorieId);
 }

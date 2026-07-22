@@ -79,6 +79,15 @@ public class TestController {
         return testService.updateTest(id, testDTO);
     }
 
+    @Operation(
+            summary = "Récupérer les tests d'une catégorie",
+            description = "Retourne la liste de tous les tests psychologiques associés à une catégorie spécifique"
+    )
+    @GetMapping("/by-categorie/{categorieId}")
+    public List<TestReponseDTO> getTestsByCategorie(@PathVariable int categorieId) {
+        return testService.getTestsByCategorie(categorieId);
+    }
+
 
     @Operation(
             summary = "Supprimer un test",

@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import jakarta.transaction.Transactional;
+import org.psychohelp.psychohelp.dto.DiagnosticResponseDTO;
 import org.psychohelp.psychohelp.dto.ResultatTestMapper;
 import org.psychohelp.psychohelp.dto.ResultatTestRequestDTO;
 import org.psychohelp.psychohelp.dto.ResultatTestResponseDTO;
@@ -61,15 +62,14 @@ public class ResultatServiceImpl implements ResultatService {
         }
 
 
-        String diagnostic = diagnosticService.genererDiagnosticScientifique(test.getNom_test(), scoreTotal);
+        DiagnosticResponseDTO diagnostic = diagnosticService.genererDiagnostic(test.getId(), scoreTotal);
 
         // 6. Construction de l'entité ResultatTest
         ResultatTest resultatTest = new ResultatTest();
         resultatTest.setCitoyen(citoyen);
         resultatTest.setTest(test);
         resultatTest.setScore(scoreTotal);
-        resultatTest.setDescription(diagnostic);
-
+        resultatTest.setDescription(diagnostic.getNiveau() + " - " + diagnostic.getMessage());
 
         ResultatTest resultatSauvegarde = resultatTestRepository.save(resultatTest);
 
