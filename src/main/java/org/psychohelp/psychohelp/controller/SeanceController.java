@@ -2,10 +2,11 @@ package org.psychohelp.psychohelp.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.psychohelp.psychohelp.dto.CitoyenRendezVousResponseDTO;
+import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.dto.SeanceResponseDTO;
 import org.psychohelp.psychohelp.entity.Utilisateur;
@@ -98,4 +99,18 @@ public class SeanceController {
 
         );
     }
+
+    @GetMapping("/mes-rdv-citoyen")
+    public List<CitoyenRendezVousResponseDTO> getSeancesByCitoyenConnecte(
+            HttpSession session) {
+
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
+        Utilisateur utilisateur = Session.getUtilisateur(session);
+
+        return seanceService.getSeancesByCitoyenConnecte(
+                Long.valueOf(utilisateur.getId())
+        );
+    }
+
 }

@@ -16,6 +16,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admins")
+//  @CrossOrigin(origins = "http://localhost:4200")
+
 @Tag(
         name = "Administrateur",
         description = "Gestion des categories, de la validation et l'annulation des psychologue ainsi que la validation et annullation des conseils publier par les administrateur"
@@ -89,7 +91,8 @@ public class AdminController {
     @PutMapping("/conseils/{id}/valider")
     public ConseilAfficheDto validerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return adminService.validerConseil(id);
+        Utilisateur admin = Session.getUtilisateur(session);
+        return adminService.validerConseil(id, admin.getId());
     }
 
     @Operation(
@@ -100,7 +103,8 @@ public class AdminController {
     @PutMapping("/conseils/{id}/annuler")
     public ConseilAfficheDto annulerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return adminService.annulerConseil(id);
+        Utilisateur admin = Session.getUtilisateur(session);
+        return adminService.annulerConseil(id, admin.getId());
     }
 
     @Operation(
@@ -124,18 +128,7 @@ public class AdminController {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
-    @Operation(
-            summary = "Liste des psychologues en attente",
-            description = "Retourne tous les psychologues en attente de validation"
-    )
-    @GetMapping("/psychologues/en-attente")
-    public List<PsychologueListeDto> listerPsychologuesEnAttente(HttpSession session){
 
-        Session.verifierRole(session, RoleEnum.ADMIN);
-
-        return adminService.listerPsychologuesEnAttente();
-
-    }
 
 
     //    @GetMapping("/")

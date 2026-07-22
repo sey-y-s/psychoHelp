@@ -20,9 +20,9 @@ public interface AdminService {
 
     void supprimerAdmin(Integer id);
 
-    ConseilAfficheDto validerConseil(Integer conseilId);
+    ConseilAfficheDto validerConseil(Integer conseilId, Integer adminId);
 
-    ConseilAfficheDto annulerConseil(Integer conseilId);
+    ConseilAfficheDto annulerConseil(Integer conseilId, Integer adminId);
 
     PsychologueListeDto validerInscriptionPsy (Integer id);
 
