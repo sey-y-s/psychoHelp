@@ -10,5 +10,5 @@ public class  TestReponseDTO {
         private int id ;
         private String nom_test;
         private String nomCategorie;
-
+        private String description;
 }

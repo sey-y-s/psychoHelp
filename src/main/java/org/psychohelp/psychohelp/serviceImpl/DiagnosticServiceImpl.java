@@ -28,6 +28,7 @@ public class DiagnosticServiceImpl implements DiagnosticService {
 
         if (nomMaj.contains("GAD-7")) {
             if (score <= 4)
+
                 return "Score : " + score + "/21 (Anxiété minimale). Dans les normes.";
 
             if (score <= 9)
