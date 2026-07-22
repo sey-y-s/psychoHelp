@@ -43,10 +43,11 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam (required = false) String status){
+    public List<ConseilAfficheDto> list(@RequestParam (required = false) StatusConseilEnum status){
         if (status != null){
             //return conseilService.listConseilParStatus(status);
-            return conseilService.listConseilParStatus(StatusConseilEnum.valueOf(status)).stream()
+            return conseilService.listConseilParStatus(status)
+                    .stream()
                     .map(
                             conseil -> new ConseilAfficheDto(conseil.getTitre(),
                                     conseil.getDescription(),conseil.getAuteur(),
