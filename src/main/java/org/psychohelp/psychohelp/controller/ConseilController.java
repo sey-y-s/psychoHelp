@@ -135,15 +135,15 @@ public class ConseilController {
             description = "Supprimer un conseil"
     )
     @DeleteMapping(path = "delete/{id}")
-    public String delete(@PathVariable int id, HttpSession session){
+    public ResponseEntity<?> delete(@PathVariable int id, HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
         Conseil conseil = conseilService.conseilParId(id);
         if (conseil.getPsychologue().getId() == utilisateur.getId()){
             conseilService.supConseil(id);
-            return "Conseils supprimer";
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
+        throw new UnauthorizedException("Vous n'avez pas les droits nessessaires pour supprimer cette ressource!");
     }
 
     @GetMapping("mes-conseils")
