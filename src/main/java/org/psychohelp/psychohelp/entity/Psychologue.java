@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
+import org.psychohelp.psychohelp.enumeration.StatusValidationPsy;
 
 import java.util.List;
 
@@ -13,11 +15,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Psychologue extends Utilisateur{
-    private Boolean status=false;
+
+    @Enumerated(EnumType.STRING) @Column(length = 20)
+    private StatusValidationPsy status = StatusValidationPsy.ENATTENTE;
+
     private String description;
     private String diplome_path;
     private String  cv_path;
     private Boolean etat=false;
+
     @ManyToOne
     @JoinColumn(name="specialite_id",nullable = false)
     private Specialite specialite;
@@ -27,5 +33,4 @@ public class Psychologue extends Utilisateur{
 
     @OneToMany(mappedBy = "psychologue")
     private List<Conseil> conseils;
-
 }
