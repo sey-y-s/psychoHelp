@@ -104,7 +104,6 @@ public class AdminServiceImpl implements AdminService {
         return response;
     }
 
-
     @Override
     public Admin getAdminById(Integer id) {
 
@@ -224,22 +223,7 @@ public class AdminServiceImpl implements AdminService {
                 psySauvegarde.getNom()
         );
 
-        PsychologueListeDto response = new PsychologueListeDto();
-
-        response.setId(psySauvegarde.getId());
-        response.setNom(psySauvegarde.getNom());
-        response.setPrenom(psySauvegarde.getPrenom());
-        response.setTelephone(psySauvegarde.getTelephone());
-        response.setMail(psySauvegarde.getMail());
-        response.setRole(psySauvegarde.getRole());
-        response.setDateCreation(psySauvegarde.getDateCreation());
-        response.setStatus(psySauvegarde.getStatus());
-        response.setDescription(psySauvegarde.getDescription());
-        response.setDiplome_path(psySauvegarde.getDiplome_path());
-        response.setCv_path(psySauvegarde.getCv_path());
-        response.setEtat(psySauvegarde.getEtat());
-
-        return response;
+        return mapPsyToDto(psySauvegarde);
     }
 
     @Override
@@ -249,35 +233,35 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
         psychologue.setStatus(StatusValidationPsy.REFUSER);
-
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
-
-        PsychologueListeDto response = new PsychologueListeDto();
-
-        response.setId(psySauvegarde.getId());
-        response.setNom(psySauvegarde.getNom());
-        response.setPrenom(psySauvegarde.getPrenom());
-        response.setTelephone(psySauvegarde.getTelephone());
-        response.setMail(psySauvegarde.getMail());
-        response.setRole(psySauvegarde.getRole());
-        response.setDateCreation(psySauvegarde.getDateCreation());
-        response.setStatus(psySauvegarde.getStatus()); // ou isStatus() selon ton entité
-        response.setDescription(psySauvegarde.getDescription());
-        response.setDiplome_path(psySauvegarde.getDiplome_path());
-        response.setCv_path(psySauvegarde.getCv_path());
-        response.setEtat(psySauvegarde.getEtat()); // ou isEtat() selon ton entité
-
-        return response;
+        return mapPsyToDto(psySauvegarde);
     }
+
     @Override
     public List<PsychologueListeDto> listerPsychologuesEnAttente() {
 
         List<Psychologue> psychologues =
                 psychologueRepository.findByStatusEnAttente();
 
-        return null;
+        return psychologues.stream().map(this::mapPsyToDto).toList();
     }
 
+    public PsychologueListeDto mapPsyToDto(Psychologue psychologue) {
+        PsychologueListeDto response = new PsychologueListeDto();
+        response.setId(psychologue.getId());
+        response.setNom(psychologue.getNom());
+        response.setPrenom(psychologue.getPrenom());
+        response.setTelephone(psychologue.getTelephone());
+        response.setMail(psychologue.getMail());
+        response.setRole(psychologue.getRole());
+        response.setDateCreation(psychologue.getDateCreation());
+        response.setStatus(psychologue.getStatus()); // ou isStatus() selon ton entité
+        response.setDescription(psychologue.getDescription());
+        response.setDiplome_path(psychologue.getDiplome_path());
+        response.setCv_path(psychologue.getCv_path());
+        response.setEtat(psychologue.getEtat()); // ou isEtat() selon ton entité
+        return response;
+    }
 
 }
 
