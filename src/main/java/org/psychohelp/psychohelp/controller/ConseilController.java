@@ -48,8 +48,7 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam(required = false) Boolean status) {
-
+    public List<ConseilAfficheDto> list(@RequestParam(name = "status", required = false) StatusConseilEnum status) {
         if (status != null) {
             return conseilService.listConseilParStatus(status);
         }
@@ -146,6 +145,7 @@ public class ConseilController {
         }
         return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
     }
+
     @GetMapping("mes-conseils")
     public  List<ConseilDtoForPyschologue> ConseilsByPyschologueId(HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);

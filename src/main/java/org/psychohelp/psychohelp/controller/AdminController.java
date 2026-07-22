@@ -89,7 +89,8 @@ public class AdminController {
     @PutMapping("/conseils/{id}/valider")
     public ConseilAfficheDto validerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return adminService.validerConseil(id);
+        Utilisateur admin = Session.getUtilisateur(session);
+        return adminService.validerConseil(id, admin.getId());
     }
 
     @Operation(
@@ -100,7 +101,8 @@ public class AdminController {
     @PutMapping("/conseils/{id}/annuler")
     public ConseilAfficheDto annulerConseil(@PathVariable Integer id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return adminService.annulerConseil(id);
+        Utilisateur admin = Session.getUtilisateur(session);
+        return adminService.annulerConseil(id, admin.getId());
     }
 
     @Operation(
