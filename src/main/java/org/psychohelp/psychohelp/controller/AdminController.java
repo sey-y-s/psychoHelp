@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-
-
 @RequestMapping("/api/admins")
 //  @CrossOrigin(origins = "http://localhost:4200")
+
 @Tag(
         name = "Administrateur",
         description = "Gestion des categories, de la validation et l'annulation des psychologue ainsi que la validation et annullation des conseils publier par les administrateur"
@@ -127,18 +126,7 @@ public class AdminController {
         Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
-    @Operation(
-            summary = "Liste des psychologues en attente",
-            description = "Retourne tous les psychologues en attente de validation"
-    )
-    @GetMapping("/psychologues/en-attente")
-    public List<PsychologueListeDto> listerPsychologuesEnAttente(HttpSession session){
 
-        Session.verifierRole(session, RoleEnum.ADMIN);
-
-        return adminService.listerPsychologuesEnAttente();
-
-    }
 
 
     //    @GetMapping("/")

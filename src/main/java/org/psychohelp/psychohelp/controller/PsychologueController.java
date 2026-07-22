@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") //<-- AJOUTE CECI
 @RequestMapping("/api/psychologues")
 @Tag(
         name = "Psychologues",
@@ -69,7 +68,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.CITOYEN);
 
         return  psyService.PSYCHOLOGUEList();
     }
@@ -80,7 +79,7 @@ public class PsychologueController {
 
     @PutMapping("/{id}")
     public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId,HttpSession session){
-        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        //Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
         return psyService.updatePsychologue(updatePsyDto,PsychologueId);
     }
@@ -127,10 +126,12 @@ public class PsychologueController {
         //return new PsychologueListeDto(psychologue.getId(),psychologue.getNom(),psychologue.getPrenom(),psychologue.getTelephone(),psychologue.getMail(),psychologue.getRole(),psychologue.getDateCreation(),psychologue.getStatus(),psychologue.getDescription(),psychologue.getDiplome_path(),psychologue.getCv_path(),psychologue.getEtat());
 
     }
+
     @Operation(
             summary = "Crée un conseil ",
             description = "Ajoute un nouveau conseil"
     )
+
     @PostMapping(path = "/conseil")
     public ListConseilDto create(@RequestBody ConseilDto conseilDto){
         Conseil conseil=new Conseil();
@@ -141,8 +142,10 @@ public class PsychologueController {
         Psychologue psychologue=psyService.GetPsychologueById(conseilDto.getPsyId());
         conseil.setPsychologue(psychologue);
         Conseil conseilcreer=conseilService.creer(conseil);
-        return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getAuteur());
+        return new ListConseilDto(conseilcreer.getTitre(),conseilcreer.getDescription(),conseilcreer.getStatus(),conseilcreer.getAuteur());
     }
+
+
     @Operation(
             summary = "Liste des Psy validés ",
             description = "Liste des Psy validés par admin"
@@ -151,11 +154,6 @@ public class PsychologueController {
     @GetMapping("/valide")
     public List<PsyReponseDto> getPsychologueValide(HttpSession session) {
         Session.verifierRole(session, RoleEnum.CITOYEN);
-
-
-
-
-
         return psyService.getPsychologueValide();
     }
 

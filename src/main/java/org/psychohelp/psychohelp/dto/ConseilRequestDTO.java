@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class ConseilRequestDTO {
         private String titre;
         private String description;
-        private String auteur;
 
 
 
