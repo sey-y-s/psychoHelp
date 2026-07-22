@@ -55,7 +55,10 @@ public class ConseilServiceImpl implements ConseilService {
                         conseil.getTitre(),
                         conseil.getDescription(),
                         conseil.getAuteur(),
-                        conseil.getPsychologue().nomComplet()
+                        conseil.getPsychologue().nomComplet(),
+                        conseil.getDatePublication(),
+                        conseil.getStatus().toString(),
+                        conseil.getId()
                 ))
                 .toList();
     }
@@ -89,14 +92,19 @@ public class ConseilServiceImpl implements ConseilService {
 
     @Override
     public List<ConseilAfficheDto> listConseilParStatus(StatusConseilEnum status) {
+
         return conseilRepository.trouverParStatutAvecPsychologue(status)
                 .stream()
                 .map(conseil -> new ConseilAfficheDto(
                         conseil.getTitre(),
                         conseil.getDescription(),
                         conseil.getAuteur(),
-                        conseil.getPsychologue().nomComplet()
-                ))
+                        conseil.getPsychologue().nomComplet(),
+                        conseil.getDatePublication(),
+                        conseil.getStatus().toString(),
+                        conseil.getId()
+
+                        ))
                 .toList();
     }
 

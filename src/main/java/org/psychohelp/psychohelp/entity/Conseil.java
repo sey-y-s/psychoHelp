@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
@@ -43,6 +44,7 @@ public class Conseil {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "psy_id")
+    //@JsonIgnoreProperties("conseils")
     private Psychologue psychologue;
 
 
