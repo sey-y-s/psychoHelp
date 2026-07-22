@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.ConseilDtoForPyschologue;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
 import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.service.NotificationService;
@@ -87,8 +88,7 @@ public class ConseilServiceImpl implements ConseilService {
 
 
     @Override
-    public List<ConseilAfficheDto> listConseilParStatus(Boolean status) {
-
+    public List<ConseilAfficheDto> listConseilParStatus(StatusConseilEnum status) {
         return conseilRepository.trouverParStatutAvecPsychologue(status)
                 .stream()
                 .map(conseil -> new ConseilAfficheDto(
