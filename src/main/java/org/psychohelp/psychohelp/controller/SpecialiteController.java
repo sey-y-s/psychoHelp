@@ -24,6 +24,7 @@ import java.util.List;
         name = "Specialité des psychologues",
         description = "Gestion de la specialité des psychologues"
 )
+
 public class SpecialiteController{
     @Autowired
     private SpecialiteService specialiteService;
