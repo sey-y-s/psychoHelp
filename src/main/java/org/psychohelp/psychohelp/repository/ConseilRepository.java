@@ -21,6 +21,6 @@ SELECT c FROM Conseil c JOIN FETCH c.psychologue WHERE c.status = :status
            """)
     List<Conseil> trouverParStatutAvecPsychologue(Boolean status);
     //les conseils postés par un psychologue
-    @Query("select c from Conseil c where c.psychologue.id=:psyschologueId ")
+    @Query("select c from Conseil c where c.psychologue.id=:psyschologueId order by c.id desc ")
     List<Conseil>ConseilsByPyschologueId(@Param("psyschologueId") int psyschologueId);
 }
