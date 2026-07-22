@@ -46,7 +46,7 @@ public class ConseilController {
     public List<ConseilAfficheDto> list(@RequestParam (required = false) String status){
         if (status != null){
             //return conseilService.listConseilParStatus(status);
-            return conseilService.  listConseilParStatus(StatusConseilEnum.valueOf(status)).stream()
+            return conseilService.listConseilParStatus(StatusConseilEnum.valueOf(status)).stream()
                     .map(
                             conseil -> new ConseilAfficheDto(conseil.getTitre(),
                                     conseil.getDescription(),conseil.getAuteur(),
@@ -60,7 +60,7 @@ public class ConseilController {
                         conseil -> new ConseilAfficheDto(conseil.getTitre(),
                                 conseil.getDescription(),conseil.getAuteur(),
                                 conseil.getPsychologue().nomComplet(),
-                                 conseil.getDatePublication(),
+                                conseil.getDatePublication(),
                                 conseil.getStatus().toString(), conseil.getId())
                 ).toList();
     }
