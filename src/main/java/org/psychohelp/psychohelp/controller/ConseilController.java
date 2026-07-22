@@ -33,10 +33,9 @@ import java.util.List;
         description = "Gestion des conseils"
 )
 public class ConseilController {
-
     @Autowired
     private PsyService psyService;
-
+    @Autowired
     ConseilServiceImpl conseilService;
 
     public ConseilController(ConseilServiceImpl utlService){
@@ -48,12 +47,32 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam(required = false) Boolean status) {
-
-        if (status != null) {
+    public List<ConseilAfficheDto> list(@RequestParam (required = false) StatusConseilEnum status){
+        if (status != null){
+            //return conseilService.listConseilParStatus(status);
             return conseilService.listConseilParStatus(status);
+//                    .stream()
+//                    .map(
+//                            conseil -> new ConseilAfficheDto(conseil.getTitre(),
+//
+//                                    conseil.getDescription(),conseil.getAuteur(),
+//                                    conseil.getPsychologue().nomComplet(),
+//                                    conseil.getDatePublication(),
+//                                    conseil.getStatus(),
+//                                    conseil.getId())
+//                    ).toList();
         }
+        //return conseilService.listeConseil();
         return conseilService.listeConseil();
+//                .stream()
+//                .map(
+//                        conseil -> new ConseilAfficheDto(conseil.getTitre(),
+//                                conseil.getDescription(),conseil.getAuteur(),
+//                                conseil.getPsychologue().nomComplet(),
+//                                conseil.getDatePublication(),
+//                                conseil.getStatus().toString(), conseil.getId())
+//                ).toList();
+
     }
 
 
@@ -146,6 +165,7 @@ public class ConseilController {
         }
         throw new UnauthorizedException("Vous n'avez pas les droits nessessaires pour supprimer cette ressource!");
     }
+
     @GetMapping("mes-conseils")
     public  List<ConseilDtoForPyschologue> ConseilsByPyschologueId(HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
