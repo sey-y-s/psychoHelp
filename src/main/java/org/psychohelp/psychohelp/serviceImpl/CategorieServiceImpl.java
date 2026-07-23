@@ -2,7 +2,6 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 import org.psychohelp.psychohelp.dto.CategorieReponseDTO;
 import org.psychohelp.psychohelp.dto.CategorieRequestDTO;
-import org.psychohelp.psychohelp.dto.SpecialiteListeDto;
 import org.psychohelp.psychohelp.entity.CategorieTest;
 import org.psychohelp.psychohelp.repository.CategorieRepository;
 import org.psychohelp.psychohelp.service.CategorieService;
@@ -89,5 +88,10 @@ public class CategorieServiceImpl
 
         categorieRepository.deleteById(id);
 
+    }
+
+    @Override
+    public CategorieReponseDTO getCategorieByTestId(Integer id) {
+        return categorieRepository.getCategorieByTestId(id);
     }
 }

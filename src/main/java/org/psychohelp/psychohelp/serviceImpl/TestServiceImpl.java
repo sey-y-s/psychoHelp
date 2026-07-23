@@ -32,15 +32,9 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Optional<TestReponseDTO> getTestById(Integer id) {
-        return testRepository.findById(id).map(
-                test -> new TestReponseDTO(
-                        test.getId(),
-                        test.getNom_test(),
-                        test.getCategorieTest().getNomCategorie(),
-                        test.getDescription() // <-- AJOUTÉ
-                )
-        );
+    public Optional<Test> getTestById(Integer id) {
+
+        return testRepository.findById(id);
     }
 
     @Override
