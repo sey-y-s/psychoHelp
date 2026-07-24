@@ -42,7 +42,7 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
         if(utilisateur instanceof Psychologue){
             Psychologue psychologue = (Psychologue) utilisateur;
-            if(Boolean.FALSE.equals(psychologue.getStatus())){
+            if("ENATTENTE".equals(psychologue.getStatus())){
                 throw new ConnexionException("Votre compte est en attente de validation par l'administrateur. Veuillez patienter.");
             }
             if(Boolean.FALSE.equals(psychologue.getEtat())){
