@@ -40,13 +40,12 @@ public class AuthentificationServiceImpl implements AuthentificationService {
             throw new ConnexionException(msg);
         }
 
-        if(utilisateur instanceof Psychologue){
-            Psychologue psychologue = (Psychologue) utilisateur;
-            if("ENATTENTE".equals(psychologue.getStatus())){
+        if(utilisateur instanceof Psychologue psychologue){
+            if(psychologue.getStatus().toString().equals("ENATTENTE")){
                 throw new ConnexionException("Votre compte est en attente de validation par l'administrateur. Veuillez patienter.");
             }
             if(Boolean.FALSE.equals(psychologue.getEtat())){
-                throw new ConnexionException("Ce compte a été désactivé.");
+                throw new ConnexionException("Ce compte est inactif.");
             }
         }
 
