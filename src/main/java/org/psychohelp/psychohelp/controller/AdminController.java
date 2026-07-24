@@ -110,7 +110,7 @@ public class AdminController {
 
     @PutMapping("/psychologues/{id}/valider")
     public PsychologueListeDto validerInscriptionPsy(@PathVariable Integer id, HttpSession session) {
-        Session.verifierRole(session, RoleEnum.ADMIN);
+        //Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.validerInscriptionPsy(id);
     }
 
@@ -121,7 +121,7 @@ public class AdminController {
 
     @PutMapping("/psychologues/{id}/annuler")
     public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
-        Session.verifierRole(session, RoleEnum.ADMIN);
+        //Session.verifierRole(session, RoleEnum.ADMIN);
         return adminService.annulerInscriptionPsy(id);
     }
 
