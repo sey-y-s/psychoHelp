@@ -16,7 +16,6 @@ public class ChoixMultiple extends ChoixMultiplesReponseDTO {
     private String choix ;
     private int score ;
 
-
     @ManyToOne
     @JoinColumn(name = "question_id")
     @ToString.Exclude
