@@ -49,30 +49,9 @@ public class ConseilController {
     @GetMapping(path = "read")
     public List<ConseilAfficheDto> list(@RequestParam (required = false) StatusConseilEnum status){
         if (status != null){
-            //return conseilService.listConseilParStatus(status);
             return conseilService.listConseilParStatus(status);
-//                    .stream()
-//                    .map(
-//                            conseil -> new ConseilAfficheDto(conseil.getTitre(),
-//
-//                                    conseil.getDescription(),conseil.getAuteur(),
-//                                    conseil.getPsychologue().nomComplet(),
-//                                    conseil.getDatePublication(),
-//                                    conseil.getStatus(),
-//                                    conseil.getId())
-//                    ).toList();
         }
-        //return conseilService.listeConseil();
         return conseilService.listeConseil();
-//                .stream()
-//                .map(
-//                        conseil -> new ConseilAfficheDto(conseil.getTitre(),
-//                                conseil.getDescription(),conseil.getAuteur(),
-//                                conseil.getPsychologue().nomComplet(),
-//                                conseil.getDatePublication(),
-//                                conseil.getStatus().toString(), conseil.getId())
-//                ).toList();
-
     }
 
 

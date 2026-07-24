@@ -13,7 +13,8 @@ import java.util.Optional;
 
 public interface ConseilRepository extends JpaRepository<Conseil, Integer> {
 
-   // List<Conseil> findByStatus(Boolean status);
+    List<Conseil> findByStatus(StatusConseilEnum status);
+
 
     @Query("""
 SELECT c FROM Conseil c JOIN FETCH c.psychologue """)
