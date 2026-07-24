@@ -16,7 +16,7 @@ public class CategorieTest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nom_categorie", nullable = false, unique = true, length = 100)
+    @Column(name = "nom_categorie", nullable = false, unique = true, length = 250)
     private String nomCategorie;
 
     @Column(length = 255)
