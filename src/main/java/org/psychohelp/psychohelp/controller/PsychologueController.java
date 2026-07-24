@@ -68,7 +68,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN,RoleEnum.CITOYEN);
+        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.CITOYEN);
 
         return  psyService.PSYCHOLOGUEList();
     }
@@ -79,7 +79,7 @@ public class PsychologueController {
 
     @PutMapping("/{id}")
     public PsychologueListeDto updatePsychologue( @RequestBody UpdatePsyDto updatePsyDto ,@PathVariable("id") int PsychologueId,HttpSession session){
-        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        //Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
 
         return psyService.updatePsychologue(updatePsyDto,PsychologueId);
     }
@@ -154,11 +154,6 @@ public class PsychologueController {
     @GetMapping("/valide")
     public List<PsyReponseDto> getPsychologueValide(HttpSession session) {
         Session.verifierRole(session, RoleEnum.CITOYEN);
-
-
-
-
-
         return psyService.getPsychologueValide();
     }
 

@@ -1,10 +1,12 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "conseils")
@@ -33,7 +35,16 @@ public class Conseil {
     private String auteur;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "traite_par_admin_id")
+    private Admin traitePar;
+
+    @Column(name = "date_traitement")
+    private LocalDateTime dateTraitement;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "psy_id")
+    //@JsonIgnoreProperties("conseils")
     private Psychologue psychologue;
 
 

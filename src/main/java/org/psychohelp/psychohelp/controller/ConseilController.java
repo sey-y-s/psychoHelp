@@ -33,10 +33,9 @@ import java.util.List;
         description = "Gestion des conseils"
 )
 public class ConseilController {
-
     @Autowired
     private PsyService psyService;
-
+    @Autowired
     ConseilServiceImpl conseilService;
 
     public ConseilController(ConseilServiceImpl utlService){
@@ -48,33 +47,11 @@ public class ConseilController {
             description = "Voir la liste des conseils"
     )
     @GetMapping(path = "read")
-    public List<ConseilAfficheDto> list(@RequestParam(required = false) String status) {
-
-        if (status != null) {
-            return conseilService.listConseilParStatus(StatusConseilEnum.valueOf(status)).stream().map(
-                    conseil -> new ConseilAfficheDto(
-                            conseil.getTitre(),
-                            conseil.getDescription(),
-                            conseil.getAuteur(),
-                            conseil.getPsychologue().nomComplet(),
-                            conseil.getDatePublication(),
-                            conseil.getStatus().toString(),
-                            conseil.getId()
-                    )
-            ).toList();
+    public List<ConseilAfficheDto> list(@RequestParam (required = false) StatusConseilEnum status){
+        if (status != null){
+            return conseilService.listConseilParStatus(status);
         }
-
-        return conseilService.listeConseil().stream().map(
-                conseil -> new ConseilAfficheDto(
-                        conseil.getTitre(),
-                        conseil.getDescription(),
-                        conseil.getAuteur(),
-                        conseil.getPsychologue().nomComplet(),
-                        conseil.getDatePublication(),
-                        conseil.getStatus().toString(),
-                        conseil.getId()
-                )
-        ).toList();
+        return conseilService.listeConseil();
     }
 
 
@@ -157,16 +134,17 @@ public class ConseilController {
             description = "Supprimer un conseil"
     )
     @DeleteMapping(path = "delete/{id}")
-    public String delete(@PathVariable int id, HttpSession session){
+    public ResponseEntity<?> delete(@PathVariable int id, HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("UtilisateurConnecte");
         Conseil conseil = conseilService.conseilParId(id);
         if (conseil.getPsychologue().getId() == utilisateur.getId()){
             conseilService.supConseil(id);
-            return "Conseils supprimer";
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return "Vous n'avez pas les droits nessessaires pour supprimer cette ressource";
+        throw new UnauthorizedException("Vous n'avez pas les droits nessessaires pour supprimer cette ressource!");
     }
+
     @GetMapping("mes-conseils")
     public  List<ConseilDtoForPyschologue> ConseilsByPyschologueId(HttpSession session){
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);

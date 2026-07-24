@@ -19,7 +19,7 @@ public interface ConseilService {
 
     public void supConseil(Integer id);
 
-    public List<Conseil> listConseilParStatus(StatusConseilEnum status);
+    public List<ConseilAfficheDto> listConseilParStatus(StatusConseilEnum status);
     List<ConseilDtoForPyschologue> ConseilsByPyschologueId( HttpSession session);
 
 

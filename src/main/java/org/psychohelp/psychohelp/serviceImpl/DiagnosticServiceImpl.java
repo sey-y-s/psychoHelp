@@ -1,45 +1,24 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.psychohelp.psychohelp.dto.DiagnosticResponseDTO;
+import org.psychohelp.psychohelp.entity.Diagnostic;
+import org.psychohelp.psychohelp.repository.DiagnosticRepository;
 import org.psychohelp.psychohelp.service.DiagnosticService;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DiagnosticServiceImpl implements DiagnosticService {
+
+    private final DiagnosticRepository diagnosticRepository;
+
     @Override
-    public String genererDiagnosticScientifique(String nomTest, int score) {
-        String nomMaj = nomTest.toUpperCase();
-
-        if (nomMaj.contains("PHQ-9")) {
-            if (score <= 4)
-                return "Score : " + score + "/27 (Dépression minimale ou absente). Statut sain.";
-
-            if (score <= 9)
-                return "Score : " + score + "/27 (Dépression légère). Vigilance requise.";
-
-            if (score <= 14)
-                return "Score : " + score + "/27 (Dépression modérée). Consultation recommandée.";
-
-            if (score <= 19)
-                return "Score : " + score + "/27 (Dépression modérément sévère). Suivi thérapeutique fortement conseillé.";
-
-            return "Score : " + score + "/27 (Dépression sévère). Détresse critique. Prise en charge requise d'urgence.";
-        }
-
-        if (nomMaj.contains("GAD-7")) {
-            if (score <= 4)
-                return "Score : " + score + "/21 (Anxiété minimale). Dans les normes.";
-
-            if (score <= 9)
-                return "Score : " + score + "/21 (Anxiété légère). Inquiétudes diffuses décelées.";
-
-            if (score <= 14)
-                return "Score : " + score + "/21 (Anxiété modérée). Impact quotidien visible. Une consultation est utile.";
-
-            return "Score : " + score + "/21 (Anxiété sévère). Niveau d'anxiété invalidant. Soutien psychologique impératif.";
-        }
-
-        return "Score global : " + score + " points. Bilan enregistré dans le dossier du patient.";
+    public DiagnosticResponseDTO genererDiagnostic(Integer testId, Integer score) {
+        Diagnostic diagnostic = diagnosticRepository.trouverDiagnostic(testId, score)
+                        .orElseThrow(() ->
+                                new RuntimeException("Diagnostic introuvable"));
+        return new DiagnosticResponseDTO(score, diagnostic.getNiveau(), diagnostic.getMessage());
     }
-    }
+}
 

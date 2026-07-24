@@ -11,4 +11,5 @@ public interface CategorieService {
     CategorieReponseDTO modifierCategorie(Integer id, CategorieRequestDTO categorieMiseAJour);
     void supprimerCategorie(Integer id);
     CategorieReponseDTO obtenirCategorieParId(Integer id);
+    CategorieReponseDTO getCategorieByTestId(Integer id);
 }
