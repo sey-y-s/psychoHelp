@@ -17,7 +17,7 @@ public interface ChoixMultipleService {
     ChoixMultiplesReponseDTO saveChoix(ChoixMultiplesRequestDTO choix, Integer question_id);
 
 
-    ChoixMultiplesReponseDTO updateChoix(int id, ChoixMultiplesRequestDTO choix);
+    ChoixMultiple updateChoix(int id, ChoixMultiplesRequestDTO choix);
 
 
     void deleteChoix(int id);
