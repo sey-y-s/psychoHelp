@@ -94,7 +94,7 @@ public class UtilisateurController {
     @Operation(summary = "Le Dashboard", description = "voir les statistiques")
     @GetMapping(path = "/dashboard")
     public DashboardAdminDTO getDashboard(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN);
+//        Session.verifierRole(session, RoleEnum.ADMIN);
         List<UtilisateurListDTO> users = utilisateurService.getRecentUsers().stream().map(
                 user -> new UtilisateurListDTO(
                         user.getNom(),
