@@ -9,7 +9,7 @@ import org.psychohelp.psychohelp.dto.ChoixMultiplesReponseDTO;
 @Data
 @Entity
 @Table(name = "choixmultiples")
-public class ChoixMultiple extends ChoixMultiplesReponseDTO {
+public class ChoixMultiple {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
