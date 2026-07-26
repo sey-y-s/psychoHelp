@@ -43,4 +43,6 @@ public interface SeanceRepository extends JpaRepository<Seance, Long> {
     List<CitoyenRendezVousResponseDTO> findSeancesByCitoyenConnecte(
             @Param("citoyenId") Long citoyenId
     );
+
+    boolean existsByCreneauIdAndStatutIn(Integer creneauId, List<StatutRdvEnum> statuts);
 }

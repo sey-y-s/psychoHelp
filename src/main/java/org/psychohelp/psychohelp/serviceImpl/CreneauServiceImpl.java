@@ -7,6 +7,7 @@ import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
 import org.psychohelp.psychohelp.entity.Creneau;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Utilisateur;
+import org.psychohelp.psychohelp.enumeration.StatutRdvEnum;
 import org.psychohelp.psychohelp.mapper.CreneauMapper;
 import org.psychohelp.psychohelp.repository.CreneauRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
@@ -29,23 +30,23 @@ public class CreneauServiceImpl implements CreneauService {
     private final CreneauRepository cp;
     private final PsychologueRepository pp;
     private final CreneauMapper mapper;
-    @Autowired
-    private SeanceRepository seanceRepository;
+    private final SeanceRepository seanceRepository;
 
     @Override
-    public CreneauResponseDTO creer(CreneauDTO dto,
-                                    Utilisateur utilisateurConnecte) {
-
+    public CreneauResponseDTO creer(CreneauDTO dto, Utilisateur utilisateurConnecte) {
         Psychologue psychologue = pp.findById(utilisateurConnecte.getId())
                 .orElseThrow(() ->
                         new RuntimeException("Psychologue introuvable"));
 
+        boolean existe = cp.existeCreneau(psychologue.getId(), dto.getJours(), dto.getHeureDebut(), dto.getHeureFin());
+        if (existe) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ce créneau existe déjà."
+            );
+        }
         Creneau creneau = mapper.toEntity(dto);
-
         creneau.setPsychologue(psychologue);
-
         Creneau saved = cp.save(creneau);
-
         return mapper.toDTO(saved);
     }
 
@@ -59,17 +60,14 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public CreneauResponseDTO getById(int id) {
-
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Créneau introuvable"));
-
         return mapper.toDTO(creneau);
     }
 
     @Override
     public CreneauResponseDTO update(int id, UpdateCreneauDTO dto) {
-
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Créneau introuvable"));
@@ -84,11 +82,17 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public void delete(int id) {
-
         Creneau creneau = cp.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Créneau introuvable"));
-
+        boolean estReserve = seanceRepository.existsByCreneauIdAndStatutIn(id,
+                List.of(StatutRdvEnum.RESERVER, StatutRdvEnum.CONFIRMER));
+        if (estReserve) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Impossible de supprimer ce créneau, un rendez-vous est déjà réservé ou confirmé."
+            );
+        }
         cp.delete(creneau);
     }
 
@@ -102,7 +106,6 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public List<CreneauResponseDTO> getDisponibles() {
-
         return cp.findByStatutTrue()
                 .stream()
                 .map(mapper::toDTO)
@@ -111,7 +114,6 @@ public class CreneauServiceImpl implements CreneauService {
 
     @Override
     public List<CreneauResponseDTO> getDisponiblesByPsychologueId(Integer psychologueId) {
-
         List<CreneauResponseDTO> creneaux =
                 cp.findByPsychologueIdAndStatutTrue(psychologueId)
                         .stream()
