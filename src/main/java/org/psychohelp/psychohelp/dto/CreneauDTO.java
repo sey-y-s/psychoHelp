@@ -32,10 +32,4 @@ public class CreneauDTO {
             example = "true"
     )
     private Boolean statut;
-
-    @Schema(
-            description = "Identifiant du psychologue associé au créneau",
-            example = "1"
-    )
-    private Long psychologueId;
 }

@@ -4,15 +4,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import org.psychohelp.psychohelp.dto.*;
 import lombok.AllArgsConstructor;
 import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Seance;
 import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.repository.ConseilRepository;
+import org.psychohelp.psychohelp.repository.TestRepository;
 import org.psychohelp.psychohelp.service.AuthentificationService;
 import org.psychohelp.psychohelp.service.UtilisateurService;
 import org.psychohelp.psychohelp.serviceImpl.UtilisateurServiceImpl;
 import org.psychohelp.psychohelp.utils.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +32,9 @@ public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
     private final AuthentificationService authentificationService;
+    @Autowired private ConseilRepository conseilRepository;
+    @Autowired private TestRepository testRepository;
+
 
 
     @Operation(summary = "Listes", description = "voir la liste des utilisateurs")
@@ -35,12 +42,12 @@ public class UtilisateurController {
     public List<UtilisateurListDTO> list(){
         return utilisateurService.listeUtilisateur().stream()
                 .map(utilisateur -> new UtilisateurListDTO(
-                        utilisateur.getNom(),
-                        utilisateur.getPrenom(),
-                        utilisateur.getMail(),
-                        utilisateur.getTelephone()
-                )
-        ).toList();
+                                utilisateur.getNom(),
+                                utilisateur.getPrenom(),
+                                utilisateur.getMail(),
+                                utilisateur.getTelephone()
+                        )
+                ).toList();
     }
 
 
@@ -84,6 +91,30 @@ public class UtilisateurController {
     }
 
 
+    @Operation(summary = "Le Dashboard", description = "voir les statistiques")
+    @GetMapping(path = "/dashboard")
+    public DashboardAdminDTO getDashboard(HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+        List<UtilisateurListDTO> users = utilisateurService.getRecentUsers().stream().map(
+                user -> new UtilisateurListDTO(
+                        user.getNom(),
+                        user.getPrenom(),
+                        user.getMail(),
+                        user.getTelephone()
+
+                )
+        ).toList();
+
+        DashboardAdminDTO dashboard = new DashboardAdminDTO(
+                utilisateurService.count(),
+                16,
+                conseilRepository.count(),
+                testRepository.count(),
+                users
+        );
+        return dashboard;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody ConnectionDTO connectionDTO, HttpSession session){
         Utilisateur utilisateur = authentificationService.connecter(connectionDTO);
@@ -97,8 +128,6 @@ public class UtilisateurController {
 
         return ResponseEntity.ok(dto);
     }
-
-
 
     @GetMapping("/session")
     @Operation( summary = "Récupérer le user courant", description = "Vérifier si une session existe déjà et renvoyer l'utilisateur")

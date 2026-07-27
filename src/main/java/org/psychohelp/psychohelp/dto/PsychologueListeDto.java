@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.StatusValidationPsy;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public class PsychologueListeDto {
     private String nom,prenom,telephone,mail;
     private RoleEnum role;
     private LocalDate dateCreation;
-    private boolean status;
+    private StatusValidationPsy status;
     private String description;
     private String diplome_path;
     private String  cv_path;

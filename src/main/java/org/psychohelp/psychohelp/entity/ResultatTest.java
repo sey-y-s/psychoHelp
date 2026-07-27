@@ -16,6 +16,9 @@ public class ResultatTest {
     @Column(nullable = false)
     private Integer score;
 
+    @Column(nullable = false, length = 50)
+    private String niveau;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 

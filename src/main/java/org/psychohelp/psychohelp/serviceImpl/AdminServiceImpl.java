@@ -7,17 +7,19 @@ import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.PsychologueListeDto;
 import org.psychohelp.psychohelp.entity.*;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.enumeration.StatusValidationPsy;
+import org.psychohelp.psychohelp.enumeration.TypeNotificationEnum;
 import org.psychohelp.psychohelp.enumeration.StatusConseilEnum;
+import org.psychohelp.psychohelp.exceptions.BadRequestException;
 import org.psychohelp.psychohelp.repository.AdminRepository;
 import org.psychohelp.psychohelp.repository.ConseilRepository;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
-import org.psychohelp.psychohelp.service.AdminService;
-import org.psychohelp.psychohelp.service.QuestionsTestService;
-import org.psychohelp.psychohelp.service.TestService;
+import org.psychohelp.psychohelp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private PsychologueRepository psychologueRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private NotificationService notificationService;
 
 //    @Autowired
 //    private TestService testService;
@@ -98,7 +106,6 @@ public class AdminServiceImpl implements AdminService {
         return response;
     }
 
-
     @Override
     public Admin getAdminById(Integer id) {
 
@@ -125,6 +132,7 @@ public class AdminServiceImpl implements AdminService {
                 })
                 .toList();
     }
+
     @Override
     public void supprimerAdmin(Integer id) {
 
@@ -135,16 +143,29 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ConseilAfficheDto validerConseil(Integer conseilId) {
+    public ConseilAfficheDto validerConseil(Integer conseilId, Integer adminId) {
 
         Conseil conseil = conseilRepository.findById(conseilId)
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
+        verifierConseilEnAttente(conseil);
+        Admin admin = adminRepository.findById(adminId)
+                .orElseThrow(() ->
+                        new RuntimeException("Administrateur introuvable."));
         conseil.setStatus(StatusConseilEnum.VALIDER);
+        conseil.setTraitePar(admin);
+        conseil.setDateTraitement(LocalDateTime.now());
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
 
+        notificationService.envoyer(
+                conseilSauvegarde.getPsychologue(),
+                "Conseil validé",
+                "Votre conseil \"" + conseilSauvegarde.getTitre()
+                        + "\" a été validé et est désormais publié.",
+                TypeNotificationEnum.CONSEIL
+        );
         ConseilAfficheDto response = new ConseilAfficheDto();
 
         response.setTitre(conseilSauvegarde.getTitre());
@@ -162,16 +183,29 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ConseilAfficheDto annulerConseil(Integer conseilId) {
+    public ConseilAfficheDto annulerConseil(Integer conseilId, Integer adminId) {
 
         Conseil conseil = conseilRepository.findById(conseilId)
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
+        verifierConseilEnAttente(conseil);
+        Admin admin = adminRepository.findById(adminId)
+                .orElseThrow(() ->
+                        new RuntimeException("Administrateur introuvable."));
         conseil.setStatus(StatusConseilEnum.REFUSER);
-
+        conseil.setTraitePar(admin);
+        conseil.setDateTraitement(LocalDateTime.now());
 
         Conseil conseilSauvegarde = conseilRepository.save(conseil);
+
+        notificationService.envoyer(
+                conseilSauvegarde.getPsychologue(),
+                "Conseil refusé",
+                "Votre conseil \"" + conseilSauvegarde.getTitre()
+                        + "\" n'a pas été validé.",
+                TypeNotificationEnum.CONSEIL
+        );
 
         ConseilAfficheDto response = new ConseilAfficheDto();
 
@@ -195,26 +229,16 @@ public class AdminServiceImpl implements AdminService {
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
-        psychologue.setStatus(true);
-
+        psychologue.setStatus(StatusValidationPsy.VALIDER);
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
 
-        PsychologueListeDto response = new PsychologueListeDto();
+        emailService.envoyerCompteActif(
+                psySauvegarde.getMail(),
+                psySauvegarde.getPrenom(),
+                psySauvegarde.getNom()
+        );
 
-        response.setId(psySauvegarde.getId());
-        response.setNom(psySauvegarde.getNom());
-        response.setPrenom(psySauvegarde.getPrenom());
-        response.setTelephone(psySauvegarde.getTelephone());
-        response.setMail(psySauvegarde.getMail());
-        response.setRole(psySauvegarde.getRole());
-        response.setDateCreation(psySauvegarde.getDateCreation());
-        response.setStatus(psySauvegarde.getStatus());
-        response.setDescription(psySauvegarde.getDescription());
-        response.setDiplome_path(psySauvegarde.getDiplome_path());
-        response.setCv_path(psySauvegarde.getCv_path());
-        response.setEtat(psySauvegarde.getEtat());
-
-        return response;
+        return mapPsyToDto(psySauvegarde);
     }
 
     @Override
@@ -223,36 +247,43 @@ public class AdminServiceImpl implements AdminService {
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
-        psychologue.setStatus(false);
-
+        psychologue.setStatus(StatusValidationPsy.REFUSER);
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
-
-        PsychologueListeDto response = new PsychologueListeDto();
-
-        response.setId(psySauvegarde.getId());
-        response.setNom(psySauvegarde.getNom());
-        response.setPrenom(psySauvegarde.getPrenom());
-        response.setTelephone(psySauvegarde.getTelephone());
-        response.setMail(psySauvegarde.getMail());
-        response.setRole(psySauvegarde.getRole());
-        response.setDateCreation(psySauvegarde.getDateCreation());
-        response.setStatus(psySauvegarde.getStatus()); // ou isStatus() selon ton entité
-        response.setDescription(psySauvegarde.getDescription());
-        response.setDiplome_path(psySauvegarde.getDiplome_path());
-        response.setCv_path(psySauvegarde.getCv_path());
-        response.setEtat(psySauvegarde.getEtat()); // ou isEtat() selon ton entité
-
-        return response;
+        return mapPsyToDto(psySauvegarde);
     }
+
     @Override
     public List<PsychologueListeDto> listerPsychologuesEnAttente() {
 
         List<Psychologue> psychologues =
-                psychologueRepository.findByStatusFalse();
+                psychologueRepository.findByStatusEnAttente();
 
-        return null;
+        return psychologues.stream().map(this::mapPsyToDto).toList();
     }
 
+    private void verifierConseilEnAttente(Conseil conseil) {
+        if (conseil.getStatus() != StatusConseilEnum.ENATTENTE) {
+            throw new BadRequestException("Ce conseil a déjà été traité.");
+        }
+    }
+
+
+    public PsychologueListeDto mapPsyToDto(Psychologue psychologue) {
+        PsychologueListeDto response = new PsychologueListeDto();
+        response.setId(psychologue.getId());
+        response.setNom(psychologue.getNom());
+        response.setPrenom(psychologue.getPrenom());
+        response.setTelephone(psychologue.getTelephone());
+        response.setMail(psychologue.getMail());
+        response.setRole(psychologue.getRole());
+        response.setDateCreation(psychologue.getDateCreation());
+        response.setStatus(psychologue.getStatus()); // ou isStatus() selon ton entité
+        response.setDescription(psychologue.getDescription());
+        response.setDiplome_path(psychologue.getDiplome_path());
+        response.setCv_path(psychologue.getCv_path());
+        response.setEtat(psychologue.getEtat()); // ou isEtat() selon ton entité
+        return response;
+    }
 
 }
 

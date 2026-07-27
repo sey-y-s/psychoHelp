@@ -44,7 +44,7 @@ public class TestController {
             description = "Retourne un test psychologique selon son ID"
     )
     @GetMapping("/{id}")
-    public Optional<TestReponseDTO> getTestById(@PathVariable int id) {
+    public Optional<Test> getTestById(@PathVariable int id) {
 
         return testService.getTestById(id);
     }
@@ -77,6 +77,15 @@ public class TestController {
         //return ResponseEntity.ok("Test modifié avec succès");
         Session.verifierRole(session, RoleEnum.ADMIN);
         return testService.updateTest(id, testDTO);
+    }
+
+    @Operation(
+            summary = "Récupérer les tests d'une catégorie",
+            description = "Retourne la liste de tous les tests psychologiques associés à une catégorie spécifique"
+    )
+    @GetMapping("/by-categorie/{categorieId}")
+    public List<TestReponseDTO> getTestsByCategorie(@PathVariable int categorieId) {
+        return testService.getTestsByCategorie(categorieId);
     }
 
 

@@ -106,4 +106,9 @@ public class CategorieTestController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/du_test/{testId}")
+    public ResponseEntity<CategorieReponseDTO> getCategorieByTestId(@PathVariable Integer testId) {
+        return ResponseEntity.ok(categorieService.getCategorieByTestId(testId));
+    }
 }

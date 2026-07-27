@@ -13,7 +13,4 @@ public class ConseilDto {
         //private Boolean status=false;
         private String auteur;
         private Integer psyId;
-
-
-
 }

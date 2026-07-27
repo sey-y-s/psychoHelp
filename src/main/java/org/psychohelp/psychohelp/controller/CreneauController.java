@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.CreneauDTO;
 import org.psychohelp.psychohelp.dto.CreneauResponseDTO;
+import org.psychohelp.psychohelp.dto.DateRdvPourCitoyen;
 import org.psychohelp.psychohelp.dto.UpdateCreneauDTO;
+import org.psychohelp.psychohelp.entity.Utilisateur;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.CreneauService;
 import org.springframework.http.HttpStatus;
@@ -47,8 +49,9 @@ public class CreneauController {
     public CreneauResponseDTO creer(@RequestBody CreneauDTO dto,
                                     HttpSession session) {
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        Utilisateur utilisateur = Session.getUtilisateur(session);
 
-        return cs.creer(dto);
+        return cs.creer(dto, utilisateur);
     }
 
     @Operation(
@@ -59,10 +62,17 @@ public class CreneauController {
             responseCode = "200",
             description = "Liste des créneaux récupérée avec succès"
     )
-    @GetMapping
-    public List<CreneauResponseDTO> getAll() {
-        return cs.getAll();
+    @GetMapping("/mes-creneaux")
+    public List<CreneauResponseDTO> getMesCreneaux(HttpSession session) {
+        Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
+        Utilisateur utilisateur = Session.getUtilisateur(session);
+        return cs.getMesCreneaux(utilisateur);
     }
+
+//    @GetMapping("/mes-creneau")
+//    public List<CreneauResponseDTO> getAll() {
+//        return cs.getAll();
+//    }
 
     @Operation(
             summary = "Obtenir un créneau",
@@ -79,7 +89,7 @@ public class CreneauController {
             )
     })
     @GetMapping("/{id}")
-    public CreneauResponseDTO getById(@PathVariable Long id) {
+    public CreneauResponseDTO getById(@PathVariable int id) {
         return cs.getById(id);
     }
 
@@ -99,7 +109,7 @@ public class CreneauController {
     })
     @PutMapping("/{id}")
     public CreneauResponseDTO update(
-            @PathVariable Long id,
+            @PathVariable int id,
             @RequestBody UpdateCreneauDTO dto,
             HttpSession session) {
 
@@ -123,7 +133,7 @@ public class CreneauController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id, HttpSession session) {
+    public void deleteById(@PathVariable int id, HttpSession session) {
         Session.verifierRole(session, RoleEnum.PSYCHOLOGUE);
         cs.delete(id);
     }
@@ -160,5 +170,11 @@ public class CreneauController {
             @PathVariable Integer psychologueId) {
 
         return cs.getDisponiblesByPsychologueId(psychologueId);
+    }
+    @GetMapping("/{id}/disponiblePourCitoyen")
+    public List<DateRdvPourCitoyen> getDateRv(@PathVariable Integer id, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.CITOYEN);
+
+        return cs.getToutesLesDatesDisponibles(id);
     }
 }

@@ -21,7 +21,6 @@ import java.util.List;
 )
 @RequestMapping("/api/citoyens")
 @RestController
-//@CrossOrigin(origins = "*")
 public class CitoyenController {
     @Autowired
     private CitoyenService citoyenService;

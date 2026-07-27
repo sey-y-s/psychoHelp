@@ -1,21 +1,21 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import org.psychohelp.psychohelp.controller.PsychologueController;
-import org.psychohelp.psychohelp.dto.*;
+import org.psychohelp.psychohelp.dto.PsyReponseDto;
+import org.psychohelp.psychohelp.dto.PsychologueListeDto;
+import org.psychohelp.psychohelp.dto.UpdateEtatStatusDto;
+import org.psychohelp.psychohelp.dto.UpdatePsyDto;
 import org.psychohelp.psychohelp.entity.Conseil;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
-import org.psychohelp.psychohelp.repository.ConseilRepository;
+import org.psychohelp.psychohelp.enumeration.StatusValidationPsy;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class PsyServiceImpl implements PsyService {
@@ -50,10 +50,8 @@ public class PsyServiceImpl implements PsyService {
             psychologueListeDto.setRole(psychologue.getRole());
             psychologueListeDto.setDateCreation(psychologue.getDateCreation());
             psychologueListeDto.setEtat(psychologue.getEtat());
-            Boolean status = psychologue.getStatus();
-            psychologueListeDto.setStatus(status != null ? status : false);
+            psychologueListeDto.setStatus(psychologue.getStatus());
             psychologueListeDto.setSpecialite(psychologue.getSpecialite().getNom());
-
             resultatPsy.add(psychologueListeDto);
 
         }

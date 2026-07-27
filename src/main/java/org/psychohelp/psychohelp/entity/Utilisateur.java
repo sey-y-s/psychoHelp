@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,8 @@ import org.psychohelp.psychohelp.enumeration.RoleEnum;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+
 //specifier que ça correspond a une table de la bdd
 @Entity
 @Table(name = "utilisateurs")
@@ -48,7 +51,9 @@ public class Utilisateur {
         return prenom + " " + nom.toUpperCase();
     }
 
-
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Notification> notifications;
 
 
 }

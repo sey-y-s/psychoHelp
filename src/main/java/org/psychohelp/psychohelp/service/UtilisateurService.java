@@ -16,4 +16,7 @@ public interface UtilisateurService {
 
     public void supUtilisateur(Integer id);
 
+    List<Utilisateur> getRecentUsers();
+
+    long count();
 }

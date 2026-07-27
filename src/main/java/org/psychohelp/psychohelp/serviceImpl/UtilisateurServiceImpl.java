@@ -50,4 +50,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void supUtilisateur(Integer id) {
         utilisateurRepository.deleteById(id);
     }
+
+    @Override
+    public List<Utilisateur> getRecentUsers(){
+        return utilisateurRepository.findTop5ByOrderByDateCreationDesc();
+    }
+
+    @Override
+    public long count() {
+        return utilisateurRepository.count();
+    }
 }
