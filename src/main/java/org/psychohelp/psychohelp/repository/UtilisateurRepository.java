@@ -13,5 +13,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
     List<Utilisateur> findTop5ByOrderByDateCreationDesc();
     Optional<Utilisateur> findByRole(RoleEnum role);
 
+
 }
 
