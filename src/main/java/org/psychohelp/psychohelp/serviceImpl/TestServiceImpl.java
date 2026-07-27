@@ -39,9 +39,8 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public TestReponseDTO saveTest(TestRequestDTO testDTO, Integer categories_test_id) {
-        CategorieTest categorie = new CategorieTest();
-        categorie.setId(categories_test_id);
-
+//        CategorieTest categorie = new CategorieTest();
+//        categorie.setId(categories_test_id);
         CategorieTest cat = categorieRepository.findById(categories_test_id)
                 .orElseThrow(() -> new RuntimeException("categorie test non trouvé"));
 
@@ -49,7 +48,7 @@ public class TestServiceImpl implements TestService {
         test.setNom_test(testDTO.getNom_test());
         test.setDescription(testDTO.getDescription());
         test.setEtat(testDTO.getEtat());
-        test.setCategorieTest(categorie);
+        test.setCategorieTest(cat);
 
         testRepository.save(test);
         return new TestReponseDTO(
@@ -68,8 +67,8 @@ public class TestServiceImpl implements TestService {
         test.setNom_test(testDTO.getNom_test());
         test.setDescription(testDTO.getDescription());
         test.setEtat(testDTO.getEtat());
-
         testRepository.save(test);
+        
         return new TestReponseDTO(
                 test.getId(),
                 test.getNom_test(),

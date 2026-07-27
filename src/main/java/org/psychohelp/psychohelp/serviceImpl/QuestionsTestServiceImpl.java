@@ -37,17 +37,21 @@ public class QuestionsTestServiceImpl implements QuestionsTestService {
 
     @Override
     public QuestionsTestReponseDTO saveQuestions(QuestionsTestRequestDTO questionsTestsDTO, Integer test_id) {
-        Test test = new Test();
-        test.setId(test_id);
-        Test test1 = testRepository.findById(test_id)
+//        Test test = new Test();
+//        test.setId(test_id);
+        Test test = testRepository.findById(test_id)
                 .orElseThrow(()-> new  RuntimeException("Question de test non trouvé"));;
 
         QuestionsTest questionsTest = new QuestionsTest();
 
         questionsTest.setQuestion(questionsTestsDTO.getQuestion());
-        questionsTest.setTest(test1);
+        questionsTest.setTest(test);
         questionsTestRepository.save(questionsTest);
-        return new QuestionsTestReponseDTO(questionsTest.getId(), questionsTest.getQuestion(), test1.getNom_test());
+
+        return new QuestionsTestReponseDTO(
+                questionsTest.getId(),
+                questionsTest.getQuestion(),
+                test.getNom_test());
     }
 
     @Override
@@ -56,13 +60,17 @@ public class QuestionsTestServiceImpl implements QuestionsTestService {
                 orElseThrow(()-> new RuntimeException("Question non trouvée"));
 
         questionsTest.setQuestion(questionsTestsDTO.getQuestion());
-
         questionsTestRepository.save(questionsTest);
-        return new QuestionsTestReponseDTO(questionsTest.getId(), questionsTest.getQuestion(), questionsTest.getTest().getNom_test());
+
+        return new QuestionsTestReponseDTO(
+                questionsTest.getId(),
+                questionsTest.getQuestion(),
+                questionsTest.getTest().getNom_test());
     }
 
     @Override
     public void deleteQuestions(int id) {
-       questionsTestRepository.deleteById(id);
+
+        questionsTestRepository.deleteById(id);
     }
 }

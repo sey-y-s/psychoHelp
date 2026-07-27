@@ -27,10 +27,7 @@ import java.util.Optional;
 )
 public class ChoixMultipleController {
 
-
     private final ChoixMultipleService choixService;
-
-
 
     @Operation(
             summary = "Récupérer tous les choix",
@@ -38,11 +35,9 @@ public class ChoixMultipleController {
     )
     @GetMapping
     public List<ChoixMultiplesReponseDTO> getAllChoix(){
-
         return choixService.getAllChoix();
 
     }
-
 
 
     @Operation(
@@ -50,8 +45,7 @@ public class ChoixMultipleController {
             description = "Retourne un choix multiple selon son identifiant"
     )
     @GetMapping("/{id}")
-    public Optional<ChoixMultiplesReponseDTO> getChoixById(
-            @PathVariable int id){
+    public Optional<ChoixMultiplesReponseDTO> getChoixById(@PathVariable int id){
 
         return choixService.getChoixById(id);
 
@@ -67,7 +61,6 @@ public class ChoixMultipleController {
     public ChoixMultiplesReponseDTO saveChoix(
             @RequestBody ChoixMultiplesRequestDTO choix, @RequestParam Integer question_id, HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
-
         return choixService.saveChoix(choix, question_id);
 
     }
@@ -79,11 +72,10 @@ public class ChoixMultipleController {
             description = "Met à jour un choix multiple existant"
     )
     @PutMapping("/{id}")
-    public ChoixMultiplesReponseDTO updateChoix(
+    public ChoixMultiple updateChoix(
             @PathVariable int id,
             @RequestBody ChoixMultiplesRequestDTO choixDTO, HttpSession session){
            Session.verifierRole(session, RoleEnum.ADMIN);
-
 
         return choixService.updateChoix(id, choixDTO);
 

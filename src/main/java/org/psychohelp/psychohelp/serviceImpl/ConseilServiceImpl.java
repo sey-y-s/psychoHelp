@@ -2,6 +2,7 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDtoForPyschologue;
 import org.psychohelp.psychohelp.entity.Admin;
 import org.psychohelp.psychohelp.entity.Utilisateur;
