@@ -21,8 +21,10 @@ public class Psychologue extends Utilisateur{
     private StatusValidationPsy status = StatusValidationPsy.ENATTENTE;
 
     private String description;
-    private String diplome_path;
-    private String  cv_path;
+    @Column(name = "cv_path")
+    private String cvPath;
+    @Column(name = "diplome_path")
+    private String diplomePath;
     private Boolean etat=false;
 
     @ManyToOne

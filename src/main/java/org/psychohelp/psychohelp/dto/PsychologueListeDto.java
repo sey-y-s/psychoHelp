@@ -18,8 +18,8 @@ public class PsychologueListeDto {
     private LocalDate dateCreation;
     private StatusValidationPsy status;
     private String description;
-    private String diplome_path;
-    private String  cv_path;
+    private String diplomePath;
+    private String cvPath;
     private boolean etat;
     private String specialite;
 }

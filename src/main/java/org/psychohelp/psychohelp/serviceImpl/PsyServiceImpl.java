@@ -1,26 +1,37 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import org.psychohelp.psychohelp.controller.PsychologueController;
-import org.psychohelp.psychohelp.dto.PsyReponseDto;
-import org.psychohelp.psychohelp.dto.PsychologueListeDto;
-import org.psychohelp.psychohelp.dto.UpdateEtatStatusDto;
-import org.psychohelp.psychohelp.dto.UpdatePsyDto;
+import org.psychohelp.psychohelp.dto.*;
 import org.psychohelp.psychohelp.entity.Conseil;
+import org.psychohelp.psychohelp.entity.DocumentType;
 import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
+import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.enumeration.StatusValidationPsy;
 import org.psychohelp.psychohelp.repository.PsychologueRepository;
+import org.psychohelp.psychohelp.repository.SpecialiteRepo;
+import org.psychohelp.psychohelp.service.FileStorageService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class PsyServiceImpl implements PsyService {
+
     @Autowired
     private PsychologueRepository psychologueRepository;
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @Autowired
+    private SpecialiteRepo specialiteRepository;
 
 
 
@@ -45,8 +56,8 @@ public class PsyServiceImpl implements PsyService {
             psychologueListeDto.setMail(psychologue.getMail());
             psychologueListeDto.setTelephone(psychologue.getTelephone());
             psychologueListeDto.setDescription(psychologue.getDescription());
-            psychologueListeDto.setDiplome_path(psychologue.getDiplome_path());
-            psychologueListeDto.setCv_path(psychologue.getCv_path());
+            psychologueListeDto.setDiplomePath(psychologue.getDiplomePath());
+            psychologueListeDto.setCvPath(psychologue.getCvPath());
             psychologueListeDto.setRole(psychologue.getRole());
             psychologueListeDto.setDateCreation(psychologue.getDateCreation());
             psychologueListeDto.setEtat(psychologue.getEtat());
@@ -86,26 +97,12 @@ public class PsyServiceImpl implements PsyService {
 
             psy.setNom(updatePsyDto.getNom());
             psy.setMail(updatePsyDto.getMail());
-
-
             psy.setPrenom(updatePsyDto.getPrenom());
-
             psy.setTelephone(updatePsyDto.getTelephone());
-
             psy.setDescription(updatePsyDto.getNom());
-
             psy.setDescription(updatePsyDto.getDescription());
-
-
-            psy.setCv_path(updatePsyDto.getCv_path());
-
-
-            psy.setDiplome_path(updatePsyDto.getDiplome_path());
-
-
-
-
-
+            psy.setCvPath(updatePsyDto.getCv_path());
+            psy.setDiplomePath(updatePsyDto.getDiplome_path());
 
             Specialite specialite = new Specialite();
 
@@ -137,14 +134,85 @@ Psychologue psychologue =psychologueRepository.save(psy);
             psyReponseDto.setMail(psychologue.getMail());
             psyReponseDto.setTelephone(psychologue.getTelephone());
             psyReponseDto.setDescription(psychologue.getDescription());
-            psyReponseDto.setDiplome_path(psychologue.getDiplome_path());
-            psyReponseDto.setCv_path(psychologue.getCv_path());
+            psyReponseDto.setDiplomePath(psychologue.getDiplomePath());
+            psyReponseDto.setCvPath(psychologue.getCvPath());
 
             resultatPsy.add(psyReponseDto);
         }
 
         return resultatPsy;
 
+    }
+
+    @Override
+    public PsychologueListeDto inscrirePsychologue(AddPsyDto dto, MultipartFile cv, MultipartFile diplome) {
+        Specialite specialite = specialiteRepository.findById(dto.getIdSpecialite())
+                .orElseThrow(() ->
+                        new RuntimeException("Spécialité introuvable."));
+
+        Psychologue psychologue = new Psychologue();
+
+        psychologue.setNom(dto.getNom());
+        psychologue.setPrenom(dto.getPrenom());
+        psychologue.setTelephone(dto.getTelephone());
+        psychologue.setMail(dto.getMail());
+        psychologue.setMotDePasse(dto.getMotDePasse());
+        psychologue.setDescription(dto.getDescription());
+        psychologue.setRole(RoleEnum.PSYCHOLOGUE);
+        psychologue.setStatus(StatusValidationPsy.ENATTENTE);
+        psychologue.setSpecialite(specialite);
+        // Première sauvegarde pour obtenir l'identifiant
+        psychologue = psychologueRepository.save(psychologue);
+        String cvPath = null;
+        String diplomePath = null;
+
+        try {
+            cvPath = fileStorageService.storePsychologueDocument(
+                    cv,
+                    psychologue.getId(),
+                    DocumentType.CV
+            );
+            diplomePath = fileStorageService.storePsychologueDocument(
+                    diplome,
+                    psychologue.getId(),
+                    DocumentType.DIPLOME
+            );
+
+            psychologue.setCvPath(cvPath);
+            psychologue.setDiplomePath(diplomePath);
+            psychologue = psychologueRepository.save(psychologue);
+            return mapToDto(psychologue);
+        } catch (Exception exception) {
+            if (cvPath != null) {
+                fileStorageService.delete(cvPath);
+            }
+            if (diplomePath != null) {
+                fileStorageService.delete(diplomePath);
+            }
+            throw exception;
+
+        }
+    }
+
+    private PsychologueListeDto mapToDto(Psychologue psychologue) {
+
+        PsychologueListeDto dto = new PsychologueListeDto();
+
+        dto.setId(psychologue.getId());
+        dto.setNom(psychologue.getNom());
+        dto.setPrenom(psychologue.getPrenom());
+        dto.setTelephone(psychologue.getTelephone());
+        dto.setMail(psychologue.getMail());
+        dto.setRole(psychologue.getRole());
+        dto.setDateCreation(psychologue.getDateCreation());
+        dto.setStatus(psychologue.getStatus());
+        dto.setDescription(psychologue.getDescription());
+        dto.setDiplomePath(psychologue.getDiplomePath());
+        dto.setCvPath(psychologue.getCvPath());
+        dto.setEtat(psychologue.getEtat());
+        dto.setSpecialite(psychologue.getSpecialite().getNom());
+
+        return dto;
     }
 
 

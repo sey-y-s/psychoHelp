@@ -12,9 +12,11 @@ import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +29,27 @@ import java.util.List;
 )
 
 public class PsychologueController {
+
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;
    @Autowired private ConseilService conseilService;
+
+
     @Operation(
             summary = "Créer une psychologue",
             description = "Ajoute un nouveau psychologue"
     )
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public PsychologueListeDto ajouterPsychologue(@Valid @RequestPart("data") AddPsyDto dto,
+                                                  @RequestPart("cv") MultipartFile cv,
+                                                  @RequestPart("diplome") MultipartFile diplome) {
+
+        return psyService.inscrirePsychologue(dto, cv, diplome);
+    }
+
+
+
+
     public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto, HttpSession session){
        // psychologue.setDateCreation(LocalDate.now());
 
@@ -47,8 +62,8 @@ public class PsychologueController {
         psychologue.setRole(RoleEnum.PSYCHOLOGUE);
 
         psychologue.setDescription(addPsyDto.getDescription());
-        psychologue.setDiplome_path(addPsyDto.getDiplome_path());
-        psychologue.setCv_path(addPsyDto.getCv_path());
+        //psychologue.setDiplomePath(addPsyDto.getDiplome_path());
+       // psychologue.setCvPath(addPsyDto.getCv_path());
         //psychologue.setEtat(addPsyDto.getEtat());
         //recupere la specialité à partir de l'id
         //Specialite specialite=specialiteService.getSpecialite(addPsyDto.getIdSpecialite());
@@ -168,8 +183,8 @@ public class PsychologueController {
         dto.setDateCreation(psychologue.getDateCreation());
         dto.setStatus(psychologue.getStatus());
         dto.setDescription(psychologue.getDescription());
-        dto.setCv_path(psychologue.getCv_path());
-        dto.setDiplome_path(psychologue.getDiplome_path());
+        dto.setCvPath(psychologue.getCvPath());
+        dto.setDiplomePath(psychologue.getDiplomePath());
         dto.setEtat(psychologue.getEtat());
         return dto;
     }

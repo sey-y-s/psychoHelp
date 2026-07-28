@@ -14,7 +14,7 @@ public class PsyReponseDto {
 
     private String nom,prenom,telephone,mail;
     private String description;
-    private String diplome_path;
-    private String  cv_path;
+    private String diplomePath;
+    private String cvPath;
 
 }
