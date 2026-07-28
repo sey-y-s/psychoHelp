@@ -69,6 +69,7 @@ public class ResultatServiceImpl implements ResultatService {
         resultatTest.setCitoyen(citoyen);
         resultatTest.setTest(test);
         resultatTest.setScore(scoreTotal);
+        resultatTest.setNiveau(diagnostic.getNiveau());
         resultatTest.setDescription(diagnostic.getNiveau() + " - " + diagnostic.getMessage());
 
         ResultatTest resultatSauvegarde = resultatTestRepository.save(resultatTest);
