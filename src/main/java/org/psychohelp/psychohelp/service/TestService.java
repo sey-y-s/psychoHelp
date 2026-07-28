@@ -1,5 +1,6 @@
 package org.psychohelp.psychohelp.service;
 
+import org.psychohelp.psychohelp.dto.QuestionsTestReponseDTO;
 import org.psychohelp.psychohelp.dto.TestReponseDTO;
 import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Test;
@@ -24,4 +25,5 @@ public interface TestService {
 
 
     List<TestReponseDTO> getTestsByCategorie(int categorieId);
+    public List<QuestionsTestReponseDTO> getallQuestionsbyTestId(int testId);
 }

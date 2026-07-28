@@ -28,8 +28,7 @@ public class LocalFileStorageService implements FileStorageService {
 
     private Path storageRoot;
 
-    private static final long MAX_SIZE = 10 * 1024 * 1024;
-    /**
+    private static final long MAX_SIZE = 10 * 1024 * 1024;/**
      * Initialise le dossier de stockage au démarrage de l'application.
      * Si le dossier n'existe pas, il est créé automatiquement.
      */
