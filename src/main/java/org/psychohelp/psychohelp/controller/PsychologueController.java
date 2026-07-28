@@ -25,7 +25,6 @@ import java.util.List;
         name = "Psychologues",
         description = "Gestion des Psychologues"
 )
-
 public class PsychologueController {
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;

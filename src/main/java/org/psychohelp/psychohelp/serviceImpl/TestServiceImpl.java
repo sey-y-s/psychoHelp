@@ -26,7 +26,8 @@ public class TestServiceImpl implements TestService {
                         test.getId(),
                         test.getNom_test(),
                         test.getCategorieTest().getNomCategorie(),
-                        test.getDescription() // <-- AJOUTÉ
+                        test.getDescription(),// <-- AJOUTÉ
+                        test.getEtat()
                 )
         ).toList();
     }
@@ -56,7 +57,8 @@ public class TestServiceImpl implements TestService {
                 test.getId(),
                 test.getNom_test(),
                 cat.getNomCategorie(),
-                test.getDescription() // <-- AJOUTÉ
+                test.getDescription(), // <-- AJOUTÉ,
+                test.getEtat()
         );
     }
 
@@ -74,7 +76,8 @@ public class TestServiceImpl implements TestService {
                 test.getId(),
                 test.getNom_test(),
                 test.getCategorieTest().getNomCategorie(),
-                test.getDescription() // <-- AJOUTÉ
+                test.getDescription() ,// <-- AJOUTÉ
+                test.getEtat()
         );
     }
 
@@ -91,7 +94,8 @@ public class TestServiceImpl implements TestService {
                         test.getId(),
                         test.getNom_test(),
                         test.getCategorieTest().getNomCategorie(),
-                        test.getDescription() // <-- AJOUTÉ
+                        test.getDescription(), // <-- AJOUTÉ
+                        test.getEtat()
                 ))
                 .toList();
     }
