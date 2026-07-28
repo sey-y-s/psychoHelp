@@ -59,7 +59,7 @@ public class ConseilController {
             summary = "Récuperer un conseil pour admin",
             description = "recuperer un conseil par id pour l'admin "
     )
-    @GetMapping(path = "{id}/admin")
+    @GetMapping(path = "{id}")
     public ConseilAfficheDto conseilById(@PathVariable int id){
         Conseil conseil = conseilService.conseilParId(id);
         ConseilAfficheDto conseilDto = new ConseilAfficheDto();
@@ -71,23 +71,6 @@ public class ConseilController {
         conseilDto.setPsyNom(conseil.getPsychologue().nomComplet());
 
         return conseilDto;
-    }
-
-    @Operation(
-            summary = "Récuperer un conseil",
-            description = "recuperer un seul conseils par son identifiant"
-    )
-    @GetMapping(path = "{id}")
-    public ConseilDtoForPyschologue conseilByIdForAdmin(@PathVariable int id){
-        Conseil conseil = conseilService.conseilParId(id);
-        ConseilDtoForPyschologue conseilDtoForPyschologue = new ConseilDtoForPyschologue();
-        conseilDtoForPyschologue.setTitre(conseil.getTitre());
-        conseilDtoForPyschologue.setDescription(conseil.getDescription());
-        conseilDtoForPyschologue.setDatePublication(conseil.getDatePublication());
-        conseilDtoForPyschologue.setId(conseil.getId());
-        conseilDtoForPyschologue.setStatusConseil(conseil.getStatus());
-
-        return conseilDtoForPyschologue;
     }
 
     @Operation(
@@ -106,7 +89,7 @@ public class ConseilController {
         Conseil conseil =  new Conseil();
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
-        conseil.setAuteur("");
+        conseil.setAuteur(conseilDto.getAuteur());
         conseil.setStatus(StatusConseilEnum.ENATTENTE);
         conseil.setDatePublication(LocalDate.now());
         /*conseil.setPsychologue(
@@ -137,6 +120,7 @@ public class ConseilController {
 
             conseil.setTitre(conseilDto.getTitre());
             conseil.setDescription(conseilDto.getDescription());
+            conseil.setAuteur(conseilDto.getAuteur());
             conseil.setStatus(StatusConseilEnum.ENATTENTE);
 
             Conseil conseilModif= conseilService.modifier(id, conseil);
