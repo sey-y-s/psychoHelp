@@ -149,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        verifierConseilEnAttente(conseil);
+        //verifierConseilEnAttente(conseil);
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() ->
                         new RuntimeException("Administrateur introuvable."));
@@ -189,7 +189,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        verifierConseilEnAttente(conseil);
+        //verifierConseilEnAttente(conseil);
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() ->
                         new RuntimeException("Administrateur introuvable."));
