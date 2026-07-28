@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.QuestionResponseWithtest_id;
 import org.psychohelp.psychohelp.dto.QuestionsTestReponseDTO;
 import org.psychohelp.psychohelp.dto.QuestionsTestRequestDTO;
+import org.psychohelp.psychohelp.dto.questionTestResquestForModifDto;
 import org.psychohelp.psychohelp.entity.QuestionsTest;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.QuestionsTestService;
@@ -98,6 +100,29 @@ public class QuestionsTestController {
             @PathVariable int id, HttpSession session){
         Session.verifierRole(session, RoleEnum.ADMIN);
         questionsTestService.deleteQuestions(id);
+
+    }
+    @PutMapping("/moussa/{id}")
+    public QuestionsTestReponseDTO updateQuestions(
+            @PathVariable int id,
+            @RequestBody questionTestResquestForModifDto questionTestResquestForModifDto, HttpSession session){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+        //questionsTestsDTO.setId(id);
+        return questionsTestService. updateQuestionsAvecTestId(id, questionTestResquestForModifDto);
+
+    }
+
+    @GetMapping("/moussa/{id}")
+    public QuestionResponseWithtest_id getTestByIdbesoij(@PathVariable int id) {
+
+        return questionsTestService.getQuestionsByIdbesoin(id);
+    }
+    @PostMapping("/moussa")
+    public QuestionsTestReponseDTO saveQuestionsmoussa(
+            @RequestBody questionTestResquestForModifDto questionsTestsDTO, HttpSession session, Integer test_id){
+        Session.verifierRole(session, RoleEnum.ADMIN);
+
+        return questionsTestService.saveQuestionsmoussa(questionsTestsDTO);
 
     }
 }
