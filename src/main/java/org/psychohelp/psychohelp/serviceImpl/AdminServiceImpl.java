@@ -279,8 +279,8 @@ public class AdminServiceImpl implements AdminService {
         response.setDateCreation(psychologue.getDateCreation());
         response.setStatus(psychologue.getStatus()); // ou isStatus() selon ton entité
         response.setDescription(psychologue.getDescription());
-        response.setDiplome_path(psychologue.getDiplome_path());
-        response.setCv_path(psychologue.getCv_path());
+        response.setDiplomePath(psychologue.getDiplomePath());
+        response.setCvPath(psychologue.getCvPath());
         response.setEtat(psychologue.getEtat()); // ou isEtat() selon ton entité
         return response;
     }
