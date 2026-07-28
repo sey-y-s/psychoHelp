@@ -17,16 +17,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
-
-
     private final ChoixMultipleRepository choixRepository;
     private  final QuestionsTestRepository questionsTestRepository;
 
-
-
     @Override
     public List<ChoixMultiplesReponseDTO> getAllChoix(){
-
         return choixRepository.findAll().stream().map(
                 choix -> new ChoixMultiplesReponseDTO(choix.getId(), choix.getChoix(),choix.getScore(), choix.getQuestionTest().getQuestion())
         ).toList();
@@ -51,12 +46,13 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
         ChoixMultiple choixMultiple = new ChoixMultiple();
         QuestionsTest question = questionsTestRepository.findById(question_id)
-                .orElseThrow(()-> new  RuntimeException("Choix non trouvé"));
+                .orElseThrow(()-> new  RuntimeException("Question non trouvé"));
 
         choixMultiple.setChoix(choixMultiplesDTO.getChoix());
         choixMultiple.setScore(choixMultiplesDTO.getScore());
         choixMultiple.setQuestionTest(question);
         choixRepository.save(choixMultiple);
+        
         return new ChoixMultiplesReponseDTO(choixMultiple.getId(), choixMultiple.getChoix(), choixMultiple.getScore(), question.getQuestion());
     }
 
@@ -65,25 +61,15 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
 
     @Override
-    public ChoixMultiple updateChoix(
-            int id,
-            ChoixMultiplesRequestDTO choixMultiplesDTO){
+    public ChoixMultiple updateChoix( int id, ChoixMultiplesRequestDTO choixMultiplesDTO){
 
 
         ChoixMultiple ancienChoix =
                 choixRepository.findById(id)
                         .orElseThrow(()->  new RuntimeException("Choix non trouvé"));
 
-
-        ancienChoix.setChoix(
-                choixMultiplesDTO.getChoix()
-        );
-
-
-        ancienChoix.setScore(
-                choixMultiplesDTO.getScore()
-        );
-
+        ancienChoix.setChoix(choixMultiplesDTO.getChoix());
+        ancienChoix.setScore(choixMultiplesDTO.getScore());
 
         return choixRepository.save(ancienChoix);
 
