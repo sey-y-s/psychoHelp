@@ -14,9 +14,9 @@ public class EmailController {
 
     private final EmailService emailService;
 
-    @PostMapping("/test")
-    public String envoyerTest(@RequestParam String destinataire) {
-        emailService.envoyerEmailTest(destinataire);
-        return "Email envoyé avec succés";
-    }
+//    @PostMapping("/test")
+//    public String envoyerTest(@RequestParam String destinataire) {
+//        emailService.envoyerEmailTest(destinataire);
+//        return "Email envoyé avec succés";
+//    }
 }

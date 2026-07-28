@@ -56,11 +56,29 @@ public class ConseilController {
 
 
     @Operation(
+            summary = "Récuperer un conseil pour admin",
+            description = "recuperer un conseil par id pour l'admin "
+    )
+    @GetMapping(path = "{id}/admin")
+    public ConseilAfficheDto conseilById(@PathVariable int id){
+        Conseil conseil = conseilService.conseilParId(id);
+        ConseilAfficheDto conseilDto = new ConseilAfficheDto();
+        conseilDto.setTitre(conseil.getTitre());
+        conseilDto.setDescription(conseil.getDescription());
+        conseilDto.setDatePublication(conseil.getDatePublication());
+        conseilDto.setId(conseil.getId());
+        conseilDto.setStatus(conseil.getStatus().toString());
+        conseilDto.setPsyNom(conseil.getPsychologue().nomComplet());
+
+        return conseilDto;
+    }
+
+    @Operation(
             summary = "Récuperer un conseil",
             description = "recuperer un seul conseils par son identifiant"
     )
     @GetMapping(path = "{id}")
-    public ConseilDtoForPyschologue conseilById(@PathVariable int id){
+    public ConseilDtoForPyschologue conseilByIdForAdmin(@PathVariable int id){
         Conseil conseil = conseilService.conseilParId(id);
         ConseilDtoForPyschologue conseilDtoForPyschologue = new ConseilDtoForPyschologue();
         conseilDtoForPyschologue.setTitre(conseil.getTitre());
