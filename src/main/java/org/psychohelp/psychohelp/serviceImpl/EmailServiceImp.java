@@ -33,7 +33,7 @@ public class EmailServiceImp implements EmailService {
     @Override
     public void envoyerCompteActif(String mail, String nom, String prenom) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("psychohelp@gmail.com");
+        message.setFrom("psychohelp.mali@gmail.com");
         message.setTo(mail);
         message.setSubject("Activation de votre compte PsychoHelp.");
         message.setText(
@@ -42,6 +42,28 @@ public class EmailServiceImp implements EmailService {
                 + "Vous pouvez maintenant vous connecter a la plateforme.\n\n"
                 + "Cordialement,\n"
                 + "L'equipe pyschoHelp.\n"
+        );
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void envoyerRefus(String mail, String motif) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("psychohelp.mali@gmail.com");
+        message.setTo(mail);
+        message.setSubject("Refus de votre inscription PsychoHelp");
+
+        message.setText(
+                "Bonjour,\n\n"
+                        + "Nous vous remercions de l'intérêt que vous portez à PsychoHelp.\n\n"
+                        + "Après étude de votre demande d'inscription en tant que psychologue, "
+                        + "nous sommes au regret de vous informer que celle-ci a été refusée.\n\n"
+                        + "Motif du refus :\n"
+                        + motif + "\n\n"
+                        + "Vous pouvez corriger votre dossier et soumettre une nouvelle demande.\n\n"
+                        + "Cordialement,\n"
+                        + "L'équipe PsychoHelp."
         );
 
         mailSender.send(message);

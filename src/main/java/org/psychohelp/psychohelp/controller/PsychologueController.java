@@ -8,16 +8,21 @@ import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.ConseilService;
+import org.psychohelp.psychohelp.service.FileStorageService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +37,8 @@ public class PsychologueController {
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;
    @Autowired private ConseilService conseilService;
+    @Autowired
+    private FileStorageService fileStorageService;
 
 
     @Operation(
@@ -169,6 +176,21 @@ public class PsychologueController {
     public List<PsyReponseDto> getPsychologueValide(HttpSession session) {
         Session.verifierRole(session, RoleEnum.CITOYEN);
         return psyService.getPsychologueValide();
+    }
+
+    @GetMapping("/documents")
+    public ResponseEntity<Resource> voirDocument(@RequestParam String path, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
+        Resource resource = fileStorageService.load(path);
+        String contentType = "application/octet-stream";
+        try {
+            contentType = Files.probeContentType(resource.getFile().toPath()
+            );
+        } catch (IOException ignored) {
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
     }
 
     public static PsychologueListeDto mapPsytoDto (Psychologue psychologue) {
