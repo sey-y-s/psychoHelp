@@ -1,11 +1,14 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.QuestionsTestReponseDTO;
 import org.psychohelp.psychohelp.dto.TestReponseDTO;
 import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.CategorieTest;
 import org.psychohelp.psychohelp.entity.Test;
+import org.psychohelp.psychohelp.exceptions.NotFoundException;
 import org.psychohelp.psychohelp.repository.CategorieRepository;
+import org.psychohelp.psychohelp.repository.QuestionsTestRepository;
 import org.psychohelp.psychohelp.repository.TestRepository;
 import org.psychohelp.psychohelp.service.TestService;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ public class TestServiceImpl implements TestService {
 
     private final TestRepository testRepository;
     private final CategorieRepository categorieRepository;
+    private final QuestionsTestRepository questionsTestRepository;
+
 
     @Override
     public List<TestReponseDTO> getAllTests() {
@@ -94,5 +99,12 @@ public class TestServiceImpl implements TestService {
                         test.getDescription() // <-- AJOUTÉ
                 ))
                 .toList();
+    }
+    @Override
+    public List<QuestionsTestReponseDTO> getallQuestionsbyTestId(int testId) {
+        Test test=testRepository.findById(testId).orElseThrow(()->new NotFoundException("ce test n'existe pas"));
+        return questionsTestRepository.getallQuestionsbyTestId(testId).stream().map(
+                questions -> new QuestionsTestReponseDTO(questions.getId(), questions.getQuestion(), test.getNom_test())
+        ).toList();
     }
 }
