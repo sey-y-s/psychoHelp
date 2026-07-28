@@ -8,14 +8,21 @@ import org.psychohelp.psychohelp.entity.Psychologue;
 import org.psychohelp.psychohelp.entity.Specialite;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
 import org.psychohelp.psychohelp.service.ConseilService;
+import org.psychohelp.psychohelp.service.FileStorageService;
 import org.psychohelp.psychohelp.service.PsyService;
 import org.psychohelp.psychohelp.service.SpecialiteService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +33,29 @@ import java.util.List;
         description = "Gestion des Psychologues"
 )
 public class PsychologueController {
+
     @Autowired private PsyService psyService;
     @Autowired private SpecialiteService specialiteService;
    @Autowired private ConseilService conseilService;
+    @Autowired
+    private FileStorageService fileStorageService;
+
+
     @Operation(
             summary = "Créer une psychologue",
             description = "Ajoute un nouveau psychologue"
     )
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public PsychologueListeDto ajouterPsychologue(@Valid @RequestPart("data") AddPsyDto dto,
+                                                  @RequestPart("cv") MultipartFile cv,
+                                                  @RequestPart("diplome") MultipartFile diplome) {
+
+        return psyService.inscrirePsychologue(dto, cv, diplome);
+    }
+
+
+
+
     public PsychologueListeDto savePsychologue(@Valid @RequestBody AddPsyDto addPsyDto, HttpSession session){
        // psychologue.setDateCreation(LocalDate.now());
 
@@ -46,8 +68,8 @@ public class PsychologueController {
         psychologue.setRole(RoleEnum.PSYCHOLOGUE);
 
         psychologue.setDescription(addPsyDto.getDescription());
-        psychologue.setDiplome_path(addPsyDto.getDiplome_path());
-        psychologue.setCv_path(addPsyDto.getCv_path());
+        //psychologue.setDiplomePath(addPsyDto.getDiplome_path());
+       // psychologue.setCvPath(addPsyDto.getCv_path());
         //psychologue.setEtat(addPsyDto.getEtat());
         //recupere la specialité à partir de l'id
         //Specialite specialite=specialiteService.getSpecialite(addPsyDto.getIdSpecialite());
@@ -156,6 +178,21 @@ public class PsychologueController {
         return psyService.getPsychologueValide();
     }
 
+    @GetMapping("/documents")
+    public ResponseEntity<Resource> voirDocument(@RequestParam String path, HttpSession session) {
+        Session.verifierRole(session, RoleEnum.ADMIN);
+        Resource resource = fileStorageService.load(path);
+        String contentType = "application/octet-stream";
+        try {
+            contentType = Files.probeContentType(resource.getFile().toPath()
+            );
+        } catch (IOException ignored) {
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
+    }
+
     public static PsychologueListeDto mapPsytoDto (Psychologue psychologue) {
         PsychologueListeDto dto=new PsychologueListeDto();
         dto.setId(psychologue.getId());
@@ -167,8 +204,8 @@ public class PsychologueController {
         dto.setDateCreation(psychologue.getDateCreation());
         dto.setStatus(psychologue.getStatus());
         dto.setDescription(psychologue.getDescription());
-        dto.setCv_path(psychologue.getCv_path());
-        dto.setDiplome_path(psychologue.getDiplome_path());
+        dto.setCvPath(psychologue.getCvPath());
+        dto.setDiplomePath(psychologue.getDiplomePath());
         dto.setEtat(psychologue.getEtat());
         return dto;
     }
