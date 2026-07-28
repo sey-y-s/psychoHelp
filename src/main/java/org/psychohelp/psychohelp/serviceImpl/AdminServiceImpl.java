@@ -149,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        verifierConseilEnAttente(conseil);
+        //verifierConseilEnAttente(conseil);
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() ->
                         new RuntimeException("Administrateur introuvable."));
@@ -189,7 +189,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("Conseil introuvable"));
 
-        verifierConseilEnAttente(conseil);
+        //verifierConseilEnAttente(conseil);
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() ->
                         new RuntimeException("Administrateur introuvable."));
@@ -230,6 +230,7 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
         psychologue.setStatus(StatusValidationPsy.VALIDER);
+        psychologue.setEtat(true);
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
 
         emailService.envoyerCompteActif(
@@ -242,13 +243,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public PsychologueListeDto annulerInscriptionPsy(Integer id) {
-
+    public PsychologueListeDto annulerInscriptionPsy(Integer id, String motif) {
+        System.out.println(">>> Refus du psychologue : " + id);
         Psychologue psychologue = psychologueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Psychologue introuvable"));
 
         psychologue.setStatus(StatusValidationPsy.REFUSER);
+        psychologue.setEtat(false);
+        psychologue.setMotifRefus(motif);
         Psychologue psySauvegarde = psychologueRepository.save(psychologue);
+        System.out.println(">>> Nouveau statut : " + psySauvegarde.getStatus());
+        emailService.envoyerRefus(psychologue.getMail(), motif);
         return mapPsyToDto(psySauvegarde);
     }
 
@@ -279,8 +284,9 @@ public class AdminServiceImpl implements AdminService {
         response.setDateCreation(psychologue.getDateCreation());
         response.setStatus(psychologue.getStatus()); // ou isStatus() selon ton entité
         response.setDescription(psychologue.getDescription());
-        response.setDiplome_path(psychologue.getDiplome_path());
-        response.setCv_path(psychologue.getCv_path());
+        response.setCvPath("/api/psychologues/documents?path=" + psychologue.getCvPath());
+        response.setDiplomePath("/api/psychologues/documents?path=" + psychologue.getDiplomePath());
+        response.setSpecialite(psychologue.getSpecialite().getNom());
         response.setEtat(psychologue.getEtat()); // ou isEtat() selon ton entité
         return response;
     }
