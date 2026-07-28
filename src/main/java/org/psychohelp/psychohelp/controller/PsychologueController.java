@@ -68,7 +68,7 @@ public class PsychologueController {
     @GetMapping
 
     public List<PsychologueListeDto> psychologueList(HttpSession session){
-        Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.CITOYEN);
+        //Session.verifierRole(session, RoleEnum.ADMIN, RoleEnum.CITOYEN);
 
         return  psyService.PSYCHOLOGUEList();
     }
