@@ -49,48 +49,28 @@ public class ConseilController {
     @GetMapping(path = "read")
     public List<ConseilAfficheDto> list(@RequestParam (required = false) StatusConseilEnum status){
         if (status != null){
-            //return conseilService.listConseilParStatus(status);
             return conseilService.listConseilParStatus(status);
-//                    .stream()
-//                    .map(
-//                            conseil -> new ConseilAfficheDto(conseil.getTitre(),
-//
-//                                    conseil.getDescription(),conseil.getAuteur(),
-//                                    conseil.getPsychologue().nomComplet(),
-//                                    conseil.getDatePublication(),
-//                                    conseil.getStatus(),
-//                                    conseil.getId())
-//                    ).toList();
         }
-        //return conseilService.listeConseil();
         return conseilService.listeConseil();
-//                .stream()
-//                .map(
-//                        conseil -> new ConseilAfficheDto(conseil.getTitre(),
-//                                conseil.getDescription(),conseil.getAuteur(),
-//                                conseil.getPsychologue().nomComplet(),
-//                                conseil.getDatePublication(),
-//                                conseil.getStatus().toString(), conseil.getId())
-//                ).toList();
-
     }
 
 
     @Operation(
-            summary = "Récuperer un conseil",
-            description = "recuperer un seul conseils par son identifiant"
+            summary = "Récuperer un conseil pour admin",
+            description = "recuperer un conseil par id pour l'admin "
     )
     @GetMapping(path = "{id}")
-    public ConseilDtoForPyschologue conseilById(@PathVariable int id){
+    public ConseilAfficheDto conseilById(@PathVariable int id){
         Conseil conseil = conseilService.conseilParId(id);
-        ConseilDtoForPyschologue conseilDtoForPyschologue = new ConseilDtoForPyschologue();
-        conseilDtoForPyschologue.setTitre(conseil.getTitre());
-        conseilDtoForPyschologue.setDescription(conseil.getDescription());
-        conseilDtoForPyschologue.setDatePublication(conseil.getDatePublication());
-        conseilDtoForPyschologue.setId(conseil.getId());
-        conseilDtoForPyschologue.setStatusConseil(conseil.getStatus());
+        ConseilAfficheDto conseilDto = new ConseilAfficheDto();
+        conseilDto.setTitre(conseil.getTitre());
+        conseilDto.setDescription(conseil.getDescription());
+        conseilDto.setDatePublication(conseil.getDatePublication());
+        conseilDto.setId(conseil.getId());
+        conseilDto.setStatus(conseil.getStatus().toString());
+        conseilDto.setPsyNom(conseil.getPsychologue().nomComplet());
 
-        return conseilDtoForPyschologue;
+        return conseilDto;
     }
 
     @Operation(
@@ -109,7 +89,7 @@ public class ConseilController {
         Conseil conseil =  new Conseil();
         conseil.setTitre(conseilDto.getTitre());
         conseil.setDescription(conseilDto.getDescription());
-        conseil.setAuteur("");
+        conseil.setAuteur(conseilDto.getAuteur());
         conseil.setStatus(StatusConseilEnum.ENATTENTE);
         conseil.setDatePublication(LocalDate.now());
         /*conseil.setPsychologue(
@@ -140,6 +120,8 @@ public class ConseilController {
 
             conseil.setTitre(conseilDto.getTitre());
             conseil.setDescription(conseilDto.getDescription());
+            conseil.setAuteur(conseilDto.getAuteur());
+            conseil.setStatus(StatusConseilEnum.ENATTENTE);
 
             Conseil conseilModif= conseilService.modifier(id, conseil);
 

@@ -3,10 +3,8 @@ package org.psychohelp.psychohelp.serviceImpl;
 import lombok.AllArgsConstructor;
 import org.psychohelp.psychohelp.dto.ChoixMultiplesReponseDTO;
 import org.psychohelp.psychohelp.dto.ChoixMultiplesRequestDTO;
-import org.psychohelp.psychohelp.dto.QuestionsTestReponseDTO;
 import org.psychohelp.psychohelp.entity.ChoixMultiple;
 import org.psychohelp.psychohelp.entity.QuestionsTest;
-import org.psychohelp.psychohelp.entity.Test;
 import org.psychohelp.psychohelp.repository.ChoixMultipleRepository;
 import org.psychohelp.psychohelp.repository.QuestionsTestRepository;
 import org.psychohelp.psychohelp.service.ChoixMultipleService;
@@ -67,7 +65,7 @@ public class ChoixMultipleServiceImpl implements ChoixMultipleService {
 
 
     @Override
-    public ChoixMultiplesReponseDTO updateChoix(
+    public ChoixMultiple updateChoix(
             int id,
             ChoixMultiplesRequestDTO choixMultiplesDTO){
 

@@ -79,7 +79,7 @@ public class ChoixMultipleController {
             description = "Met à jour un choix multiple existant"
     )
     @PutMapping("/{id}")
-    public ChoixMultiplesReponseDTO updateChoix(
+    public ChoixMultiple updateChoix(
             @PathVariable int id,
             @RequestBody ChoixMultiplesRequestDTO choixDTO, HttpSession session){
            Session.verifierRole(session, RoleEnum.ADMIN);

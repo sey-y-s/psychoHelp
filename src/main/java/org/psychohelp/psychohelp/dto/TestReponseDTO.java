@@ -14,4 +14,5 @@ public class  TestReponseDTO {
         private String nom_test;
         private String nomCategorie;
         private String description;
+        private boolean etat;
 }
