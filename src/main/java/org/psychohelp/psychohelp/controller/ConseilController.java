@@ -140,6 +140,7 @@ public class ConseilController {
 
             conseil.setTitre(conseilDto.getTitre());
             conseil.setDescription(conseilDto.getDescription());
+            conseil.setStatus(StatusConseilEnum.ENATTENTE);
 
             Conseil conseilModif= conseilService.modifier(id, conseil);
 
