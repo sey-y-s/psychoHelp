@@ -56,8 +56,8 @@ public class PsyServiceImpl implements PsyService {
             psychologueListeDto.setMail(psychologue.getMail());
             psychologueListeDto.setTelephone(psychologue.getTelephone());
             psychologueListeDto.setDescription(psychologue.getDescription());
-            psychologueListeDto.setDiplomePath(psychologue.getDiplomePath());
-            psychologueListeDto.setCvPath(psychologue.getCvPath());
+            psychologueListeDto.setDiplomePath("http://localhost:8080/api/psychologues/documents?path=" + psychologue.getDiplomePath());
+            psychologueListeDto.setCvPath("http://localhost:8080/api/psychologues/documents?path=" + psychologue.getCvPath());
             psychologueListeDto.setRole(psychologue.getRole());
             psychologueListeDto.setDateCreation(psychologue.getDateCreation());
             psychologueListeDto.setEtat(psychologue.getEtat());
@@ -207,8 +207,8 @@ Psychologue psychologue =psychologueRepository.save(psy);
         dto.setDateCreation(psychologue.getDateCreation());
         dto.setStatus(psychologue.getStatus());
         dto.setDescription(psychologue.getDescription());
-        dto.setDiplomePath(psychologue.getDiplomePath());
-        dto.setCvPath(psychologue.getCvPath());
+        dto.setDiplomePath("http://localhost:8080/api/psychologues/documents?path=" + psychologue.getDiplomePath());
+        dto.setCvPath("http://localhost:8080/api/psychologues/documents?path=" + psychologue.getCvPath());
         dto.setEtat(psychologue.getEtat());
         dto.setSpecialite(psychologue.getSpecialite().getNom());
 

@@ -124,9 +124,9 @@ public class AdminController {
     )
 
     @PutMapping("/psychologues/{id}/annuler")
-    public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id,HttpSession session) {
+    public PsychologueListeDto annulerInscriptionPsy(@PathVariable Integer id, @RequestBody RefusPsychologueDTO dto,HttpSession session) {
         Session.verifierRole(session, RoleEnum.ADMIN);
-        return adminService.annulerInscriptionPsy(id);
+        return adminService.annulerInscriptionPsy(id, dto.getMotif());
     }
 
 

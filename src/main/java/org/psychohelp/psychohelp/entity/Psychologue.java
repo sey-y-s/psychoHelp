@@ -31,6 +31,9 @@ public class Psychologue extends Utilisateur{
     @JoinColumn(name="specialite_id",nullable = false)
     private Specialite specialite;
 
+    @Column(columnDefinition = "TEXT")
+    private String motifRefus;
+
     @OneToMany(mappedBy = "psychologue")
     private List<Creneau> creneaux;
 
