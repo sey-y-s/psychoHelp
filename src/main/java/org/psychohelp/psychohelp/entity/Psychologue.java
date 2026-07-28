@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Psychologue extends Utilisateur{
 
-    @Enumerated(EnumType.STRING) @Column(length = 20)
+    @Enumerated(EnumType.STRING) @Column(length = 100)
     private StatusValidationPsy status = StatusValidationPsy.ENATTENTE;
 
     private String description;
