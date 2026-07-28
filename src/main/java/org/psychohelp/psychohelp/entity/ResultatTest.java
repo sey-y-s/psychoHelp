@@ -2,12 +2,16 @@ package org.psychohelp.psychohelp.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "resultats_test")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResultatTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

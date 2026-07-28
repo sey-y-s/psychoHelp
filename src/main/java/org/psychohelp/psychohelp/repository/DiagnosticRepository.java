@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,6 @@ public interface DiagnosticRepository extends JpaRepository<Diagnostic, Integer>
           AND :score BETWEEN d.scoreMin AND d.scoreMax
     """)
     Optional<Diagnostic> trouverDiagnostic(Integer testId, Integer score);
+
+    List<Diagnostic> findByTestId(Integer testId);
 }
