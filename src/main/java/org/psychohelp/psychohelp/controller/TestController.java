@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.psychohelp.psychohelp.dto.QuestionsTestReponseDTO;
 import org.psychohelp.psychohelp.dto.TestReponseDTO;
 import org.psychohelp.psychohelp.dto.TestRequestDTO;
 import org.psychohelp.psychohelp.entity.Test;
 import org.psychohelp.psychohelp.enumeration.RoleEnum;
+import org.psychohelp.psychohelp.service.QuestionsTestService;
 import org.psychohelp.psychohelp.service.TestService;
 import org.psychohelp.psychohelp.utils.Session;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ public class TestController {
 
 
     private final TestService testService;
+    private final QuestionsTestService questionsTestService;
+
 
     @Operation(
             summary = "Récupérer tous les tests",
@@ -100,5 +104,17 @@ public class TestController {
         return ResponseEntity.ok("Test supprimé avec succès");
 
     }
+
+
+    @Operation(
+            summary = "recuperer les questions d'un test",
+            description = "Supprime un test psychologique selon son identifiant"
+    )
+    @GetMapping("/{id}/questions")
+    public List<QuestionsTestReponseDTO> getAllQuestionsByTestId(@PathVariable int id) {
+
+        return testService.getallQuestionsbyTestId(id);
+    }
+
 
 }
