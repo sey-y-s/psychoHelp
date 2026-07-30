@@ -12,4 +12,5 @@ public class ChoixMultiplesReponseDTO {
     private String choix;
     private int score;
     private String question;
+    private Integer questionId;  // ← AJOUTÉ
 }
