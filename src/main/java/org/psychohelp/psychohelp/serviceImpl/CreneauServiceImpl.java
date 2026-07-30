@@ -144,17 +144,17 @@ public class CreneauServiceImpl implements CreneauService {
 
     private void genererDisponibilites(Creneau creneau, List<DateRdvPourCitoyen> disponibilites) {
         LocalDate debut = LocalDate.now();
-        LocalDate fin = debut.plusDays(30); // générer les 30 prochains jours
+        LocalDate fin = debut.plusDays(30); // genere les 30 prochains jours
         for(LocalDate date = debut; !date.isAfter(fin); date = date.plusDays(1)) {
-            LocalTime ajourdhui=LocalTime.now();
-            LocalDate jour=LocalDate.now();
+            LocalTime heureAjourduit=LocalTime.now();
+            LocalDate dateAjouduit=LocalDate.now();
             if(date.getDayOfWeek().equals(convertirJour(creneau.getJours()))) {
                 //on verifie ici si la date en question est prise
                 int reserve= seanceRepository.rdvDejaPris(date,creneau.getId());
                 if(reserve==0){
-                    System.out.println(ajourdhui);
+                    System.out.println(heureAjourduit);
 
-                    if (jour.isBefore(date)|| (jour.isEqual(date) && ajourdhui.isBefore(creneau.getHeureFin()))) {
+                    if (dateAjouduit.isBefore(date)|| (dateAjouduit.isEqual(date) && heureAjourduit.isBefore(creneau.getHeureFin()))) {
                         DateRdvPourCitoyen dto = new DateRdvPourCitoyen();
                         dto.setDate(date);
                         dto.setHeureDebut(creneau.getHeureDebut());
