@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class Test {
 
     @ManyToOne
     @JoinColumn(name = "categorie_test_id")
+    @OnDelete(action = OnDeleteAction.CASCADE) // Génère le ON DELETE CASCADE en SQL
 
     @ToString.Exclude
     @JsonBackReference
