@@ -20,7 +20,7 @@ public class ResultatTest {
     @Column(nullable = false)
     private Integer score;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 150)
     private String niveau;
 
     @Column(nullable = false, columnDefinition = "TEXT")
