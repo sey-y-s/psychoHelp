@@ -20,6 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,32 +140,33 @@ public class CreneauServiceImpl implements CreneauService {
         return listes;
     }
 
+
+
     private void genererDisponibilites(Creneau creneau, List<DateRdvPourCitoyen> disponibilites) {
-
         LocalDate debut = LocalDate.now();
-        LocalDate fin = debut.plusDays(30); // générer les 30 prochains jours
-
-
+        LocalDate fin = debut.plusDays(30); // genere les 30 prochains jours
         for(LocalDate date = debut; !date.isAfter(fin); date = date.plusDays(1)) {
-
-
+            LocalTime heureAjourduit=LocalTime.now();
+            LocalDate dateAjouduit=LocalDate.now();
             if(date.getDayOfWeek().equals(convertirJour(creneau.getJours()))) {
                 //on verifie ici si la date en question est prise
                 int reserve= seanceRepository.rdvDejaPris(date,creneau.getId());
                 if(reserve==0){
-                    DateRdvPourCitoyen dto = new DateRdvPourCitoyen();
+                    System.out.println(heureAjourduit);
 
-                    dto.setDate(date);
-                    dto.setHeureDebut(creneau.getHeureDebut());
-                    dto.setHeureFin(creneau.getHeureFin());
-                    dto.setCreneauId(creneau.getId());
-                    dto.setJours(creneau.getJours());
+                    if (dateAjouduit.isBefore(date)|| (dateAjouduit.isEqual(date) && heureAjourduit.isBefore(creneau.getHeureFin()))) {
+                        DateRdvPourCitoyen dto = new DateRdvPourCitoyen();
+                        dto.setDate(date);
+                        dto.setHeureDebut(creneau.getHeureDebut());
+                        dto.setHeureFin(creneau.getHeureFin());
+                        dto.setCreneauId(creneau.getId());
+                        dto.setJours(creneau.getJours());
+                        dto.setPsyId(creneau.getPsychologue().getId());
+                        dto.setNomPsychologue(creneau.getPsychologue().getNom());
 
-                    dto.setPsyId(creneau.getPsychologue().getId());
-                    dto.setNomPsychologue(creneau.getPsychologue().getNom());
+                        disponibilites.add(dto);
+                    }
 
-
-                    disponibilites.add(dto);
                 }
 
 
