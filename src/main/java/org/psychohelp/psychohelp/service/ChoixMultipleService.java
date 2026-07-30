@@ -10,15 +10,14 @@ import java.util.Optional;
 public interface ChoixMultipleService {
     List<ChoixMultiplesReponseDTO> getAllChoix();
 
-
     Optional<ChoixMultiplesReponseDTO> getChoixById(int id);
-
 
     ChoixMultiplesReponseDTO saveChoix(ChoixMultiplesRequestDTO choix, Integer question_id);
 
-
     ChoixMultiple updateChoix(int id, ChoixMultiplesRequestDTO choix);
 
-
     void deleteChoix(int id);
+
+    // ← AJOUT
+    List<ChoixMultiplesReponseDTO> getChoixByQuestionId(Integer questionId);
 }
