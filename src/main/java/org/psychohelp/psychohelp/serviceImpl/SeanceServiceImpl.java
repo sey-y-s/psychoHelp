@@ -103,16 +103,23 @@ public class SeanceServiceImpl implements SeanceService {
         if (utilisateurConnecte.getRole() == RoleEnum.CITOYEN) {
             notificationService.envoyer(
                     seance.getCreneau().getPsychologue(),
-                    "Rendez-vous annulé",
-                    seance.getCitoyen().nomComplet()
-                            + " a annulé le rendez-vous.",
+                    "Annulation d'un rendez-vous",
+                    "Le rendez-vous prévu le " + seance.getDateRdv()
+                            + " de " + seance.getCreneau().getHeureDebut()
+                            + " à " + seance.getCreneau().getHeureFin()
+                            + " a été annulé par "
+                            + seance.getCitoyen().nomComplet() + ".",
                     TypeNotificationEnum.RENDEZ_VOUS
             );
         } else {
             notificationService.envoyer(
                     seance.getCitoyen(),
                     "Rendez-vous annulé",
-                    "Le psychologue a annulé votre rendez-vous.",
+                    "Votre rendez-vous prévu le " + seance.getDateRdv()
+                            + " de " + seance.getCreneau().getHeureDebut()
+                            + " à " + seance.getCreneau().getHeureFin()
+                            + " a été annulé par votre psychologue. "
+                            + "Nous vous invitons à choisir un autre créneau disponible afin de reprogrammer votre séance.",
                     TypeNotificationEnum.RENDEZ_VOUS
             );
         }
@@ -162,10 +169,11 @@ public class SeanceServiceImpl implements SeanceService {
         notificationService.envoyer(
                 seance.getCitoyen(),
                 "Rendez-vous confirmé",
-                "Votre rendez-vous du "
-                        + seance.getDateRdv()
-                        + " a été confirmé.",
-
+                "Votre rendez-vous prévu le " + seance.getDateRdv()
+                        + " de " + seance.getCreneau().getHeureDebut()
+                        + " à " + seance.getCreneau().getHeureFin()
+                        + " a été confirmé par votre psychologue. "
+                        + "Nous vous remercions de vous présenter à l'heure prévue.",
                 TypeNotificationEnum.RENDEZ_VOUS
         );
         SeanceDTO dto = new SeanceDTO();

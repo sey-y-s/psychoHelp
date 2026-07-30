@@ -12,6 +12,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
     Optional<Utilisateur> findByMail(String mail);
     List<Utilisateur> findTop5ByOrderByDateCreationDesc();
     Optional<Utilisateur> findByRole(RoleEnum role);
+    Optional<Utilisateur> findByTelephone(String telephone);
 
 
 }

@@ -1,6 +1,7 @@
 package org.psychohelp.psychohelp.serviceImpl;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.psychohelp.psychohelp.dto.ConseilAfficheDto;
 import org.psychohelp.psychohelp.dto.ConseilDtoForPyschologue;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ConseilServiceImpl implements ConseilService {
 
     private final ConseilRepository conseilRepository;
@@ -65,7 +67,7 @@ public class ConseilServiceImpl implements ConseilService {
 
     @Override
     public Conseil conseilParId(Integer id) {
-        return conseilRepository.findById(id)
+        return conseilRepository.trouverParIdPourTraitement(id)
                 .orElseThrow(() -> new RuntimeException("Conseil non trouvé avec l'id : " + id));
     }
 

@@ -11,6 +11,9 @@ public class ConnectionDTO {
 
     private String email;
 
+    // Email ou numéro de téléphone
+    private String identifiant;
+
     private String motDePasse;
 
 

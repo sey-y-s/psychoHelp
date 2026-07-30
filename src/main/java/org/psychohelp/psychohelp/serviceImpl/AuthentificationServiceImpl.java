@@ -22,29 +22,52 @@ public class AuthentificationServiceImpl implements AuthentificationService {
     }
     @Override
     public Utilisateur inscrireUtilisateur(Utilisateur utilisateur) {
-        Optional<Utilisateur> existe = utilisateurRepository.findByMail(utilisateur.getMail());
+        // Vérifie l'email uniquement s'il est renseigné
+        if (utilisateur.getMail() != null && !utilisateur.getMail().trim().isEmpty()) {
 
-        if(existe.isPresent()){
-            throw new RuntimeException("Cette adresse email est déjà utilisée !");
+            Optional<Utilisateur> existeMail = utilisateurRepository.findByMail(utilisateur.getMail());
+            if (existeMail.isPresent()) {
+                throw new RuntimeException("Cette adresse email est déjà utilisée !");
+            }
         }
+        // Vérifie toujours le téléphone
+        Optional<Utilisateur> existeTelephone = utilisateurRepository.findByTelephone(utilisateur.getTelephone());
+        if (existeTelephone.isPresent()) {
+            throw new RuntimeException("Ce numéro de téléphone est déjà utilisé !");
+        }
+
         return utilisateurRepository.save(utilisateur);
     }
 
     @Override
     public Utilisateur connecter(ConnectionDTO connectionDTO) {
         String msg = "Identifiants incorrects.";
-        Utilisateur utilisateur = utilisateurRepository.findByMail(connectionDTO.getEmail()).orElseThrow(()
-                -> new ConnexionException(msg));
+        Utilisateur utilisateur;
 
-        if(!utilisateur.getMotDePasse().equals(connectionDTO.getMotDePasse())){
+        String identifiant = connectionDTO.getIdentifiant().trim();
+
+        // Si le texte contient @ on recherche par email
+        if (identifiant.contains("@")) {
+            utilisateur = utilisateurRepository
+                    .findByMail(identifiant)
+                    .orElseThrow(() -> new ConnexionException(msg));
+        } else {
+            // Sinon on recherche par téléphone
+            utilisateur = utilisateurRepository
+                    .findByTelephone(identifiant)
+                    .orElseThrow(() -> new ConnexionException(msg));
+        }
+        // Vérification du mot de passe
+        if (!utilisateur.getMotDePasse().equals(connectionDTO.getMotDePasse())) {
             throw new ConnexionException(msg);
         }
-
-        if(utilisateur instanceof Psychologue psychologue){
-            if(psychologue.getStatus().toString().equals("ENATTENTE")){
-                throw new ConnexionException("Votre compte est en attente de validation par l'administrateur. Veuillez patienter.");
+        // Vérification spécifique aux psychologues
+        if (utilisateur instanceof Psychologue psychologue) {
+            if (psychologue.getStatus().toString().equals("ENATTENTE")) {
+                throw new ConnexionException(
+                        "Votre compte est en attente de validation par l'administrateur. Veuillez patienter.");
             }
-            if(Boolean.FALSE.equals(psychologue.getEtat())){
+            if (Boolean.FALSE.equals(psychologue.getEtat())) {
                 throw new ConnexionException("Ce compte est inactif.");
             }
         }
