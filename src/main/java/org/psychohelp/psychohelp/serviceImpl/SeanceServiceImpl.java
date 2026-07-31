@@ -2,7 +2,6 @@ package org.psychohelp.psychohelp.serviceImpl;
 
 
 import org.psychohelp.psychohelp.dto.CitoyenRendezVousResponseDTO;
-import org.psychohelp.psychohelp.dto.CitoyenSeanceWithPsychologueDto;
 import org.psychohelp.psychohelp.dto.SeanceDTO;
 import org.psychohelp.psychohelp.dto.SeanceResponseDTO;
 import org.psychohelp.psychohelp.entity.Citoyen;
@@ -21,8 +20,11 @@ import org.psychohelp.psychohelp.service.NotificationService;
 import org.psychohelp.psychohelp.service.SeanceService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,6 +58,38 @@ public class SeanceServiceImpl implements SeanceService {
         Creneau creneau = creneauRepository.findById(dto.getCreneauId())
                 .orElseThrow(() -> new NotFoundException("Créneau introuvable"));
 
+        if (dto.getDateRdv() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La date du rendez-vous est obligatoire."
+            );
+        }
+
+        LocalDate aujourdHui = LocalDate.now();
+        LocalDateTime maintenant = LocalDateTime.now();
+        LocalDateTime finCreneau = LocalDateTime.of(dto.getDateRdv(), creneau.getHeureFin());
+
+        if (!creneau.getStatut()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ce créneau n'est plus disponible."
+            );
+        }
+        if (dto.getDateRdv().isBefore(aujourdHui)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Impossible de réserver un créneau passé."
+            );
+        }
+        if (!finCreneau.isAfter(maintenant)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Impossible de réserver un créneau dont l'heure est déjà passée."
+            );
+        }
+        int dejaPris = seanceRepository.rdvDejaPris(dto.getDateRdv(), creneau.getId());
+        if (dejaPris > 0) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ce créneau est déjà réservé pour cette date."
+            );
+        }
+
         Seance seance = new Seance();
         seance.setDateRdv(dto.getDateRdv());
         seance.setStatut(StatutRdvEnum.RESERVER);
@@ -64,8 +98,16 @@ public class SeanceServiceImpl implements SeanceService {
         seanceRepository.save(seance);
         notificationService.envoyer(
                 creneau.getPsychologue(),
-                "Nouvelle réservation",
-                citoyen.nomComplet() + " a réservé un rendez-vous.",
+                "Nouvelle demande de rendez-vous",
+                "Vous avez une nouvelle réservation de "
+                        + citoyen.nomComplet()
+                        + " pour le "
+                        + seance.getDateRdv()
+                        + " de "
+                        + creneau.getHeureDebut()
+                        + " à "
+                        + creneau.getHeureFin()
+                        + ".",
                 TypeNotificationEnum.RENDEZ_VOUS
         );
         SeanceDTO seanceDTO = new SeanceDTO();
