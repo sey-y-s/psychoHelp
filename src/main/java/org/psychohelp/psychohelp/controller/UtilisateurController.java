@@ -125,6 +125,7 @@ public class UtilisateurController {
         dto.setPrenom(utilisateur.getPrenom());
         dto.setMail(utilisateur.getMail());
         dto.setRole(utilisateur.getRole());
+        dto.setTelephone(utilisateur.getTelephone());
 
         return ResponseEntity.ok(dto);
     }

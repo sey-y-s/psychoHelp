@@ -49,6 +49,7 @@ public final class Session {
         dto.setPrenom(u.getPrenom());
         dto.setMail(u.getMail());
         dto.setRole(u.getRole().toString());
+        dto.setTelephone(u.getTelephone());
         return dto;
     }
 }

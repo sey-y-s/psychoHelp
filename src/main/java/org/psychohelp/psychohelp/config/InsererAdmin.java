@@ -20,7 +20,7 @@ public class InsererAdmin {
                 Admin admin = new Admin();
                 admin.setNom("Coulibaly");
                 admin.setPrenom("Mohamed");
-                admin.setMotDePasse("1234");
+                admin.setMotDePasse("pass1234");
                 admin.setMail("mc@gmail.com");
                 admin.setTelephone("77990088");
                 admin.setRole(RoleEnum.ADMIN);
