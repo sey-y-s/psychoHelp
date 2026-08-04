@@ -154,7 +154,7 @@ public class CreneauServiceImpl implements CreneauService {
                 if(reserve==0){
                     System.out.println(heureAjourduit);
 
-                    if (dateAjouduit.isBefore(date)|| (dateAjouduit.isEqual(date) && heureAjourduit.isBefore(creneau.getHeureFin()))) {
+                    if (dateAjouduit.isBefore(date)|| (dateAjouduit.isEqual(date) && heureAjourduit.isBefore(creneau.getHeureDebut()))) {
                         DateRdvPourCitoyen dto = new DateRdvPourCitoyen();
                         dto.setDate(date);
                         dto.setHeureDebut(creneau.getHeureDebut());
